@@ -8,7 +8,7 @@ pygame.display.set_caption("PoolGame")
 posX = 0
 posY = 0
 pantalla_principal = pygame.image.load("PLAY (1).png")
-
+#Bruno grande
 #cantidad de pixeles que se moverá la imagen
 velocidad = 200
 blanco=(255,255,255)

@@ -5,6 +5,8 @@ pygame.init()
 window = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("PoolGame")
 
+#nievas, hacé el update
+
 posX = 0
 posY = 0
 pantalla_principal = pygame.image.load("PLAY (1).png")
@@ -19,7 +21,6 @@ abajo = False
 
 numero = 12
 #Comentario commit
-
 
 rectangulo_hitbox = pygame.Rect(231,568, 575-231, 675-568)
 window.blit(pantalla_principal,(posX, posY))

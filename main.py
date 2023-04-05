@@ -18,6 +18,8 @@ arriba = False
 abajo = False
 
 numero = 12
+#Comentario commit
+
 
 rectangulo_hitbox = pygame.Rect(231,568, 575-231, 675-568)
 window.blit(pantalla_principal,(posX, posY))

@@ -6,6 +6,7 @@ window = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("PoolGame")
 
 #nievas, hacé el update
+#probando commits desde la notebook
 
 posX = 0
 posY = 0

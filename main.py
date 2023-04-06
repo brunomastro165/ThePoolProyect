@@ -86,7 +86,7 @@ while True:
         window.fill(blanco)
         pygame.mixer.music.stop()
 
-
+#1
     for event in pygame.event.get(): #event.get() son los eventos prefabricados de pygame
         #1 = izquierdo 2 = rueda 3 = derecho
         #and ((mouse_x >= 229 and mouse_y >= 568) and (mouse_x >= 567 and mouse_y >= 658))

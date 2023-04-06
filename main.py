@@ -31,7 +31,7 @@ abajo = False
 
 #rectangulo_hitbox = pygame.Rect(231,568, 575-231, 675-568) #hitbox del rectángulo de 'play' en la pantalla principal
 
-
+#uwu
 #BOTONES
 start_hitbox = button.Button(231,568, 575-231, 675-568)
 menu_hitbox = button.Button(300, 696, 500 -300, 759 -696)

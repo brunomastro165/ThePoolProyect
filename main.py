@@ -14,10 +14,15 @@ posY = 0
 
 #CARGADO DE IMAGENES
 
+#PANTALLA PRINCIPAL
 pantalla_principal = pygame.image.load("PLAY.png") #cargado de imagen en una variable
 pantalla_principal_activa = pygame.image.load("PLAY (ACTIVE).png")
 pantalla_principal_menu_active = pygame.image.load("MENU (ACTIVE).png")
 pantalla_principal_datos = pygame.image.load("PLAY DATOS.png")
+
+#PANTALLA DATOS
+pantalla_datos = pygame.image.load("DATOS (PAGINA).png")
+pantalla_datos_activa = pygame.image.load("DATOS (PAG ACTIVA).png")
 
 #para mover una imagen...
 
@@ -32,14 +37,13 @@ abajo = False
 #rectangulo_hitbox = pygame.Rect(231,568, 575-231, 675-568) #hitbox del rectángulo de 'play' en la pantalla principal
 
 #uwu
-#BOTONES
+#BOTONES PANTALLA PRINCIPAL
 start_hitbox = button.Button(231,568, 575-231, 675-568)
 menu_hitbox = button.Button(300, 696, 500 -300, 759 -696)
 datos_hitbox = button.Button(714, 706, 778-714, 782- 706)
 
-# SI 714, 706
-# ID 778, 782
-
+#BOTÓN BACK EN DATOS
+back_datos_hitbox = button.Button(12, 18, 165-12, 64-18)
 
 #SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3') #agregar música
@@ -69,6 +73,7 @@ print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
 
 
 while True:
+
     mouse_x,mouse_y = pygame.mouse.get_pos() #posición cartesiana del mouse
     #JUEGO
     if(start == True):
@@ -89,10 +94,14 @@ while True:
 
     #VENTANA DATOS
     if (datos == True):
-        window.fill(blanco)
+        window.blit(pantalla_datos, (posX, posY))
         pygame.mixer.music.stop()
 
-#1
+        #No sé por qué funciona solo con down, pero si le pongo up se rompe, funciona perfecto de todas formas
+        if back_datos_hitbox.down(event) == True:
+            window.blit(pantalla_datos_activa, (posX, posY))
+            datos = False
+
     for event in pygame.event.get(): #event.get() son los eventos prefabricados de pygame
         #1 = izquierdo 2 = rueda 3 = derecho
         #and ((mouse_x >= 229 and mouse_y >= 568) and (mouse_x >= 567 and mouse_y >= 658))
@@ -124,8 +133,6 @@ while True:
 
         #DATOS
        #if(start == False and menu == False):
-
-
 
         if event.type == QUIT:
             pygame.quit()

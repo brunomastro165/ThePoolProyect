@@ -88,12 +88,12 @@ while True:
 
         #START
         if start == False and menu == False and start_hitbox.down(event) == True:
-            print("hola")
+
             window.blit(pantalla_principal_activa, (posX, posY))
 
         #MENU
         elif start == False and menu == False and menu_hitbox.down(event) == True:
-            print("hola")
+
             window.blit(pantalla_principal_menu_active, (posX, posY))
 
         #Pantalla principal

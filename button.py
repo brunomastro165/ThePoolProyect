@@ -19,7 +19,14 @@ class Button:
     #Me falta terminar esto, ya voy a ver bien cómo hacerlo, pero voy bien, es una clase para no tener que hacer mil botones diferentes
     def is_mouse_over(self):
         mouse_pos = pygame.mouse.get_pos()
-        if(self.hitbox.collidepoint(mouse_pos)):
-            print("COLISIÓN")
-            if pygame.event.get(MOUSEBUTTONDOWN):
+
+        if(self.hitbox.collidepoint(mouse_pos) and event.type == pygame.MOUSEBUTTONUP):
+            if event.button == 1:
+                return True
+
+    def down(self, event):
+        mouse_pos = pygame.mouse.get_pos()
+
+        if (self.hitbox.collidepoint(mouse_pos) and event.type == pygame.MOUSEBUTTONDOWN):
+            if event.button == 1:
                 return True

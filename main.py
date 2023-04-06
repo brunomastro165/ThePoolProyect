@@ -11,7 +11,11 @@ pygame.display.set_caption("PoolGame") #nombre que va a tener la ventana
 posX = 0
 posY = 0
 
-pantalla_principal = pygame.image.load("PLAY (1).png") #cargado de imagen en una variable
+#CARGADO DE IMAGENES
+
+pantalla_principal = pygame.image.load("PLAY.png") #cargado de imagen en una variable
+pantalla_principal_activa = pygame.image.load("PLAY (ACTIVE).png")
+pantalla_principal_menu_active = pygame.image.load("MENU (ACTIVE).png")
 
 #para mover una imagen...
 
@@ -23,11 +27,12 @@ izquierda = False
 arriba = False
 abajo = False
 
-rectangulo_hitbox = pygame.Rect(231,568, 575-231, 675-568) #hitbox del rectángulo de 'play' en la pantalla principal
+#rectangulo_hitbox = pygame.Rect(231,568, 575-231, 675-568) #hitbox del rectángulo de 'play' en la pantalla principal
 
-menu_hitbox = button.Button(314, 702, 100, 100)
 
-window.blit(pantalla_principal,(posX, posY)) #usar una imagen cómo ventana
+#BOTONES
+start_hitbox = button.Button(231,568, 575-231, 675-568)
+menu_hitbox = button.Button(300, 696, 500 -300, 759 -696)
 
 #SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3') #agregar música
@@ -44,18 +49,22 @@ leftLine = mesa.MesaObject(100, 50, 10, 650)
 botLine = mesa.MesaObject(100, 700, 500, 10)
 rightLine = mesa.MesaObject(600, 50, 10, 660)
 
-game = False #condicion para mostrar la pantalla principal o el 'juego' 
+
+menu = False
+start = False #condicion para mostrar la pantalla principal o el 'juego'
 
 
 print(f"Hitbox de la línea superior: {topLine.hitbox}")
 print(f"Hitbox de la línea izquierda: {leftLine.hitbox}")
 print(f"Hitbox de la línea inferior: {botLine.hitbox}")
 print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
-menu_hitbox.draw(window)
+#menu_hitbox.draw(window)
 
 while True:
     mouse_x,mouse_y = pygame.mouse.get_pos() #posición cartesiana del mouse
-    if(game == True):
+
+    #JUEGO
+    if(start == True):
         #dibujamos la hitbox
         #Prueba rojo
         window.fill(blanco)
@@ -66,19 +75,31 @@ while True:
         pygame.mixer.music.stop()  # detener la música
         #window.blit(mesa_pool_, (posX, posY))
 
+    #MENU
+    if(menu == True):
+        window.fill(blanco)
+        pygame.mixer.music.stop()
+
 
     for event in pygame.event.get(): #event.get() son los eventos prefabricados de pygame
         #1 = izquierdo 2 = rueda 3 = derecho
         #and ((mouse_x >= 229 and mouse_y >= 568) and (mouse_x >= 567 and mouse_y >= 658))
-        if event.type == pygame.MOUSEBUTTONDOWN and game == False:
-            mouse_pos = pygame.mouse.get_pos()
 
-            if rectangulo_hitbox.collidepoint(mouse_pos):
-                if event.button == 1:
-                    game = True
+        #START
+        if start == False and menu == False and start_hitbox.down(event) == True:
+            window.blit(pantalla_principal_activa, (posX, posY))
+        elif(start == False and menu == False):
+            window.blit(pantalla_principal, (posX, posY))
+        if start == False and menu == False and start_hitbox.up(event) == True:
+                start = True
 
-        if game == False and menu_hitbox.is_mouse_over() == True:
-            game = True
+        #MENU
+        if start == False and menu == False and menu_hitbox.down(event) == True:
+            window.blit(pantalla_principal_menu_active, (posX, posY))
+        elif (start == False and menu == False):
+            window.blit(pantalla_principal, (posX, posY))
+        if start == False and menu == False and menu_hitbox.up(event) == True:
+            menu = True
 
         if event.type == QUIT:
             pygame.quit()
@@ -105,5 +126,5 @@ while True:
     posY = posY-100
     '''
 
-    #print(pygame.mouse.get_pos())
+    print(pygame.mouse.get_pos())
     pygame.display.update()

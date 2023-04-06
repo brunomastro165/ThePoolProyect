@@ -1,5 +1,6 @@
 import pygame, sys
-
+import pymunk
+import pymunk.pygame_util
 import button
 import mesa
 from pygame.locals import *
@@ -41,7 +42,7 @@ pygame.mixer.music.play(-1) #reproducir música en bucle
 
 pygame.mixer.music.set_volume(0.1) #setear volumen
 
-#objeto mesaDePool creado desde la clase mesa, con sus atributos
+window.blit(pantalla_principal, (posX, posY))
 
 #hacer cada línea individualmente, para poder rodear la imagen con la hitbox
 topLine = mesa.MesaObject(100, 50, 500, 10)

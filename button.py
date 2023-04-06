@@ -14,6 +14,7 @@ class Button:
     def draw(self, surface):
         # dibujar el objeto
         pygame.draw.rect(surface, (255, 0, 0), (self.x, self.y, self.width, self.height))
+        pygame.draw.r
 
 
 

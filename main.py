@@ -88,17 +88,19 @@ while True:
 
         #START
         if start == False and menu == False and start_hitbox.down(event) == True:
+            print("hola")
             window.blit(pantalla_principal_activa, (posX, posY))
-        elif(start == False and menu == False):
+
+        #MENU
+        elif start == False and menu == False and menu_hitbox.down(event) == True:
+            print("hola")
+            window.blit(pantalla_principal_menu_active, (posX, posY))
+
+        #Pantalla principal
+        elif (start == False and menu == False):
             window.blit(pantalla_principal, (posX, posY))
         if start == False and menu == False and start_hitbox.up(event) == True:
                 start = True
-
-        #MENU
-        if start == False and menu == False and menu_hitbox.down(event) == True:
-            window.blit(pantalla_principal_menu_active, (posX, posY))
-        elif (start == False and menu == False):
-            window.blit(pantalla_principal, (posX, posY))
         if start == False and menu == False and menu_hitbox.up(event) == True:
             menu = True
 
@@ -127,5 +129,5 @@ while True:
     posY = posY-100
     '''
 
-    print(pygame.mouse.get_pos())
+    #print(pygame.mouse.get_pos())
     pygame.display.update()

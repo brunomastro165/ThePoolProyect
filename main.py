@@ -1,4 +1,6 @@
 import pygame, sys
+
+import button
 import mesa
 from pygame.locals import *
 
@@ -23,8 +25,11 @@ abajo = False
 
 rectangulo_hitbox = pygame.Rect(231,568, 575-231, 675-568) #hitbox del rectángulo de 'play' en la pantalla principal
 
+menu_hitbox = button.Button(314, 702, 100, 100)
+
 window.blit(pantalla_principal,(posX, posY)) #usar una imagen cómo ventana
 
+#SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3') #agregar música
 
 pygame.mixer.music.play(-1) #reproducir música en bucle
@@ -39,13 +44,14 @@ leftLine = mesa.MesaObject(100, 50, 10, 650)
 botLine = mesa.MesaObject(100, 700, 500, 10)
 rightLine = mesa.MesaObject(600, 50, 10, 660)
 
-game = False #condicion para mostrar la pantalla principal o el 'juego'
+game = False #condicion para mostrar la pantalla principal o el 'juego' 
+
 
 print(f"Hitbox de la línea superior: {topLine.hitbox}")
 print(f"Hitbox de la línea izquierda: {leftLine.hitbox}")
 print(f"Hitbox de la línea inferior: {botLine.hitbox}")
 print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
-
+menu_hitbox.draw(window)
 while True:
     mouse_x,mouse_y = pygame.mouse.get_pos() #posición cartesiana del mouse
     if(game == True):
@@ -58,6 +64,7 @@ while True:
         pygame.mixer.music.stop()  # detener la música
         #window.blit(mesa_pool_, (posX, posY))
 
+
     for event in pygame.event.get(): #event.get() son los eventos prefabricados de pygame
         #1 = izquierdo 2 = rueda 3 = derecho
         #and ((mouse_x >= 229 and mouse_y >= 568) and (mouse_x >= 567 and mouse_y >= 658))
@@ -67,6 +74,9 @@ while True:
             if rectangulo_hitbox.collidepoint(mouse_pos):
                 if event.button == 1:
                     game = True
+
+        if game == False and menu_hitbox.is_mouse_over() == True:
+            game = True
 
         if event.type == QUIT:
             pygame.quit()
@@ -85,6 +95,7 @@ while True:
     '''
 
     #Mover imágenes con el mouse
+
 
     '''
     posX, posY = (pygame.mouse.get_pos())

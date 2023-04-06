@@ -10,7 +10,6 @@ class Button:
 
         self.hitbox = pygame.Rect(self.x, self.y, self.width, self.height)
 
-
     def draw(self, surface):
         # dibujar el objeto
         pygame.draw.rect(surface, (255, 0, 0), (self.x, self.y, self.width, self.height))

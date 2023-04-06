@@ -35,6 +35,11 @@ abajo = False
 #BOTONES
 start_hitbox = button.Button(231,568, 575-231, 675-568)
 menu_hitbox = button.Button(300, 696, 500 -300, 759 -696)
+datos_hitbox = button.Button(714, 706, 778-714, 782- 706)
+
+# SI 714, 706
+# ID 778, 782
+
 
 #SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3') #agregar música
@@ -54,13 +59,14 @@ rightLine = mesa.MesaObject(600, 50, 10, 660)
 
 menu = False
 start = False #condicion para mostrar la pantalla principal o el 'juego'
-
+principal = True
+datos = False
 
 print(f"Hitbox de la línea superior: {topLine.hitbox}")
 print(f"Hitbox de la línea izquierda: {leftLine.hitbox}")
 print(f"Hitbox de la línea inferior: {botLine.hitbox}")
 print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
-#menu_hitbox.draw(window)
+
 
 while True:
     mouse_x,mouse_y = pygame.mouse.get_pos() #posición cartesiana del mouse
@@ -76,7 +82,7 @@ while True:
         pygame.mixer.music.stop()  # detener la música
         #window.blit(mesa_pool_, (posX, posY))
 
-    #MENU
+    #VENTANA MENU
     if(menu == True):
         window.fill(blanco)
         pygame.mixer.music.stop()
@@ -91,9 +97,9 @@ while True:
         #1 = izquierdo 2 = rueda 3 = derecho
         #and ((mouse_x >= 229 and mouse_y >= 568) and (mouse_x >= 567 and mouse_y >= 658))
 
+        #Animacion de Botones
         #START
-        if start == False and menu == False and start_hitbox.down(event) == True:
-
+        if start == False and menu == False and datos == False and start_hitbox.down(event) == True:
             window.blit(pantalla_principal_activa, (posX, posY))
 
         #MENU
@@ -110,13 +116,21 @@ while True:
 
         #Abriendo otras pantallas
         if start == False and menu == False and start_hitbox.up(event) == True:
-                start = True
+            start = True
         if start == False and menu == False and menu_hitbox.up(event) == True:
             menu = True
+        if start == False and menu == False and datos_hitbox.up(event) == True:
+            datos = True
+
+        #DATOS
+       #if(start == False and menu == False):
+
+
 
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+
 
     '''
     #Detectar colisiones (hay que probarlo con las bochas creadas)

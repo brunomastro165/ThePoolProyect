@@ -17,6 +17,7 @@ posY = 0
 pantalla_principal = pygame.image.load("PLAY.png") #cargado de imagen en una variable
 pantalla_principal_activa = pygame.image.load("PLAY (ACTIVE).png")
 pantalla_principal_menu_active = pygame.image.load("MENU (ACTIVE).png")
+pantalla_principal_datos = pygame.image.load("PLAY DATOS.png")
 
 #para mover una imagen...
 
@@ -63,7 +64,6 @@ print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
 
 while True:
     mouse_x,mouse_y = pygame.mouse.get_pos() #posición cartesiana del mouse
-
     #JUEGO
     if(start == True):
         #dibujamos la hitbox
@@ -81,6 +81,11 @@ while True:
         window.fill(blanco)
         pygame.mixer.music.stop()
 
+    #VENTANA DATOS
+    if (datos == True):
+        window.fill(blanco)
+        pygame.mixer.music.stop()
+
 
     for event in pygame.event.get(): #event.get() son los eventos prefabricados de pygame
         #1 = izquierdo 2 = rueda 3 = derecho
@@ -92,13 +97,18 @@ while True:
             window.blit(pantalla_principal_activa, (posX, posY))
 
         #MENU
-        elif start == False and menu == False and menu_hitbox.down(event) == True:
+        elif start == False and menu == False and datos == False and menu_hitbox.down(event) == True:
 
             window.blit(pantalla_principal_menu_active, (posX, posY))
+        #DATOS
+        elif start == False and menu == False and datos == False and datos_hitbox.down(event) == True:
+            window.blit(pantalla_principal_datos, (posX,posY))
 
         #Pantalla principal
-        elif (start == False and menu == False):
+        elif (start == False and menu == False and datos == False):
             window.blit(pantalla_principal, (posX, posY))
+
+        #Abriendo otras pantallas
         if start == False and menu == False and start_hitbox.up(event) == True:
                 start = True
         if start == False and menu == False and menu_hitbox.up(event) == True:
@@ -128,6 +138,5 @@ while True:
     posX = posX-100
     posY = posY-100
     '''
-
-    #print(pygame.mouse.get_pos())
+    print(pygame.mouse.get_pos())
     pygame.display.update()

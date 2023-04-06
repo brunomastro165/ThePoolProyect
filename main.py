@@ -52,10 +52,12 @@ print(f"Hitbox de la línea izquierda: {leftLine.hitbox}")
 print(f"Hitbox de la línea inferior: {botLine.hitbox}")
 print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
 menu_hitbox.draw(window)
+
 while True:
     mouse_x,mouse_y = pygame.mouse.get_pos() #posición cartesiana del mouse
     if(game == True):
         #dibujamos la hitbox
+        #Prueba rojo
         window.fill(blanco)
         leftLine.draw(window)
         botLine.draw(window)

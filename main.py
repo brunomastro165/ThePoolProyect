@@ -27,7 +27,6 @@ data = False
 posX = 0
 posY = 0
 
-
 #Color Blanco
 white_color = (255,255,255)
 
@@ -50,13 +49,14 @@ data_image = imageLoad("DATOS (PAGINA).png")
 data_return = imageLoad("DATOS (PAG ACTIVA).png")
 
 """
-Esto no se usa todabia y capaz no se use
-
+Esto no se usa todavía y capaz no se use
 right = False
 left = False
 up = False
 down = False
 """
+#BOTONES
+
 #BOTONES PANTALLA PRINCIPAL
 start_hitbox = button.Button(231,568, 575-231, 675-568)
 menu_hitbox = button.Button(300, 696, 500 -300, 759 -696)
@@ -67,9 +67,7 @@ data_return_hitbox = button.Button(12, 18, 165-12, 64-18)
 
 #SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3') #agregar música
-
 pygame.mixer.music.play(-1) #reproducir música en bucle
-
 pygame.mixer.music.set_volume(0.1) #setear volumen
 
 #hacer cada línea individualmente, para poder rodear la imagen con la hitbox
@@ -88,7 +86,6 @@ window.fill(white_color)
 
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
-
 
     #Este for revisa cada evento posible
     for event in pygame.event.get():
@@ -128,20 +125,25 @@ while True:
             if data_return_hitbox.up(event) == True:
                 data = False
 
-        # Animacion de Botones
+        # Animacion de Botones y cambio de pestañas
         # START
         if start == menu == data == False and start_hitbox.down(event) == True:
             window.blit(game_start_click, (posX, posY))
+            start = True
         # MENU
         elif start == menu == data == False and menu_hitbox.down(event) == True:
             window.blit(game_menu_click, (posX, posY))
+            menu = True
         # DATOS
         elif start == menu == data == False and data_hitbox.down(event) == True:
             window.blit(game_data_click, (posX, posY))
+            data = True
         # Pantalla principal
         elif start == menu == data == False:
             window.blit(game, (posX, posY))
 
+        #Es innecesario poner el .up event, esto provoca el error de los botones
+            '''
         # Abriendo otras pantallas
         if start == menu == False and start_hitbox.up(event) == True:
             start = True
@@ -149,6 +151,7 @@ while True:
             menu = True
         if start == menu == False and data_hitbox.up(event) == True:
             data = True
+            '''
 
         '''
             #Detectar colisiones (hay que probarlo con las bochas creadas)

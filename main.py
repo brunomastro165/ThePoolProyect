@@ -124,23 +124,29 @@ while True:
                 window.blit(data_image, (posX, posY))
             if data_return_hitbox.up(event) == True:
                 data = False
+                main = True
 
         # Animacion de Botones y cambio de pestañas
         # START
-        if start == menu == data == False and start_hitbox.down(event) == True:
-            window.blit(game_start_click, (posX, posY))
-            start = True
-        # MENU
-        elif start == menu == data == False and menu_hitbox.down(event) == True:
-            window.blit(game_menu_click, (posX, posY))
-            menu = True
-        # DATOS
-        elif start == menu == data == False and data_hitbox.down(event) == True:
-            window.blit(game_data_click, (posX, posY))
-            data = True
+        if main == True:
+            if start_hitbox.down(event) == True:
+                window.blit(game_start_click, (posX, posY))
+                start = True
+                main = False
+            # MENU
+            elif menu_hitbox.down(event) == True:
+                window.blit(game_menu_click, (posX, posY))
+                menu = True
+                main = False
+            # DATOS
+            elif data_hitbox.down(event) == True:
+                window.blit(game_data_click, (posX, posY))
+                data = True
+                main = False
+            else:
+                window.blit(game, (posX, posY))
         # Pantalla principal
-        elif start == menu == data == False:
-            window.blit(game, (posX, posY))
+
 
         #Es innecesario poner el .up event, esto provoca el error de los botones
             '''

@@ -3,6 +3,7 @@ import pymunk
 import pymunk.pygame_util
 import button
 import mesa
+import palo
 from pygame.locals import *
 
 
@@ -150,7 +151,7 @@ def create_ball(rad, pos):
     return shape
 
 
-# Crear las bolas para el jogo
+# Crear las bolas para el juego
 balls = []
 rows = 5
 # Bolas numeradas
@@ -162,7 +163,8 @@ for col in range(5):
     rows -= 1
 
 # Bola blanca
-pos = (888, (base_height/2))
+pos = (888, (678/2))
+print(pos)
 cue_ball = create_ball((diam/2), pos)
 balls.append(cue_ball)
 
@@ -182,6 +184,7 @@ def create_table_border(poly_dims):
     body = pymunk.Body(body_type=pymunk.Body.STATIC)
     body.position = (0, 0)
     shape = pymunk.Poly(body, poly_dims)
+    shape = pymunk.Poly(body, poly_dims)
     shape.elasticity = 0.8
 
     space.add(body, shape)
@@ -191,6 +194,8 @@ for b in border:
     create_table_border(b)
 
 
+# Objeto palo (instancia de la clase palo)
+palo_p1 = palo.Palo(balls[-1].body.position)
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
@@ -343,6 +348,8 @@ while True:
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
 
+        #dibujar palo
+        palo_p1.draw(window)
         # Event Handler
         for event in pygame.event.get():
             # Disparar la bola blanca
@@ -354,7 +361,6 @@ while True:
 
         # space.debug_draw(draw_options)
         pygame.display.update()
-    print(pygame.mouse.get_pos())
     # print(pygame.mouse.get_pos())
     clock.tick(60)
     pygame.display.flip()

@@ -18,12 +18,6 @@ def resposiveHitbox(object,pos):
 base_width = 800
 base_height = 800
 
-#Condicion para cambiar de pantalla
-main = True
-menu = False
-start = False
-data = False
-
 posX = 0
 posY = 0
 
@@ -48,6 +42,13 @@ game_data_click = imageLoad("PLAY DATOS.png")
 data_image = imageLoad("DATOS (PAGINA).png")
 data_return = imageLoad("DATOS (PAG ACTIVA).png")
 
+
+#Pantalla PrePlay
+prePlayInactive =imageLoad("Images/PrePlayInactive.png")
+prePlayPlayerActiveImage =imageLoad("Images/PrePlayPlayerActive.png")
+prePlayBotActive =imageLoad("Images/PrePlayBotActive.png")
+prePlayBackActive =imageLoad("Images/PrePlayBackActive.png")
+
 """
 Esto no se usa todavía y capaz no se use
 right = False
@@ -67,7 +68,6 @@ data_return_hitbox = button.Button(12, 18, 165-12, 64-18)
 
 #SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3') #agregar música
-pygame.mixer.music.play(-1) #reproducir música en bucle
 pygame.mixer.music.set_volume(0.1) #setear volumen
 
 #hacer cada línea individualmente, para poder rodear la imagen con la hitbox
@@ -75,6 +75,7 @@ topLine = mesa.MesaObject(100, 50, 500, 10)
 leftLine = mesa.MesaObject(100, 50, 10, 650)
 botLine = mesa.MesaObject(100, 700, 500, 10)
 rightLine = mesa.MesaObject(600, 50, 10, 660)
+
 """
 print(f"Hitbox de la línea superior: {topLine.hitbox}")
 print(f"Hitbox de la línea izquierda: {leftLine.hitbox}")
@@ -83,12 +84,19 @@ print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
 """
 window.fill(white_color)
 
-
+#Condicion para cambiar de pantalla
+main = True
+menu = False
+start = False
+data = False
+prePlay = False
+playMusic()
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
     #Este for revisa cada evento posible
     for event in pygame.event.get():
+
 
         #Revisa si la resolucion varia para ajustase
         if event.type == pygame.VIDEORESIZE:
@@ -98,9 +106,13 @@ while True:
                 posX = (window.get_width() - 800) / 2
                 posY = (window.get_height() - 800) / 2
 
-        #VENTANA DE JUEGO
-        if start == True:
+        #VENTANA DE PRE JUEGO
+        if start == True and main == False:
             # dibujamos la hitbox
+            prePlayPlayerActive_hitbox = button.Button(221, 502, 577 - 210, 585 - 502)
+            preBotActive_hitbox = button.Button(221, 629, 577 - 210, 585 - 502)
+
+            pygame.mixer.music.stop()
             window.fill(white_color)
             leftLine.draw(window)
             botLine.draw(window)
@@ -117,27 +129,35 @@ while True:
         # VENTANA DATOS
         if data == True:
             pygame.mixer.music.stop()
-            # No sé por qué funciona solo con down, pero si le pongo up se rompe, funciona perfecto de todas formas
-            if data_return_hitbox.down(event) == True:
+
+            if return_hitbox.down(event) == True:
                 window.blit(data_return, (posX, posY))
             else:
                 window.blit(data_image, (posX, posY))
-            if data_return_hitbox.up(event) == True:
+            if return_hitbox.up(event) == True:
+                playMusic()
                 data = False
                 main = True
 
-        # Animacion de Botones y cambio de pestañas
-        # START
+        #Animacion de Botones y cambio de pestañas
+
+        # PANTALLA PRINCIPAL
         if main == True:
+            prePlayPlayerActive_hitbox = button.Button(221, 502, 0, 0)
+            preBotActive_hitbox = button.Button(221, 629, 0, 0)
+
             if start_hitbox.down(event) == True:
                 window.blit(game_start_click, (posX, posY))
                 start = True
                 main = False
+                start = True
+
             # MENU
             elif menu_hitbox.down(event) == True:
                 window.blit(game_menu_click, (posX, posY))
                 menu = True
                 main = False
+
             # DATOS
             elif data_hitbox.down(event) == True:
                 window.blit(game_data_click, (posX, posY))
@@ -149,7 +169,7 @@ while True:
 
 
         #Es innecesario poner el .up event, esto provoca el error de los botones
-            '''
+        '''
         # Abriendo otras pantallas
         if start == menu == False and start_hitbox.up(event) == True:
             start = True
@@ -174,7 +194,7 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-
+    
     #print(pygame.mouse.get_pos())
-    clock.tick(60)
+    clock.tick(30)
     pygame.display.flip()

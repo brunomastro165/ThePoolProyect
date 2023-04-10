@@ -5,49 +5,51 @@ import button
 import mesa
 from pygame.locals import *
 
-#Funcion para cargar imagenes
+
+# Funcion para cargar imagenes
 def imageLoad(name):
     return pygame.image.load(name)
 
-#Funcion para hacer resposive los botones
-def resposiveHitbox(object,pos):
+
+# Funcion para hacer resposive los botones
+def resposiveHitbox(object, pos):
     object.x = (window.get_width() - 800) / 2 + pos
     object.hitbox = pygame.Rect(object.x, object.y, object.width, object.height)
 
-#Variables de la Resolucion
+
+# Variables de la Resolucion
 base_width = 800
 base_height = 800
 
 posX = 0
 posY = 0
 
-#Color Blanco
-white_color = (255,255,255)
+# Color Blanco
+white_color = (255, 255, 255)
 
-#Iniciar Pygame, hacer la ventana como una variable con la resolucion y poner el nombre del juego
+# Iniciar Pygame, hacer la ventana como una variable con la resolucion y poner el nombre del juego
 pygame.init()
 window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 pygame.display.set_caption("PoolGame")
 clock = pygame.time.Clock()
 
-#Cargando Imagenes
+# Cargando Imagenes
 
-#Pantalla Principal
+# Pantalla Principal
 game = imageLoad("Images/PLAY.png")
 game_start_click = imageLoad("Images/PLAY (ACTIVE).png")
 game_menu_click = imageLoad("Images/MENU (ACTIVE).png")
 game_data_click = imageLoad("Images/PLAY DATOS.png")
 
-#Pantalla de Datos
+# Pantalla de Datos
 data_image = imageLoad("Images/DATOS (PAGINA).png")
 data_return = imageLoad("Images/DATOS (PAG ACTIVA).png")
 
-
-#Pantalla PrePlay
-prePlayInactive =imageLoad("Images/PrePlayInactive.png")
-prePlayPlayerActiveImage =imageLoad("Images/PrePlayPlayerActive.png")
-prePlayBotActive =imageLoad("Images/PrePlayBotActive.png")
-prePlayBackActive =imageLoad("Images/PrePlayBackActive.png")
+# Pantalla PrePlay
+prePlayInactive = imageLoad("Images/PrePlayInactive.png")
+prePlayPlayerActiveImage = imageLoad("Images/PrePlayPlayerActive.png")
+prePlayBotActive = imageLoad("Images/PrePlayBotActive.png")
+prePlayBackActive = imageLoad("Images/PrePlayBackActive.png")
 
 """
 Esto no se usa todavía y capaz no se use
@@ -56,29 +58,28 @@ left = False
 up = False
 down = False
 """
-#BOTONES
+# BOTONES
 
-#BOTONES PANTALLA PRINCIPAL
-start_hitbox = button.Button(231,568, 575-231, 675-568)
-menu_hitbox = button.Button(300, 696, 500 -300, 759 -696)
-data_hitbox = button.Button(714, 706, 778-714, 782 - 706)
+# BOTONES PANTALLA PRINCIPAL
+start_hitbox = button.Button(231, 568, 575 - 231, 675 - 568)
+menu_hitbox = button.Button(300, 696, 500 - 300, 759 - 696)
+data_hitbox = button.Button(714, 706, 778 - 714, 782 - 706)
 
-#BOTÓN BACK
-return_hitbox = button.Button(12, 18, 165-12, 74-18)
+# BOTÓN BACK
+return_hitbox = button.Button(12, 18, 165 - 12, 74 - 18)
 
-#BOTONES DE LA PANTALLA DE JUEGO BÁSICA
-prePlayPlayerActive_hitbox = button.Button(221,502,0,0)
-preBotActive_hitbox= button.Button(221,629,0,0)
+# BOTONES DE LA PANTALLA DE JUEGO BÁSICA
+prePlayPlayerActive_hitbox = button.Button(221, 502, 0, 0)
+preBotActive_hitbox = button.Button(221, 629, 0, 0)
+
+# BOTONES DE LA PANTALLA MENU
 
 
-#BOTONES DE LA PANTALLA MENU
+# SECCIÓN DE MÚSICA
+pygame.mixer.music.load('easy-lifestyle-137766.mp3')  # agregar música
+pygame.mixer.music.set_volume(0.1)  # setear volumen
 
-
-#SECCIÓN DE MÚSICA
-pygame.mixer.music.load('easy-lifestyle-137766.mp3') #agregar música
-pygame.mixer.music.set_volume(0.1) #setear volumen
-
-#hacer cada línea individualmente, para poder rodear la imagen con la hitbox
+# hacer cada línea individualmente, para poder rodear la imagen con la hitbox
 topLine = mesa.MesaObject(100, 50, 500, 10)
 leftLine = mesa.MesaObject(100, 50, 10, 650)
 botLine = mesa.MesaObject(100, 700, 500, 10)
@@ -91,10 +92,13 @@ print(f"Hitbox de la línea inferior: {botLine.hitbox}")
 print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
 """
 window.fill(white_color)
+
+
 def playMusic():
     pygame.mixer.music.play(-1)  # reproducir música en bucle
 
-#Condicion para cambiar de pantalla
+
+# Condicion para cambiar de pantalla
 main = True
 menu = False
 start = False

@@ -69,8 +69,8 @@ data_hitbox = button.Button(714, 706, 778 - 714, 782 - 706)
 return_hitbox = button.Button(12, 18, 165 - 12, 74 - 18)
 
 # BOTONES DE LA PANTALLA DE JUEGO BÁSICA
-prePlayPlayerActive_hitbox = button.Button(221, 502, 0, 0)
-preBotActive_hitbox = button.Button(221, 629, 0, 0)
+prePlayPlayerActive_hitbox = button.Button(221, 319, 0, 0)
+preBotActive_hitbox = button.Button(221, 441, 0, 0)
 
 # BOTONES DE LA PANTALLA MENU
 
@@ -107,7 +107,7 @@ prePlay = False
 playing = False
 playMusic()
 
-#                      COSAS DE PYMUNK
+# COSAS DE PYMUNK
 
 # Pymunk space
 space = pymunk.Space()
@@ -193,6 +193,7 @@ for b in border:
 
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
+
     if playing == False:
     # Este for revisa cada evento posible
         for event in pygame.event.get():
@@ -212,23 +213,26 @@ while True:
             if main == True:
 
                 window.blit(game, (posX, posY))
-                if start_hitbox.down(event) == True:
+                # START HOVER
+                if start_hitbox.hover(event) == True:
                     window.blit(game_start_click, (posX, posY))
-                # MENU
-                if menu_hitbox.down(event) == True:
+                # MENU HOVER
+                if menu_hitbox.hover(event) == True:
                     window.blit(game_menu_click, (posX, posY))
-                # DATOS
-                if data_hitbox.down(event) == True:
+                # DATOS HOVER
+                if data_hitbox.hover(event) == True:
                     window.blit(game_data_click, (posX, posY))
-                if start_hitbox.up(event) == True:
+
+                # START DOWN
+                if start_hitbox.down(event) == True:
                     main = False
                     start = True
-                # MENU
-                if menu_hitbox.up(event) == True:
+                # MENU DOWN
+                if menu_hitbox.down(event) == True:
                     menu = True
                     main = False
-                # DATOS
-                if data_hitbox.up(event) == True:
+                # DATOS DOWN
+                if data_hitbox.down(event) == True:
                     data = True
                     main = False
 
@@ -236,28 +240,29 @@ while True:
             if start == True and main == False:
 
                 # dibujamos la hitbox
-                prePlayPlayerActive_hitbox = button.Button(221, 502, 577 - 210, 585 - 502)
-                preBotActive_hitbox = button.Button(221, 629, 577 - 210, 585 - 502)
+                prePlayPlayerActive_hitbox = button.Button(221, 319, 577 - 210, 585 - 502)
+                preBotActive_hitbox = button.Button(221, 441, 577 - 210, 585 - 502)
 
                 pygame.mixer.music.stop()
                 window.fill(white_color)
 
                 # DOWN EVENT
 
-                if return_hitbox.down(event) == True:
+                if return_hitbox.hover(event) == True:
                     window.blit(prePlayBackActive, (posX, posY))
 
-                elif prePlayPlayerActive_hitbox.down(event) == True:
+                elif prePlayPlayerActive_hitbox.hover(event) == True:
                     window.blit(prePlayPlayerActiveImage, (posX, posY))
 
-                elif preBotActive_hitbox.down(event) == True:
+                elif preBotActive_hitbox.hover(event) == True:
                     window.blit(prePlayBotActive, (posX, posY))
 
                 else:
                     window.blit(prePlayInactive, (posX, posY))
 
                 # UP EVENT
-                if prePlayPlayerActive_hitbox.up(event) == True:
+
+                if prePlayPlayerActive_hitbox.down(event) == True:
                     playMusic()
                     start = False
                     playing = True
@@ -265,12 +270,12 @@ while True:
                     base_width = 1200
                     window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 
-                if return_hitbox.up(event) == True:
+                if return_hitbox.down(event) == True:
                     playMusic()
                     start = False
                     main = True
 
-                if preBotActive_hitbox.up(event) == True:
+                if preBotActive_hitbox.down(event) == True:
                     playMusic()
                     start = False
                     main = True
@@ -282,19 +287,16 @@ while True:
 
             # VENTANA DATOS
             if data == True:
-                pygame.mixer.music.stop()
 
                 if return_hitbox.down(event) == True:
-                    window.blit(data_return, (posX, posY))
-                else:
-                    window.blit(data_image, (posX, posY))
-                if return_hitbox.up(event) == True:
-                    playMusic()
                     data = False
                     main = True
 
+                if return_hitbox.hover(event) == True:
+                    window.blit(data_return, (posX, posY))
 
-
+                else:
+                    window.blit(data_image, (posX, posY))
 
 
 
@@ -319,8 +321,8 @@ while True:
                     print('Colisión con la línea derecha')
                 elif topLine.check_collision('bocha'):
                     print('Colisión con la línea superior')
-                '''
-            prePlayPlayerActive_hitbox.draw(window)
+            '''
+
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
@@ -344,7 +346,7 @@ while True:
         # Event Handler
         for event in pygame.event.get():
             # Disparar la bola blanca
-            if event.type == pygame.MOUSEBUTTONUP:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 cue_ball.body.apply_impulse_at_local_point((-3500, 0), (0, 0))
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -352,7 +354,7 @@ while True:
 
         # space.debug_draw(draw_options)
         pygame.display.update()
-
+    print(pygame.mouse.get_pos())
     # print(pygame.mouse.get_pos())
     clock.tick(60)
     pygame.display.flip()

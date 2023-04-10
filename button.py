@@ -27,3 +27,9 @@ class Button:
         if (self.hitbox.collidepoint(mouse_pos) and event.type == pygame.MOUSEBUTTONDOWN):
             if event.button == 1:
                 return True
+
+    def hover(self, event):
+        mouse_pos = pygame.mouse.get_pos()
+
+        if(self.hitbox.collidepoint(mouse_pos)):
+            return True

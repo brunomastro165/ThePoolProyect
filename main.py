@@ -33,14 +33,14 @@ clock = pygame.time.Clock()
 #Cargando Imagenes
 
 #Pantalla Principal
-game = imageLoad("PLAY.png")
-game_start_click = imageLoad("PLAY (ACTIVE).png")
-game_menu_click = imageLoad("MENU (ACTIVE).png")
-game_data_click = imageLoad("PLAY DATOS.png")
+game = imageLoad("Images/PLAY.png")
+game_start_click = imageLoad("Images/PLAY (ACTIVE).png")
+game_menu_click = imageLoad("Images/MENU (ACTIVE).png")
+game_data_click = imageLoad("Images/PLAY DATOS.png")
 
 #Pantalla de Datos
-data_image = imageLoad("DATOS (PAGINA).png")
-data_return = imageLoad("DATOS (PAG ACTIVA).png")
+data_image = imageLoad("Images/DATOS (PAGINA).png")
+data_return = imageLoad("Images/DATOS (PAG ACTIVA).png")
 
 
 #Pantalla PrePlay
@@ -63,8 +63,16 @@ start_hitbox = button.Button(231,568, 575-231, 675-568)
 menu_hitbox = button.Button(300, 696, 500 -300, 759 -696)
 data_hitbox = button.Button(714, 706, 778-714, 782 - 706)
 
-#BOTÓN BACK EN DATOS
-data_return_hitbox = button.Button(12, 18, 165-12, 64-18)
+#BOTÓN BACK
+return_hitbox = button.Button(12, 18, 165-12, 74-18)
+
+#BOTONES DE LA PANTALLA DE JUEGO BÁSICA
+prePlayPlayerActive_hitbox = button.Button(221,502,0,0)
+preBotActive_hitbox= button.Button(221,629,0,0)
+
+
+#BOTONES DE LA PANTALLA MENU
+
 
 #SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3') #agregar música
@@ -83,6 +91,8 @@ print(f"Hitbox de la línea inferior: {botLine.hitbox}")
 print(f"Hitbox de la línea derecha: {rightLine.hitbox}")
 """
 window.fill(white_color)
+def playMusic():
+    pygame.mixer.music.play(-1)  # reproducir música en bucle
 
 #Condicion para cambiar de pantalla
 main = True
@@ -100,7 +110,7 @@ while True:
 
         #Revisa si la resolucion varia para ajustase
         if event.type == pygame.VIDEORESIZE:
-            for hitbox, value in zip([start_hitbox, menu_hitbox, data_hitbox, data_return_hitbox], [231, 300, 714, 12]):
+            for hitbox, value in zip([start_hitbox, menu_hitbox, data_hitbox, return_hitbox,prePlayPlayerActive_hitbox,preBotActive_hitbox], [231, 300, 714, 12,221,221]):
                 resposiveHitbox(hitbox, value)
                 window.fill(white_color)
                 posX = (window.get_width() - 800) / 2
@@ -114,12 +124,36 @@ while True:
 
             pygame.mixer.music.stop()
             window.fill(white_color)
-            leftLine.draw(window)
-            botLine.draw(window)
-            rightLine.draw(window)
-            topLine.draw(window)
-            pygame.mixer.music.stop()  # detener la música
-            # window.blit(mesa_pool_, (posX, posY))
+
+            #DOWN EVENT
+
+            if return_hitbox.down(event) == True:
+                window.blit(prePlayBackActive, (posX, posY))
+
+            elif prePlayPlayerActive_hitbox.down(event) == True:
+                window.blit(prePlayPlayerActiveImage,(posX,posY))
+
+            elif preBotActive_hitbox.down(event) == True:
+                window.blit(prePlayBotActive,(posX,posY))
+
+            else:
+                window.blit(prePlayInactive,(posX,posY))
+
+            #UP EVENT
+            if prePlayPlayerActive_hitbox.up(event) == True:
+                playMusic()
+                start = False
+                main = True
+
+            if return_hitbox.up(event) == True:
+                playMusic()
+                start = False
+                main = True
+
+            if preBotActive_hitbox.up(event) == True:
+                playMusic()
+                start = False
+                main = True
 
         # VENTANA MENU
         if menu == True:
@@ -148,7 +182,7 @@ while True:
 
             if start_hitbox.down(event) == True:
                 window.blit(game_start_click, (posX, posY))
-                start = True
+
                 main = False
                 start = True
 
@@ -166,7 +200,8 @@ while True:
             else:
                 window.blit(game, (posX, posY))
         # Pantalla principal
-
+        prePlayPlayerActive_hitbox.draw(window)
+        preBotActive_hitbox.draw(window)
 
         #Es innecesario poner el .up event, esto provoca el error de los botones
         '''

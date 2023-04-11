@@ -215,17 +215,17 @@ while True:
             # Animacion de Botones y cambio de pestañas
 
             # PANTALLA PRINCIPAL
-            if main == True:
+            if main:
 
                 window.blit(game, (posX, posY))
                 # START HOVER
-                if start_hitbox.hover(event) == True:
+                if start_hitbox.hover(event):
                     window.blit(game_start_click, (posX, posY))
                 # MENU HOVER
-                if menu_hitbox.hover(event) == True:
+                if menu_hitbox.hover(event):
                     window.blit(game_menu_click, (posX, posY))
                 # DATOS HOVER
-                if data_hitbox.hover(event) == True:
+                if data_hitbox.hover(event):
                     window.blit(game_data_click, (posX, posY))
 
                 # START DOWN
@@ -242,7 +242,7 @@ while True:
                     main = False
 
             # VENTANA DE PRE JUEGO
-            if start == True and main == False:
+            if start and main == False:
 
                 # dibujamos la hitbox
                 prePlayPlayerActive_hitbox = button.Button(221, 319, 577 - 210, 585 - 502)
@@ -280,7 +280,7 @@ while True:
                     start = False
                     main = True
 
-                if preBotActive_hitbox.down(event) == True:
+                if preBotActive_hitbox.down(event):
                     playMusic()
                     start = False
                     main = True
@@ -291,7 +291,7 @@ while True:
                 pygame.mixer.music.stop()
 
             # VENTANA DATOS
-            if data == True:
+            if data:
 
                 if return_hitbox.down(event) == True:
                     data = False
@@ -348,8 +348,26 @@ while True:
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
 
-        #dibujar palo
-        palo_p1.draw(window)
+
+        '''
+        # Checkar si las bolas estan quietas
+        taking_shot = True
+        for ball in balls:
+            if ball.body.velocity[0] != 0
+        '''
+
+        if taking_shot == True:
+            # Calcular el angulo
+            mouse_pos = pygame.mouse.get_pos()
+            palo_p1.rect.center = balls[-1].body.position
+            x_dis = balls[-1].body.position[0] - mouse_pos[0]
+            y_dis = -(balls[-1].body.position[1] - mouse_pos[1])
+            palo_p1.angle = math.degrees(math.atan2(y_dis, x_dis))
+            palo_p1.update(palo_p1.angle)
+            # dibujar palo
+            palo_p1.draw(window)
+
+
         # Event Handler
         for event in pygame.event.get():
             # Disparar la bola blanca
@@ -362,5 +380,5 @@ while True:
         # space.debug_draw(draw_options)
         pygame.display.update()
     # print(pygame.mouse.get_pos())
-    clock.tick(60)
+    clock.tick(FPS)
     pygame.display.flip()

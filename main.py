@@ -17,6 +17,7 @@ def resposiveHitbox(object, pos):
     object.x = (window.get_width() - 800) / 2 + pos
     object.hitbox = pygame.Rect(object.x, object.y, object.width, object.height)
 
+
 def playMusic():
     pygame.mixer.music.play(-1)  # reproducir música en bucle
 
@@ -61,7 +62,6 @@ white_color = (255, 255, 255)
 pygame.init()
 window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 pygame.display.set_caption("PoolGame")
-clock = pygame.time.Clock()
 
 # Cargando Imagenes
 
@@ -133,6 +133,7 @@ FPS = 60
 
 # Game variables
 diam = 36
+taking_shot = True;
 
 # Colores
 BG = [50, 50, 50]
@@ -182,8 +183,8 @@ palo_p1 = palo.Palo(balls[-1].body.position)
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
-    if playing == False:
-    # Este for revisa cada evento posible
+    if not playing:
+        # Este for revisa cada evento posible
         for event in pygame.event.get():
 
             # Revisa si la resolucion varia para ajustase
@@ -236,13 +237,13 @@ while True:
 
                 # DOWN EVENT
 
-                if return_hitbox.hover(event) == True:
+                if return_hitbox.hover(event):
                     window.blit(prePlayBackActive, (posX, posY))
 
-                elif prePlayPlayerActive_hitbox.hover(event) == True:
+                elif prePlayPlayerActive_hitbox.hover(event):
                     window.blit(prePlayPlayerActiveImage, (posX, posY))
 
-                elif preBotActive_hitbox.hover(event) == True:
+                elif preBotActive_hitbox.hover(event):
                     window.blit(prePlayBotActive, (posX, posY))
 
                 else:
@@ -250,7 +251,7 @@ while True:
 
                 # UP EVENT
 
-                if prePlayPlayerActive_hitbox.down(event) == True:
+                if prePlayPlayerActive_hitbox.down(event):
                     playMusic()
                     start = False
                     playing = True
@@ -258,8 +259,7 @@ while True:
                     base_width = 1200
                     window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 
-                if return_hitbox.down(event) == True:
-                    playMusic()
+                if return_hitbox.down(event):
                     start = False
                     main = True
 
@@ -276,11 +276,11 @@ while True:
             # VENTANA DATOS
             if data:
 
-                if return_hitbox.down(event) == True:
+                if return_hitbox.down(event):
                     data = False
                     main = True
 
-                if return_hitbox.hover(event) == True:
+                if return_hitbox.hover(event):
                     window.blit(data_return, (posX, posY))
 
                 else:
@@ -301,7 +301,7 @@ while True:
         window.blit(table_image, (0, 0))
 
         # draw pool balls
-        # Utilizo el iterador i para obtener el nÃºmero de la bola
+        # Utilizo el iterador i para obtener el número de la bola
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))

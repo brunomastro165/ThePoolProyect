@@ -8,10 +8,13 @@ ImagePalo = pygame.image.load("Assets/Images/paloNeutro.png")
 class Palo():
     def __init__(self, pos):
         self.originalImage = ImagePalo
-        self.angle = 45
+        self.angle = 0
         self.image = pygame.transform.rotate(self.originalImage, self.angle)
         self.rect = self.image.get_rect()
-        self.rect.center = (888, 600)
+        self.rect.center = pos
+
+    def update(self, angle):
+        self.angle = angle
 
     def draw(self, surface):
         self.image = pygame.transform.rotate(self.originalImage, self.angle)

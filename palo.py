@@ -4,6 +4,8 @@ import pymunk
 from pygame.locals import *
 
 ImagePalo = pygame.image.load("Assets/Images/paloNeutro.png")
+
+
 # pos = pygame.mouse.get_pos()
 
 
@@ -21,5 +23,6 @@ class Palo:
     def draw(self, surface):
         self.image = pygame.transform.rotate(self.originalImage, self.angle)
         surface.blit(self.image,
-                     ((self.rect.centerx - self.image.get_width() / 2),
-          (self.rect.centery - self.image.get_height() / 2 )))
+                     (self.rect.centerx - self.image.get_width() / 2,
+                      self.rect.centery - self.image.get_height() / 2)
+                     )

@@ -133,10 +133,15 @@ FPS = 60
 
 # Game variables
 diam = 36
-taking_shot = True;
+force = 0
+max_force = 10000
+force_direction = 1
+taking_shot = True
+powering_up = False
 
 # Colores
-BG = [50, 50, 50]
+BG = (50, 50, 50)
+RED = (255, 0, 0)
 
 # load images
 table_image = pygame.image.load("Assets/Images/table.png").convert_alpha()
@@ -180,6 +185,11 @@ for b in border:
 
 # Objeto palo (instancia de la clase palo)
 palo_p1 = palo.Palo(balls[-1].body.position)
+
+# Barra de poder del paliño
+power_bar = pygame.Surface((10, 20))
+power_bar.fill(RED)
+
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
@@ -306,31 +316,48 @@ while True:
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
 
-
-        '''
         # Checkar si las bolas estan quietas
         taking_shot = True
         for ball in balls:
-            if ball.body.velocity[0] != 0
-        '''
+            if int(ball.body.velocity[0]) != 0 or int(ball.body.velocity[1]) != 0:
+                taking_shot = False
 
-        if taking_shot == True:
+        if taking_shot:
             # Calcular el angulo
             mouse_pos = pygame.mouse.get_pos()
             palo_p1.rect.center = balls[-1].body.position
-            x_dis = balls[-1].body.position[0] - mouse_pos[0]
-            y_dis = -(balls[-1].body.position[1] - mouse_pos[1])
-            palo_p1.angle = math.degrees(math.atan2(y_dis, x_dis))
-            palo_p1.update(palo_p1.angle)
+            x_dist = balls[-1].body.position[0] - mouse_pos[0]
+            y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
+            palo_angle = math.degrees(math.atan2(y_dist, x_dist))
+            palo_p1.update(palo_angle)
             # dibujar palo
             palo_p1.draw(window)
 
+        # Fuerza del golpe
+        if powering_up is True:
+            force += 100 * force_direction
+            if force >= max_force or force <= 0:
+                force_direction *= -1
+            # Dibujar las barras de poder
+            for b in range(math.ceil(force/2000)):
+                window.blit(power_bar,
+                            (balls[-1].body.position[0] - 30 + (b * 15),
+                             balls[-1].body.position[1] + 30))
+        elif powering_up is False and taking_shot is True:
+            x_impulse = math.cos(math.radians(palo_angle))
+            y_impulse = math.sin(math.radians(palo_angle))
+            balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
+            force = 0
+            force_direction = 1
 
         # Event Handler
         for event in pygame.event.get():
             # Disparar la bola blanca
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                cue_ball.body.apply_impulse_at_local_point((-3500, 0), (0, 0))
+            if event.type == pygame.MOUSEBUTTONDOWN and taking_shot is True:
+                powering_up = True
+            if event.type == pygame.MOUSEBUTTONUP and taking_shot is True:
+                powering_up = False
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()

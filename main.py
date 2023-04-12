@@ -75,6 +75,24 @@ game_data_click = imageLoad("Images/PLAY DATOS.png")
 data_image = imageLoad("Images/DATOS (PAGINA).png")
 data_return = imageLoad("Images/DATOS (PAG ACTIVA).png")
 
+# Pantalla Menu
+    # Cargamos Imagenes
+imagenPrincpal = imageLoad("Images/MENU_PRINCIPAL.png")
+imagenSiFacil = imageLoad("Images/M_P_SI_FACIL.png")
+imagenSiFacilBack = imageLoad("Images/M_P_SI_FACIL_BACK.png")
+imagenSiMedio = imageLoad("Images/M_P_SI_MEDIO.png")
+imagenSiMedioBack = imageLoad("Images/M_P_SI_MEDIO_BACK.png")
+imagenSiDificil = imageLoad("Images/M_P_SI_DIFICIL.png")
+imagenSiDificilBack = imageLoad("Images/M_P_SI_DIFICIL_BACK.png")
+imagenNoFacil = imageLoad("Images/M_P_NO_FACIL.png")
+imagenNoFacilBack = imageLoad("Images/M_P_NO_FACIL_BACK.png")
+imagenNoMedio = imageLoad("Images/M_P_NO_MEDIO.png")
+imagenNoMedioBack = imageLoad("Images/M_P_NO_MEDIO_BACK.png")
+imagenNoDificil = imageLoad("Images/M_P_NO_DIFICIL.png")
+imagenNoDificilBack = imageLoad("Images/M_P_NO_DIFICIL_BACK.png")
+    # Generamos variable para cambiar las imagenes de menu
+imagenActual = imagenNoMedio
+
 # Pantalla PrePlay
 prePlayInactive = imageLoad("Images/PrePlayInactive.png")
 prePlayPlayerActiveImage = imageLoad("Images/PrePlayPlayerActive.png")
@@ -96,7 +114,11 @@ prePlayPlayerActive_hitbox = button.Button(221, 319, 0, 0)
 preBotActive_hitbox = button.Button(221, 441, 0, 0)
 
 # BOTONES DE LA PANTALLA MENU
-
+fullscreenSi_hitbox = button.Button(406, 355, 484-406, 436-355)
+fullscreenNo_hitbox = button.Button(621, 360, 700-621, 432-360)
+diffFacil_hitbox = button.Button(404, 474, 695-404, 560-474)
+diffMedio_hitbox = button.Button(405, 574, 693-405, 657-574)
+diffDificil_hitbox = button.Button(407, 684, 697-407, 760-684)
 
 # SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3')  # agregar música
@@ -181,6 +203,7 @@ border = [
 
 for b in border:
     create_table_border(b)
+
 
 
 # Objeto palo (instancia de la clase palo)
@@ -283,6 +306,85 @@ while True:
                 window.fill(white_color)
                 pygame.mixer.music.stop()
 
+                # VOLVER AL PRINCIPAL
+
+                if return_hitbox.down(event) == True:
+                    menu = False
+                    main = True
+
+                # SI ESTA APRETADO SI
+
+                if fullscreenSi_hitbox.down(event) == True:
+                    screenSiPress = True
+                    screenNoPress = False
+                    imagenActual = imagenSiMedio
+                    window.blit(imagenActual, (posX, posY))
+                else:
+                    window.blit(imagenActual, (posX, posY))
+
+                # DIFERENCIADOS POR DIFICULTADO
+
+                if diffFacil_hitbox.down(event):
+                    Medio = False
+                    Facil = True
+                    dificil = False
+
+                if diffMedio_hitbox.down(event):
+                    Medio = True
+                    Facil = False
+                    dificil = False
+
+                if diffDificil_hitbox.down(event):
+                    Medio = False
+                    Facil = False
+                    dificil = True
+
+                # SI ESTA APRETADO NO
+
+                if fullscreenNo_hitbox.down(event) == True:
+                    screenNoPress = True
+                    screenSiPress = False
+                    imagenActual = imagenNoMedio
+                    window.blit(imagenActual, (posX, posY))
+                else:
+                    window.blit(imagenActual, (posX, posY))
+
+
+                # Cosas de frontEnd
+                if screenSiPress:
+                    if Facil:
+                        imagenActual = imagenSiFacil
+                        window.blit(imagenActual, (posX, posY))
+                        if return_hitbox.hover(event) == True:
+                            window.blit(imagenSiFacilBack, (posX, posY))
+                    if Medio:
+                        imagenActual = imagenSiMedio
+                        window.blit(imagenActual, (posX, posY))
+                        if return_hitbox.hover(event) == True:
+                            window.blit(imagenSiMedioBack, (posX, posY))
+                    if dificil:
+                        imagenActual = imagenSiDificil
+                        window.blit(imagenActual, (posX, posY))
+                        if return_hitbox.hover(event) == True:
+                            window.blit(imagenSiDificilBack, (posX, posY))
+
+                elif screenNoPress:
+                    if Facil:
+                        imagenActual = imagenNoFacil
+                        window.blit(imagenActual, (posX, posY))
+                        if return_hitbox.hover(event) == True:
+                            window.blit(imagenNoFacilBack, (posX, posY))
+                    if Medio:
+                        imagenActual = imagenNoMedio
+                        window.blit(imagenActual, (posX, posY))
+                        if return_hitbox.hover(event) == True:
+                            window.blit(imagenNoMedioBack, (posX, posY))
+                    if dificil:
+                        imagenActual = imagenNoDificil
+                        window.blit(imagenActual, (posX, posY))
+                        if return_hitbox.hover(event) == True:
+                            window.blit(imagenNoDificilBack, (posX, posY))
+
             # VENTANA DATOS
             if data:
 
@@ -364,6 +466,6 @@ while True:
 
         # space.debug_draw(draw_options)
         pygame.display.update()
-    # print(pygame.mouse.get_pos())
+    #print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

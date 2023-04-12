@@ -21,7 +21,6 @@ def resposiveHitbox(object, pos):
 def playMusic():
     pygame.mixer.music.play(-1)  # reproducir música en bucle
 
-
 # Funcion para crear objetos del escenario
 def create_table_border(poly_dims):
     body = pymunk.Body(body_type=pymunk.Body.STATIC)
@@ -31,19 +30,29 @@ def create_table_border(poly_dims):
     shape.elasticity = 0.8
 
     space.add(body, shape)
+'''
+IMPORTANTÍSIMO
+'''
 
+# MODIFICACION DE LA CLASE CIRCLE DE PYMUNK (NECESARIO PARA NO TENER QUE REESCRIBIR ALL OF CODE)
+class MyCircle(pymunk.Circle):
+    def __init__(self, body, radius, tipo=""):
+        super().__init__(body, radius)
+        self.tipo = tipo
 
 # Funcion para crear bolas
-def create_ball(rad, pos):
+
+def create_ball(rad, pos, tipo):
     body = pymunk.Body()
     body.position = pos
-    shape = pymunk.Circle(body, rad)
+    shape = MyCircle(body, rad)
     shape.mass = 5
     shape.elasticity = 0.9
     # use pivot joint to add friction
     pivot = pymunk.PivotJoint(static_body, body, (0, 0), (0, 0))
     pivot.max_bias = 0  # Disable joint correction
     pivot.max_force = 500  # emulate linear friction
+    tipo=""
 
     space.add(body, shape, pivot)
     return shape
@@ -148,6 +157,10 @@ Facil = False
 Medio = True
 dificil = False
 
+#Condición para los turnos
+cont = 0
+suma_hecha = False
+turn = False
 # COSAS DE PYMUNK
 
 # Pymunk space
@@ -188,15 +201,41 @@ rows = 5
 for col in range(5):
     for row in range(rows):
         pos = (250 + (col*(diam+3)), 267 + (row*(diam+3)) + (col*diam/2))
-        new_ball = create_ball((diam/2), pos)
-        balls.append(new_ball)
+
+        # CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, SIMPLEMENTE ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS
+        # NECESITAMOS O HACER BALLS UNA CLASE, O ENCONTRAR ALTERNATIVAS PARA IDENTIFICAR CADA BOLA
+        # POR LO DEMÁS, ESTE CÓDIGO FUNCIONA, PERO NECESITAMOS INCORPORAR EL ATRIBUTO TIPO DE ALGUNA FORMA
+
+        if(len(balls)<8 and len(balls)>0):
+            #print(f"Lisas: {len(balls)}")
+            new_ball = create_ball((diam / 2), pos, "lisas")
+            new_ball.tipo="lisa"
+        if(len(balls)==0): #LA ITERACION 0 POR ALGÚN MOTIVO ES LA NÚMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
+            #print(f"Rayadas: {len(balls)}")
+            new_ball = create_ball((diam / 2), pos, "rayadas")
+            new_ball.tipo="rayada"
+        if(len(balls)>8):
+            #print(f"Rayadas: {len(balls)}")
+            new_ball = create_ball((diam / 2), pos, "rayadas")
+            new_ball.tipo="rayada"
+        if(len(balls)==8):
+            #print(f"Negra: {len(balls)}")
+            new_ball = create_ball((diam / 2), pos, "negra")
+            new_ball.tipo="negra"
+
+        if new_ball:
+            balls.append(new_ball)
     rows -= 1
 
 # Bola blanca
 pos = (888, (678/2))
 print(pos)
-cue_ball = create_ball((diam/2), pos)
+cue_ball = create_ball((diam/2), pos, "blanca")
+cue_ball.tipo="blanca"
 balls.append(cue_ball)
+
+for i in balls:
+    print(i.tipo)
 
 # Crear los bordes de la mesa (usando las coordenadas donde quiero dibujarlos)
 border = [
@@ -220,6 +259,7 @@ palo_p1 = palo.Palo(balls[-1].body.position)
 power_bar = pygame.Surface((10, 20))
 power_bar.fill(RED)
 
+turn = True
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
@@ -408,7 +448,9 @@ while True:
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+
     else:
+
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)
@@ -424,6 +466,8 @@ while True:
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
+
+
 
         # Checkar si las bolas estan quietas
         taking_shot = True
@@ -464,13 +508,24 @@ while True:
             # Disparar la bola blanca
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot is True:
                 powering_up = True
+
+                #Sistema de turnos
+                cont+=1
+                if cont > 1:
+                    turn = not turn
+
             if event.type == pygame.MOUSEBUTTONUP and taking_shot is True:
                 powering_up = False
 
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
+        '''
+        if turn:
+            print(f"Tirada jugador 1: {turn}")
+        else:
+            print(f"Tirada jugador 2: {turn}")
+        '''
         # space.debug_draw(draw_options)
         pygame.display.update()
     #print(pygame.mouse.get_pos())

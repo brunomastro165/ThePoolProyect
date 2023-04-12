@@ -141,6 +141,13 @@ prePlay = False
 playing = False
 playMusic()
 
+# Condiciones para los botones del menu
+screenSiPress = False
+screenNoPress = True
+Facil = False
+Medio = True
+dificil = False
+
 # COSAS DE PYMUNK
 
 # Pymunk space

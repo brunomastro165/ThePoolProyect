@@ -30,6 +30,13 @@ def create_table_border(poly_dims):
     shape.elasticity = 0.8
 
     space.add(body, shape)
+
+# Funcion para actualizar las imagenes con hover
+def updateImage(hitbox,image):
+    if hitbox.hover(event):
+        window.blit(image,(posX,posY))
+
+
 '''
 IMPORTANTÍSIMO
 '''
@@ -64,8 +71,10 @@ base_height = 800
 posX = 0
 posY = 0
 
-# Color Blanco
+# Colores
 white_color = (255, 255, 255)
+green_color = (52, 130, 43)
+yellow_color = (238, 182, 2)
 
 # Iniciar Pygame, hacer la ventana como una variable con la resolucion y poner el nombre del juego
 pygame.init()
@@ -108,6 +117,12 @@ prePlayPlayerActiveImage = imageLoad("Images/PrePlayPlayerActive.png")
 prePlayBotActive = imageLoad("Images/PrePlayBotActive.png")
 prePlayBackActive = imageLoad("Images/PrePlayBackActive.png")
 
+
+# VARIABLES DE LA BARRA DE VOLUMEN
+# Variables para el movimiento del cursor
+moving_cursor = False
+moving_bar = False
+
 # BOTONES
 
 # BOTONES PANTALLA PRINCIPAL
@@ -119,8 +134,8 @@ data_hitbox = button.Button(714, 706, 778 - 714, 782 - 706)
 return_hitbox = button.Button(12, 18, 165 - 12, 74 - 18)
 
 # BOTONES DE LA PANTALLA DE JUEGO BÁSICA
-prePlayPlayerActive_hitbox = button.Button(221, 319, 0, 0)
-preBotActive_hitbox = button.Button(221, 441, 0, 0)
+prePlayPlayerActive_hitbox = button.Button(221, 319, 577 - 210, 585 - 502)
+preBotActive_hitbox = button.Button(221, 441, 577 - 210, 585 - 502)
 
 # BOTONES DE LA PANTALLA MENU
 fullscreenSi_hitbox = button.Button(406, 355, 484-406, 436-355)
@@ -260,6 +275,7 @@ power_bar = pygame.Surface((10, 20))
 power_bar.fill(RED)
 
 turn = True
+default_sound = True
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
@@ -283,14 +299,11 @@ while True:
 
                 window.blit(game, (posX, posY))
                 # START HOVER
-                if start_hitbox.hover(event):
-                    window.blit(game_start_click, (posX, posY))
+                updateImage(start_hitbox,game_start_click)
                 # MENU HOVER
-                if menu_hitbox.hover(event):
-                    window.blit(game_menu_click, (posX, posY))
+                updateImage(menu_hitbox,game_menu_click)
                 # DATOS HOVER
-                if data_hitbox.hover(event):
-                    window.blit(game_data_click, (posX, posY))
+                updateImage(data_hitbox,game_data_click)
 
                 # START DOWN
                 if start_hitbox.down(event):
@@ -306,30 +319,18 @@ while True:
                     main = False
 
             # VENTANA DE PRE JUEGO
-            if start and main == False:
-
-                # dibujamos la hitbox
-                prePlayPlayerActive_hitbox = button.Button(221, 319, 577 - 210, 585 - 502)
-                preBotActive_hitbox = button.Button(221, 441, 577 - 210, 585 - 502)
+            if start:
 
                 pygame.mixer.music.stop()
-                window.fill(white_color)
+
+                window.blit(prePlayInactive, (posX, posY))
+
+                updateImage(return_hitbox,prePlayBackActive)
+                updateImage(prePlayPlayerActive_hitbox,prePlayPlayerActiveImage)
+                updateImage(preBotActive_hitbox,prePlayBotActive)
+
 
                 # DOWN EVENT
-
-                if return_hitbox.hover(event):
-                    window.blit(prePlayBackActive, (posX, posY))
-
-                elif prePlayPlayerActive_hitbox.hover(event):
-                    window.blit(prePlayPlayerActiveImage, (posX, posY))
-
-                elif preBotActive_hitbox.hover(event):
-                    window.blit(prePlayBotActive, (posX, posY))
-
-                else:
-                    window.blit(prePlayInactive, (posX, posY))
-
-                # UP EVENT
 
                 if prePlayPlayerActive_hitbox.down(event):
                     playMusic()
@@ -350,18 +351,56 @@ while True:
 
             # VENTANA MENU
             if menu:
-                window.fill(white_color)
-                pygame.mixer.music.stop()
+                # BARRA DE VOLUMEN
+                # Definir la barra
+                bar_width = 300
+                bar_height = 10
+                bar_x = (window.get_width() - 800) / 2 + 408
+                bar_y = (window.get_height() - 800) / 2 + 273
+                soud_bar = pygame.Rect(bar_x, bar_y, bar_width, bar_height)
 
+                # Definir el cursor
+                cursor_width = 20
+                cursor_height = 40
+                if default_sound:
+                    x_cursor = bar_x + bar_width / 2
+                y_cursor = bar_y - (cursor_height / 2)
+                cursor = pygame.Rect(x_cursor, y_cursor, cursor_width, cursor_height)
+                #pygame.mixer.music.stop()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if cursor.collidepoint(event.pos):
+                        moving_cursor = True
+                        x_cursor, y_cursor = event.pos
+                        cursor.x = x_cursor - (cursor_width / 2)
+
+                    elif soud_bar.collidepoint(event.pos):
+                        moving_bar = True
+                        x_cursor, y_cursor = event.pos
+                        cursor.x = x_cursor - (cursor_width / 2)
+
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    moving_cursor = False
+                    moving_bar = False
+                elif event.type == pygame.MOUSEMOTION:
+                    if moving_cursor and x_cursor >= bar_x and x_cursor <= bar_x+bar_width - 30:
+                        default_sound = False
+                        x_cursor, y_cursor = event.pos
+                        cursor.x = x_cursor - (cursor_width / 2)
+
+                    elif moving_bar and x_cursor >= bar_x and x_cursor <= bar_x+bar_width- 30:
+                        x_cursor, y_cursor = event.pos
+                        cursor.x = x_cursor - (cursor_width / 2)
+                    soud = (x_cursor - bar_x) / bar_width
+                    pygame.mixer.music.set_volume(soud)
                 # VOLVER AL PRINCIPAL
 
-                if return_hitbox.down(event) == True:
+                if return_hitbox.down(event):
                     menu = False
                     main = True
 
                 # SI ESTA APRETADO SI
 
-                if fullscreenSi_hitbox.down(event) == True:
+                if fullscreenSi_hitbox.down(event):
                     screenSiPress = True
                     screenNoPress = False
                     imagenActual = imagenSiMedio
@@ -388,7 +427,7 @@ while True:
 
                 # SI ESTA APRETADO NO
 
-                if fullscreenNo_hitbox.down(event) == True:
+                if fullscreenNo_hitbox.down(event):
                     screenNoPress = True
                     screenSiPress = False
                     imagenActual = imagenNoMedio
@@ -402,48 +441,39 @@ while True:
                     if Facil:
                         imagenActual = imagenSiFacil
                         window.blit(imagenActual, (posX, posY))
-                        if return_hitbox.hover(event) == True:
-                            window.blit(imagenSiFacilBack, (posX, posY))
+                        updateImage(return_hitbox, imagenSiFacilBack)
                     if Medio:
                         imagenActual = imagenSiMedio
                         window.blit(imagenActual, (posX, posY))
-                        if return_hitbox.hover(event) == True:
-                            window.blit(imagenSiMedioBack, (posX, posY))
+                        updateImage(return_hitbox, imagenSiMedioBack)
                     if dificil:
                         imagenActual = imagenSiDificil
                         window.blit(imagenActual, (posX, posY))
-                        if return_hitbox.hover(event) == True:
-                            window.blit(imagenSiDificilBack, (posX, posY))
+                        updateImage(return_hitbox, imagenSiDificilBack)
 
                 elif screenNoPress:
                     if Facil:
                         imagenActual = imagenNoFacil
                         window.blit(imagenActual, (posX, posY))
-                        if return_hitbox.hover(event) == True:
-                            window.blit(imagenNoFacilBack, (posX, posY))
+                        updateImage(return_hitbox,imagenNoFacilBack)
                     if Medio:
                         imagenActual = imagenNoMedio
                         window.blit(imagenActual, (posX, posY))
-                        if return_hitbox.hover(event) == True:
-                            window.blit(imagenNoMedioBack, (posX, posY))
+                        updateImage(return_hitbox, imagenNoMedioBack)
                     if dificil:
                         imagenActual = imagenNoDificil
                         window.blit(imagenActual, (posX, posY))
-                        if return_hitbox.hover(event) == True:
-                            window.blit(imagenNoDificilBack, (posX, posY))
-
+                        updateImage(return_hitbox, imagenNoDificilBack)
+                pygame.draw.rect(window, green_color, soud_bar)
+                pygame.draw.rect(window, yellow_color, cursor)
             # VENTANA DATOS
             if data:
-
                 if return_hitbox.down(event):
                     data = False
                     main = True
 
-                if return_hitbox.hover(event):
-                    window.blit(data_return, (posX, posY))
-
-                else:
-                    window.blit(data_image, (posX, posY))
+                window.blit(data_image, (posX, posY))
+                updateImage(return_hitbox,data_return)
 
             if event.type == QUIT:
                 pygame.quit()
@@ -528,6 +558,6 @@ while True:
         '''
         # space.debug_draw(draw_options)
         pygame.display.update()
-    #print(pygame.mouse.get_pos())
+    print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

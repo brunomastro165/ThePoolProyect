@@ -82,7 +82,8 @@ window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 pygame.display.set_caption("PoolGame")
 
 # Cargando Imagenes
-
+icon = imageLoad("Images/icono.png")
+pygame.display.set_icon(icon)
 # Pantalla Principal
 game = imageLoad("Images/PLAY.png")
 game_start_click = imageLoad("Images/PLAY (ACTIVE).png")
@@ -558,6 +559,6 @@ while True:
         '''
         # space.debug_draw(draw_options)
         pygame.display.update()
-    print(pygame.mouse.get_pos())
+    #print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

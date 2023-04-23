@@ -118,12 +118,6 @@ prePlayPlayerActiveImage = imageLoad("Images/PrePlayPlayerActive.png")
 prePlayBotActive = imageLoad("Images/PrePlayBotActive.png")
 prePlayBackActive = imageLoad("Images/PrePlayBackActive.png")
 
-
-# VARIABLES DE LA BARRA DE VOLUMEN
-# Variables para el movimiento del cursor
-moving_cursor = False
-moving_bar = False
-
 # BOTONES
 
 # BOTONES PANTALLA PRINCIPAL
@@ -148,6 +142,12 @@ diffDificil_hitbox = button.Button(407, 684, 697-407, 760-684)
 # SECCIÓN DE MÚSICA
 pygame.mixer.music.load('easy-lifestyle-137766.mp3')  # agregar música
 pygame.mixer.music.set_volume(0.1)  # setear volumen
+# VARIABLES DE LA BARRA DE VOLUMEN
+moving_cursor = False
+moving_bar = False
+cursor = pygame.Rect(0, 0, 0, 0)
+default_sound = True
+actual_resolution = 800
 
 # hacer cada línea individualmente, para poder rodear la imagen con la hitbox
 topLine = mesa.MesaObject(100, 50, 500, 10)
@@ -276,7 +276,7 @@ power_bar = pygame.Surface((10, 20))
 power_bar.fill(RED)
 
 turn = True
-default_sound = True
+
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
@@ -286,6 +286,9 @@ while True:
 
             # Revisa si la resolucion varia para ajustase
             if event.type == pygame.VIDEORESIZE:
+
+                cursor.x = cursor.x +(window.get_width()-actual_resolution)/2
+                actual_resolution = window.get_width()
                 for hitbox, value in zip(
                         [start_hitbox, menu_hitbox, data_hitbox, return_hitbox, prePlayPlayerActive_hitbox,
                          preBotActive_hitbox], [231, 300, 714, 12, 221, 221]):
@@ -358,41 +361,58 @@ while True:
                 bar_height = 10
                 bar_x = (window.get_width() - 800) / 2 + 408
                 bar_y = (window.get_height() - 800) / 2 + 273
-                soud_bar = pygame.Rect(bar_x, bar_y, bar_width, bar_height)
-
+                sound_bar = pygame.Rect(bar_x, bar_y, bar_width, bar_height)
+                mouse_state = pygame.mouse.get_pressed()
                 # Definir el cursor
                 cursor_width = 20
                 cursor_height = 40
                 if default_sound:
                     x_cursor = bar_x + bar_width / 2
-                y_cursor = bar_y - (cursor_height / 2)
-                cursor = pygame.Rect(x_cursor, y_cursor, cursor_width, cursor_height)
+                    y_cursor = bar_y - (cursor_height / 2)
+                    cursor = pygame.Rect(x_cursor-cursor_width/2, y_cursor, cursor_width, cursor_height)
+                print(cursor.x)
                 #pygame.mixer.music.stop()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if cursor.collidepoint(event.pos):
                         moving_cursor = True
                         x_cursor, y_cursor = event.pos
                         cursor.x = x_cursor - (cursor_width / 2)
-
-                    elif soud_bar.collidepoint(event.pos):
+                        default_sound = False
+                    elif sound_bar.collidepoint(event.pos):
                         moving_bar = True
                         x_cursor, y_cursor = event.pos
                         cursor.x = x_cursor - (cursor_width / 2)
-
+                        default_sound = False
                 elif event.type == pygame.MOUSEBUTTONUP:
                     moving_cursor = False
                     moving_bar = False
+                    x_cursor, y_cursor = event.pos  # actualizar posición del cursor
+
                 elif event.type == pygame.MOUSEMOTION:
-                    if moving_cursor and x_cursor >= bar_x and x_cursor <= bar_x+bar_width - 30:
-                        default_sound = False
+                    if moving_cursor:
                         x_cursor, y_cursor = event.pos
+                        # asegurarse de que el cursor no se mueva fuera de los límites de la barra
+                        if x_cursor < bar_x:
+                            x_cursor = bar_x
+                        elif x_cursor > bar_x + bar_width - cursor_width:
+                            x_cursor = bar_x + bar_width - cursor_width
+                        cursor.x = x_cursor - (cursor_width / 2)
+                    elif moving_bar:
+                        x_cursor, y_cursor = event.pos
+                        # asegurarse de que el cursor no se mueva fuera de los límites de la barra
+                        if x_cursor < bar_x:
+                            x_cursor = bar_x
+                        elif x_cursor > bar_x + bar_width - cursor_width:
+                            x_cursor = bar_x + bar_width - cursor_width
                         cursor.x = x_cursor - (cursor_width / 2)
 
-                    elif moving_bar and x_cursor >= bar_x and x_cursor <= bar_x+bar_width- 30:
-                        x_cursor, y_cursor = event.pos
-                        cursor.x = x_cursor - (cursor_width / 2)
-                    soud = (x_cursor - bar_x) / bar_width
-                    pygame.mixer.music.set_volume(soud)
+                # Calcular el volumen y actualizar la música
+                sound = (cursor.x - bar_x) / bar_width
+                pygame.mixer.music.set_volume(sound)
+
+
+                soud = (x_cursor - bar_x) / bar_width
+                pygame.mixer.music.set_volume(soud)
                 # VOLVER AL PRINCIPAL
 
                 if return_hitbox.down(event):
@@ -465,7 +485,7 @@ while True:
                         imagenActual = imagenNoDificil
                         window.blit(imagenActual, (posX, posY))
                         updateImage(return_hitbox, imagenNoDificilBack)
-                pygame.draw.rect(window, green_color, soud_bar)
+                pygame.draw.rect(window, green_color, sound_bar)
                 pygame.draw.rect(window, yellow_color, cursor)
             # VENTANA DATOS
             if data:

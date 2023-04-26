@@ -191,11 +191,17 @@ FPS = 60
 
 # Game variables
 diam = 36
+pocket_dia = 66
 force = 0
 max_force = 10000
 force_direction = 1
 taking_shot = True
 powering_up = False
+potted_balls = []
+potted_balls_lisa = []
+potted_balls_rayada = []
+potted_negra = False
+potted_blanca = False
 
 # Colores
 BG = (50, 50, 50)
@@ -219,8 +225,8 @@ for col in range(5):
         pos = (250 + (col*(diam+3)), 267 + (row*(diam+3)) + (col*diam/2))
 
         # CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, SIMPLEMENTE ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS
-        # NECESITAMOS O HACER BALLS UNA CLASE, O ENCONTRAR ALTERNATIVAS PARA IDENTIFICAR CADA BOLA
-        # POR LO DEMÁS, ESTE CÓDIGO FUNCIONA, PERO NECESITAMOS INCORPORAR EL ATRIBUTO TIPO DE ALGUNA FORMA
+        # ASÍ QUE SE MODIFICÓ LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
+
 
         if(len(balls)<8 and len(balls)>0):
             #print(f"Lisas: {len(balls)}")
@@ -250,8 +256,14 @@ cue_ball = create_ball((diam/2), pos, "blanca")
 cue_ball.tipo="blanca"
 balls.append(cue_ball)
 
+contBalls = 0
 for i in balls:
-    print(i.tipo)
+    print(f"{contBalls} : {i.tipo}")
+    contBalls = contBalls + 1
+
+balls[0].tipo = "lisa"
+balls[8].tipo = "rayada"
+balls[7].tipo = "negra"
 
 # Crear los bordes de la mesa (usando las coordenadas donde quiero dibujarlos)
 border = [
@@ -263,10 +275,18 @@ border = [
     [(1143, 96), (1122, 117), (1122, 560), (1143, 581)]
 ]
 
+# Crear los hoyos de la mesa
+pockets = [
+    (55, 63),
+    (592, 48),
+    (1134, 64),
+    (55, 616),
+    (592, 629),
+    (1134, 616)
+]
+
 for b in border:
     create_table_border(b)
-
-
 
 # Objeto palo (instancia de la clase palo)
 palo_p1 = palo.Palo(balls[-1].body.position)
@@ -277,6 +297,7 @@ power_bar.fill(RED)
 
 turn = True
 
+print(balls[15].tipo)
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
@@ -310,7 +331,7 @@ while True:
                 updateImage(data_hitbox,game_data_click)
 
                 # START DOWN
-                if start_hitbox.down(event):
+                if start_hitbox.down(event) == True:
                     main = False
                     start = True
                 # MENU DOWN
@@ -342,7 +363,8 @@ while True:
                     playing = True
                     base_height = 678
                     base_width = 1200
-                    window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
+                    base_bottom_panel = 50
+                    window = pygame.display.set_mode((base_width, base_height+base_bottom_panel), pygame.RESIZABLE)
 
                 if return_hitbox.down(event):
                     start = False
@@ -512,13 +534,54 @@ while True:
         # draw pool table
         window.blit(table_image, (0, 0))
 
+        # Fijarse si cualquier ball tocó un hoyo
+        for i, ball in enumerate(balls):
+            for pocket in pockets:
+                ball_x_dist = abs(ball.body.position[0] - pocket[0])
+                ball_y_dist = abs(ball.body.position[1] - pocket[1])
+                ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
+                if ball_dist <= pocket_dia / 2:
+
+                    if(ball.tipo == "lisa"):
+                        potted_balls.append(ball_images[i])
+                        potted_balls_lisa.append(ball_images[i])
+                        space.remove(ball.body)
+                        balls.remove(ball)
+                        ball_images.pop(i)
+
+                    elif(ball.tipo == "rayada"):
+                        potted_balls.append(ball_images[i])
+                        potted_balls_rayada.append(ball_images[i])
+                        space.remove(ball.body)
+                        balls.remove(ball)
+                        ball_images.pop(i)
+
+                    elif(ball.tipo == "negra"):
+                        potted_negra = True
+                        potted_balls.append(ball_images[i])
+                        space.remove(ball.body)
+                        balls.remove(ball)
+                        ball_images.pop(i)
+
+                    elif(ball.tipo == "blanca"):
+                        potted_blanca = True
+                        ball.body.position = (-100, -100)
+                        ball.body.velocity = (0.0, 0.0)
+
+                    contBalls = 0
+                    for i in balls:
+                        print(f"{contBalls} : {i.tipo}")
+                        contBalls = contBalls + 1
+
+                    print(f"Lisas: {potted_balls_lisa}")
+                    print(f"Rayadas: {potted_balls_rayada}")
+                    print(f"Negra: {potted_negra}")
+
         # draw pool balls
         # Utilizo el iterador i para obtener el número de la bola
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
-
-
 
         # Checkar si las bolas estan quietas
         taking_shot = True
@@ -527,6 +590,10 @@ while True:
                 taking_shot = False
 
         if taking_shot:
+            if potted_blanca == True:
+                print("a")
+                balls[-1].body.position = (888, base_height / 2)
+                potted_blanca = False
             # Calcular el angulo
             mouse_pos = pygame.mouse.get_pos()
             palo_p1.rect.center = balls[-1].body.position
@@ -554,6 +621,11 @@ while True:
             force = 0
             force_direction = 1
 
+
+        #dibujar las bochas metidas en la parte de abajo
+        for i, ball in enumerate(potted_balls):
+            window.blit(ball, (10 +(i*50), base_height - 5))
+
         # Event Handler
         for event in pygame.event.get():
             # Disparar la bola blanca
@@ -571,12 +643,14 @@ while True:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
         '''
         if turn:
             print(f"Tirada jugador 1: {turn}")
         else:
             print(f"Tirada jugador 2: {turn}")
         '''
+
         # space.debug_draw(draw_options)
         pygame.display.update()
     #print(pygame.mouse.get_pos())

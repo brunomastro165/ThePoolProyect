@@ -11,7 +11,6 @@ from pygame.locals import *
 def imageLoad(name):
     return pygame.image.load(name)
 
-
 # Funcion para hacer resposive los botones
 def resposiveHitbox(object, pos):
     object.x = (window.get_width() - 800) / 2 + pos
@@ -58,7 +57,7 @@ def create_ball(rad, pos, tipo):
     # use pivot joint to add friction
     pivot = pymunk.PivotJoint(static_body, body, (0, 0), (0, 0))
     pivot.max_bias = 0  # Disable joint correction
-    pivot.max_force = 500  # emulate linear friction
+    pivot.max_force = 1000  # emulate linear friction
     tipo=""
 
     space.add(body, shape, pivot)
@@ -202,6 +201,7 @@ potted_balls_lisa = []
 potted_balls_rayada = []
 potted_negra = False
 potted_blanca = False
+ballTeam = True
 
 # Colores
 BG = (50, 50, 50)
@@ -226,7 +226,6 @@ for col in range(5):
 
         # CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, SIMPLEMENTE ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS
         # ASÍ QUE SE MODIFICÓ LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
-
 
         if(len(balls)<8 and len(balls)>0):
             #print(f"Lisas: {len(balls)}")
@@ -541,7 +540,7 @@ while True:
                 ball_y_dist = abs(ball.body.position[1] - pocket[1])
                 ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
                 if ball_dist <= pocket_dia / 2:
-
+                    
                     if(ball.tipo == "lisa"):
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
@@ -621,6 +620,35 @@ while True:
             force = 0
             force_direction = 1
 
+        #Tipos de bocha para cada jugador
+        if ballTeam == True:
+            if len(potted_balls_lisa)>0 and turn == True:
+                P1LISA = True
+                P1RAY = False
+                P2LISA = False
+                P2RAY = True
+                ballTeam = False
+
+            elif len(potted_balls_rayada)>0 and turn == True:
+                P1LISA = False
+                P1RAY = True
+                P2LISA = False
+                P2RAY = True
+                ballTeam = False
+
+            elif len(potted_balls_lisa)>0 and turn == False:
+                P1LISA = False
+                P1RAY = True
+                P2LISA = True
+                P2RAY = False
+                ballTeam = False
+
+            elif len(potted_balls_rayada)>0 and turn == False:
+                P1LISA = True
+                P1RAY = False
+                P2LISA = False
+                P2RAY = True
+                ballTeam = False
 
         #dibujar las bochas metidas en la parte de abajo
         for i, ball in enumerate(potted_balls):
@@ -641,18 +669,23 @@ while True:
                 powering_up = False
 
             if event.type == pygame.QUIT:
-                pygame.quit()
                 sys.exit()
+                pygame.quit()
 
-        '''
+
         if turn:
             print(f"Tirada jugador 1: {turn}")
         else:
             print(f"Tirada jugador 2: {turn}")
-        '''
 
+
+        if ballTeam == False:
+            print(f"P1 ES LISA {P1LISA}")
+            print(f"P2 ES LISA {P2LISA}")
+
+        #print(f"BallTeam{ballTeam}")
         # space.debug_draw(draw_options)
         pygame.display.update()
-    #print(pygame.mouse.get_pos())
+    # print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

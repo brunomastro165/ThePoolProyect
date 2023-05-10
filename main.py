@@ -292,9 +292,16 @@ for b in border:
 # Objeto palo (instancia de la clase palo)
 palo_p1 = palo.Palo(balls[-1].body.position)
 
+# Imagen para la barra de carga
+barra_placeholder = imageLoad('Assets/Images/MascaraHK.png')
+barra_placeholder2 = imageLoad('Assets/Images/Joni.png')
+
 # Barra de poder del paliño
-power_bar = pygame.Surface((10, 20))
-power_bar.fill(RED)
+power_bar = pygame.Surface((barra_placeholder.get_width(), barra_placeholder.get_height()))
+power_bar.blit(barra_placeholder, (0, 0))
+
+power_bar2 = pygame.Surface((barra_placeholder2.get_width(), barra_placeholder2.get_height()))
+power_bar2.blit(barra_placeholder2, (0, 0))
 
 turn = True
 
@@ -631,9 +638,14 @@ while True:
                 force_direction *= -1
             # Dibujar las barras de poder
             for b in range(math.ceil(force/2000)):
-                window.blit(power_bar,
-                            (balls[-1].body.position[0] - 30 + (b * 15),
-                             balls[-1].body.position[1] + 30))
+                if b == 4:
+                    window.blit(power_bar2,
+                                (balls[-1].body.position[0] - 30 + (b * 15),
+                                 balls[-1].body.position[1] + 30))
+                else:
+                    window.blit(power_bar,
+                                (balls[-1].body.position[0] - 30 + (b * 15),
+                                 balls[-1].body.position[1] + 30))
         elif powering_up is False and taking_shot is True:
             x_impulse = math.cos(math.radians(palo_angle))
             y_impulse = math.sin(math.radians(palo_angle))

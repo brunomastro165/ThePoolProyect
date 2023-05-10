@@ -786,9 +786,14 @@ while True:
         for i, ball in enumerate(potted_balls):
             window.blit(ball, (10 +(i*50), base_height - 5))
 
-
         #CONDICIONES DE VICTORIA (PROTOTIPO)
         if not ballTeam:
+            '''
+            aux = len(potted_balls_rayada)
+            
+            if(P1LISA == True and turn == True and len(potted_balls_rayada)>aux):
+                turn = not turn
+            '''
             #Meter las bochas correspondientes al equipo
             if(P1LISA == True and len(potted_balls_lisa)==7):
                 p1_can_put_black = True
@@ -799,6 +804,8 @@ while True:
                 p2_can_put_black = True
             elif(P2RAY == True and len(potted_balls_rayada)==7):
                 p2_can_put_black = True
+
+
 
             # Meter la negra antes de tiempo
         if(turn == True and potted_negra == True and p1_can_put_black == False):
@@ -811,16 +818,14 @@ while True:
             print("Perdió jugador 2 por meter la negra antes de tiempo")
             sys.exit()
 
-            #Meter la negra para ganar
-            if(p1_can_put_black == True and potted_negra == True):
-                print("Ganó jugador 1")
-                sys.exit()
+        #Meter la negra para ganar
+        if(p1_can_put_black == True and potted_negra == True):
+            print("Ganó jugador 1")
+            sys.exit()
 
-            if(p2_can_put_black == True and potted_negra == True):
-                print("Ganó jugador 2")
-                sys.exit()
-
-
+        if(p2_can_put_black == True and potted_negra == True):
+            print("Ganó jugador 2")
+            sys.exit()
 
         # Event Handler
         for event in pygame.event.get():
@@ -850,8 +855,6 @@ while True:
 
             if event.type == pygame.QUIT:
                 sys.exit()
-
-
 
         '''
         if not ballTeam:

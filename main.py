@@ -34,6 +34,76 @@ def create_table_border(poly_dims):
 def updateImage(hitbox,image):
     if hitbox.hover(event):
         window.blit(image,(posX,posY))
+def changePos(a,b):
+    auxiliar = balls[a].body.position
+    balls[a].body.position = balls[b].body.position
+    balls[b].body.position = auxiliar
+def makeNewGame():
+
+    # Crear las bolas para el juego
+    for ball in balls:
+        ball.body.position = (-1000,-1000)
+        ball.body.velocity = (0.0,0.0)
+    balls.clear()
+    rows = 5
+    # Bolas numeradas
+
+    for col in range(5):
+        for row in range(rows):
+            pos = (250 + (col * (diam + 3)), 267 + (row * (diam + 3)) + (col * diam / 2))
+
+            # CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, SIMPLEMENTE ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS
+            # ASÍ QUE SE MODIFICÓ LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
+
+            if (len(balls) < 8 and len(balls) > 0):
+                # print(f"Lisas: {len(balls)}")
+                new_ball = create_ball((diam / 2), pos, "lisas")
+                new_ball.tipo = "lisa"
+            if (len(balls) == 0):  # LA ITERACION 0 POR ALGÚN MOTIVO ES LA NÚMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
+                # print(f"Rayadas: {len(balls)}")
+                new_ball = create_ball((diam / 2), pos, "rayadas")
+                new_ball.tipo = "rayada"
+            if (len(balls) > 8):
+                # print(f"Rayadas: {len(balls)}")
+                new_ball = create_ball((diam / 2), pos, "rayadas")
+                new_ball.tipo = "rayada"
+            if (len(balls) == 8):
+                # print(f"Negra: {len(balls)}")
+                new_ball = create_ball((diam / 2), pos, "negra")
+                new_ball.tipo = "negra"
+
+            if new_ball:
+                balls.append(new_ball)
+        rows -= 1
+
+    # Cambiando las bolas de lugar
+
+    changePos(0, 14)
+    changePos(1, 5)
+    changePos(2, 13)
+    changePos(13, 8)
+    changePos(4, 12)
+    changePos(4, 9)
+    changePos(7, 10)
+    changePos(10, 6)
+    changePos(3, 12)
+    changePos(12, 10)
+
+    # Bola blanca
+    pos = (888, (678 / 2))
+    print(pos)
+    cue_ball = create_ball((diam / 2), pos, "blanca")
+    cue_ball.tipo = "blanca"
+    balls.append(cue_ball)
+
+    contBalls = 0
+    for i in balls:
+        print(f"{contBalls} : {i.tipo}")
+        contBalls = contBalls + 1
+
+    balls[0].tipo = "lisa"
+    balls[8].tipo = "rayada"
+    balls[7].tipo = "negra"
 
 
 '''
@@ -57,7 +127,7 @@ def create_ball(rad, pos, tipo):
     # use pivot joint to add friction
     pivot = pymunk.PivotJoint(static_body, body, (0, 0), (0, 0))
     pivot.max_bias = 0  # Disable joint correction
-    pivot.max_force = 2000  # emulate linear friction
+    pivot.max_force = 1500  # emulate linear friction
     tipo=""
 
     space.add(body, shape, pivot)
@@ -189,7 +259,7 @@ clock = pygame.time.Clock()
 FPS = 60
 
 # Game variables
-diam = 46
+diam = 40
 pocket_dia = 66
 force = 0
 max_force = 10000
@@ -249,6 +319,22 @@ for col in range(5):
         if new_ball:
             balls.append(new_ball)
     rows -= 1
+
+# Cambiando las bolas de lugar
+
+changePos(0,14)
+changePos(1,5)
+changePos(2,13)
+changePos(13,8)
+changePos(4,12)
+changePos(4,9)
+changePos(7,10)
+changePos(10,6)
+changePos(3,12)
+changePos(12,10)
+
+
+
 
 # Bola blanca
 pos = (888, (678/2))
@@ -551,6 +637,7 @@ while True:
                 sys.exit()
 
     else:
+
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)
@@ -572,6 +659,8 @@ while True:
                     if(ball.tipo == "lisa"):
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
+                        ball.body.position = (-1000,-1000)
+                        ball.body.velocity = (0.0,0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
@@ -579,6 +668,8 @@ while True:
                     elif(ball.tipo == "rayada"):
                         potted_balls.append(ball_images[i])
                         potted_balls_rayada.append(ball_images[i])
+                        ball.body.position = (-1000, -1000)
+                        ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
@@ -708,14 +799,16 @@ while True:
             elif(P2RAY == True and len(potted_balls_rayada)==7):
                 p2_can_put_black = True
 
-            #Meter la negra antes de tiempo
-            if(turn == True and potted_negra == True and p1_can_put_black == False):
-                print("Perdió jugador 1 por meter la negra antes de tiempo")
-                sys.exit()
+            # Meter la negra antes de tiempo
+        if(turn == True and potted_negra == True and p1_can_put_black == False):
+            taking_shot = False
+            print("Perdió jugador 1 por meter la negra antes de tiempo")
+            sys.exit()
 
-            if(turn == False and potted_negra == True and p2_can_put_black == False):
-                print("Perdió jugador 2 por meter la negra antes de tiempo")
-                sys.exit()
+        if(turn == False and potted_negra == True and p2_can_put_black == False):
+            taking_shot = False
+            print("Perdió jugador 2 por meter la negra antes de tiempo")
+            sys.exit()
 
             #Meter la negra para ganar
             if(p1_can_put_black == True and potted_negra == True):
@@ -730,6 +823,9 @@ while True:
 
         # Event Handler
         for event in pygame.event.get():
+            if event.type == KEYDOWN:  # Verificar si se presionó una tecla
+                if event.key == pygame.K_p:
+                    makeNewGame()
             # Disparar la bola blanca
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot is True:
                 powering_up = True

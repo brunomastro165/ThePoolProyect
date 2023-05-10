@@ -720,6 +720,9 @@ while True:
             if event.type == pygame.MOUSEBUTTONUP and taking_shot is True:
                 powering_up = False
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                sys.exit()
+
             if event.type == pygame.QUIT:
                 sys.exit()
                 pygame.quit()

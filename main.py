@@ -391,7 +391,8 @@ power_bar2 = pygame.Surface((barra_placeholder2.get_width(), barra_placeholder2.
 power_bar2.blit(barra_placeholder2, (0, 0))
 
 turn = True
-
+aux_rayada = 0
+aux_lisa = 0
 print(balls[15].tipo)
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
@@ -787,13 +788,27 @@ while True:
             window.blit(ball, (10 +(i*50), base_height - 5))
 
         #CONDICIONES DE VICTORIA (PROTOTIPO)
-        if not ballTeam:
-            '''
-            aux = len(potted_balls_rayada)
-            
-            if(P1LISA == True and turn == True and len(potted_balls_rayada)>aux):
+        if not ballTeam and taking_shot:
+            if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
+                aux_rayada += 1
+                aux_lisa += 1
+            elif ((P1RAY and turn) or (P2RAY and not turn)) and len(potted_balls_rayada) > aux_rayada:
+                aux_rayada += 1
+                cont = 0
+            elif ((P1LISA and turn) or (P2LISA and not turn)) and len(potted_balls_lisa) > aux_lisa:
+                aux_lisa += 1
+                cont = 0
+            elif ((P1RAY and turn) or (P2RAY and not turn)) and len(potted_balls_lisa) > aux_lisa:
                 turn = not turn
-            '''
+                aux_lisa +=1
+                cont = -1
+            elif ((P1LISA and turn) or (P2LISA and not turn)) and len(potted_balls_rayada) > aux_rayada:
+                turn = not turn
+                aux_rayada += 1
+                cont = -1
+
+
+
             #Meter las bochas correspondientes al equipo
             if(P1LISA == True and len(potted_balls_lisa)==7):
                 p1_can_put_black = True
@@ -837,7 +852,7 @@ while True:
                 powering_up = True
 
                 # Sistema de turnos
-                cont+=1
+                cont += 1
                 print(f"Contador: {cont}")
                 if cont > 1:
                     turn = not turn

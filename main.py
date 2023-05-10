@@ -38,6 +38,7 @@ def changePos(a,b):
     auxiliar = balls[a].body.position
     balls[a].body.position = balls[b].body.position
     balls[b].body.position = auxiliar
+
 def makeNewGame():
 
     # Crear las bolas para el juego

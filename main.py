@@ -616,9 +616,13 @@ while True:
             if int(ball.body.velocity[0]) != 0 or int(ball.body.velocity[1]) != 0:
                 taking_shot = False
 
+        #Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (cómo en el pool de verdad)
+        if (potted_blanca == True):
+            turn = not turn
+            cont=-1
+
         if taking_shot:
             if potted_blanca == True:
-                print("a")
                 balls[-1].body.position = (888, base_height / 2)
                 potted_blanca = False
             # Calcular el angulo
@@ -707,9 +711,11 @@ while True:
             #Meter la negra antes de tiempo
             if(turn == True and potted_negra == True and p1_can_put_black == False):
                 print("Perdió jugador 1 por meter la negra antes de tiempo")
+                sys.exit()
 
             if(turn == False and potted_negra == True and p2_can_put_black == False):
                 print("Perdió jugador 2 por meter la negra antes de tiempo")
+                sys.exit()
 
             #Meter la negra para ganar
             if(p1_can_put_black == True and potted_negra == True):
@@ -720,6 +726,8 @@ while True:
                 print("Ganó jugador 2")
                 sys.exit()
 
+
+
         # Event Handler
         for event in pygame.event.get():
             # Disparar la bola blanca
@@ -728,8 +736,14 @@ while True:
 
                 # Sistema de turnos
                 cont+=1
+                print(f"Contador: {cont}")
                 if cont > 1:
                     turn = not turn
+
+                if turn:
+                    print(f"Tirada jugador 1")
+                else:
+                    print(f"Tirada jugador 2")
 
             if event.type == pygame.MOUSEBUTTONUP and taking_shot is True:
                 powering_up = False
@@ -740,10 +754,7 @@ while True:
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        if turn:
-            print(f"Tirada jugador 1")
-        else:
-            print(f"Tirada jugador 2")
+
 
         '''
         if not ballTeam:

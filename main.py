@@ -538,7 +538,9 @@ while True:
                 updateImage(return_hitbox,data_return)
 
             if event.type == QUIT:
-                pygame.quit()
+                sys.exit()
+
+            if event.type == event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
 
     else:

@@ -57,7 +57,7 @@ def create_ball(rad, pos, tipo):
     # use pivot joint to add friction
     pivot = pymunk.PivotJoint(static_body, body, (0, 0), (0, 0))
     pivot.max_bias = 0  # Disable joint correction
-    pivot.max_force = 1000  # emulate linear friction
+    pivot.max_force = 2000  # emulate linear friction
     tipo=""
 
     space.add(body, shape, pivot)
@@ -189,7 +189,7 @@ clock = pygame.time.Clock()
 FPS = 60
 
 # Game variables
-diam = 36
+diam = 46
 pocket_dia = 66
 force = 0
 max_force = 10000
@@ -202,6 +202,8 @@ potted_balls_rayada = []
 potted_negra = False
 potted_blanca = False
 ballTeam = True
+p1_can_put_black = False
+p2_can_put_black = False
 
 # Colores
 BG = (50, 50, 50)
@@ -522,7 +524,6 @@ while True:
                 sys.exit()
 
     else:
-
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)
@@ -622,28 +623,31 @@ while True:
 
         #Tipos de bocha para cada jugador
         if ballTeam == True:
-            if len(potted_balls_lisa)>0 and turn == True:
+
+            #Jugador 1
+            if len(potted_balls_lisa)>0 and turn == True: #Probado y funciona
                 P1LISA = True
                 P1RAY = False
                 P2LISA = False
                 P2RAY = True
                 ballTeam = False
 
-            elif len(potted_balls_rayada)>0 and turn == True:
-                P1LISA = False
-                P1RAY = True
-                P2LISA = False
-                P2RAY = True
-                ballTeam = False
-
-            elif len(potted_balls_lisa)>0 and turn == False:
+            elif len(potted_balls_rayada)>0 and turn == True: #Probado y funciona
                 P1LISA = False
                 P1RAY = True
                 P2LISA = True
                 P2RAY = False
                 ballTeam = False
 
-            elif len(potted_balls_rayada)>0 and turn == False:
+            #Jugador 2
+            elif len(potted_balls_lisa)>0 and turn == False: #Probado y funciona
+                P1LISA = False
+                P1RAY = True
+                P2LISA = True
+                P2RAY = False
+                ballTeam = False
+
+            elif len(potted_balls_rayada)>0 and turn == False: #Probado y funciona
                 P1LISA = True
                 P1RAY = False
                 P2LISA = False
@@ -653,6 +657,31 @@ while True:
         #dibujar las bochas metidas en la parte de abajo
         for i, ball in enumerate(potted_balls):
             window.blit(ball, (10 +(i*50), base_height - 5))
+
+        if not ballTeam:
+            #Prototipo de fin de partida
+            #Meter las bochas correspondientes al equipo
+            if(P1LISA == True and len(potted_balls_lisa)==7):
+                print("Ganó jugador 1")
+                p1_can_put_black = True
+            elif(P1RAY == True and len(potted_balls_rayada)==7):
+                print("Ganó jugador 1")
+                p1_can_put_black = True
+
+            if(P2LISA == True and len(potted_balls_lisa)==7):
+                print("Ganó jugador 2")
+                p2_can_put_black = True
+            elif(P2RAY == True and len(potted_balls_rayada)==7):
+                print("Ganó jugador 2")
+                p2_can_put_black = True
+
+            #Meter la negra antes de tiempo
+            if(turn == True and potted_negra == True and p1_can_put_black == False):
+                print("Perdió jugador 1 por meter la negra antes de tiempo")
+
+            if(turn == False and potted_negra == True and p2_can_put_black == False):
+                print("Perdió jugador 2 por meter la negra antes de tiempo")
+
 
         # Event Handler
         for event in pygame.event.get():
@@ -674,14 +703,22 @@ while True:
 
 
         if turn:
-            print(f"Tirada jugador 1: {turn}")
+            print(f"Tirada jugador 1")
         else:
-            print(f"Tirada jugador 2: {turn}")
+            print(f"Tirada jugador 2")
 
+        '''
+        if not ballTeam:
+            if P1LISA == True:
+                print(f"Jugador 1 juega con lisas {P1LISA}")
+            else:
+                print(f"Jugador 1 juega con rayadas {P1RAY}")
 
-        if ballTeam == False:
-            print(f"P1 ES LISA {P1LISA}")
-            print(f"P2 ES LISA {P2LISA}")
+            if P2LISA == True:
+                print(f"Jugador 2 juega con lisas {P2LISA}")
+            else:
+                print(f"Jugador 2 juega con raydas {P2RAY}")
+        '''
 
         #print(f"BallTeam{ballTeam}")
         # space.debug_draw(draw_options)

@@ -204,7 +204,7 @@ potted_blanca = False
 ballTeam = True
 p1_can_put_black = False
 p2_can_put_black = False
-
+FullScreen = False
 # Colores
 BG = (50, 50, 50)
 RED = (255, 0, 0)
@@ -359,13 +359,29 @@ while True:
                 # DOWN EVENT
 
                 if prePlayPlayerActive_hitbox.down(event):
-                    playMusic()
+                    #playMusic()
                     start = False
                     playing = True
                     base_height = 678
                     base_width = 1200
                     base_bottom_panel = 50
-                    window = pygame.display.set_mode((base_width, base_height+base_bottom_panel), pygame.RESIZABLE)
+
+                    if FullScreen == False:
+                        window = pygame.display.set_mode((base_width+100, base_height+base_bottom_panel), pygame.RESIZABLE)
+                    else:
+                        screen_info = pygame.display.Info()
+
+                        screen_width = screen_info.current_w
+                        screen_height = screen_info.current_h
+
+                        w = (screen_width - base_width) // 2
+                        h = (screen_height - base_height + base_bottom_panel) // 2
+
+                        screen_position = (w, h)
+
+                        window = pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel),
+                                                         pygame.RESIZABLE)
+                        pygame.display.set_mode((base_width+200, base_height+base_bottom_panel), w, h)
 
                 if return_hitbox.down(event):
                     start = False
@@ -449,6 +465,7 @@ while True:
                     screenNoPress = False
                     imagenActual = imagenSiMedio
                     window.blit(imagenActual, (posX, posY))
+                    FullScreen = True
                 else:
                     window.blit(imagenActual, (posX, posY))
 
@@ -476,6 +493,7 @@ while True:
                     screenSiPress = False
                     imagenActual = imagenNoMedio
                     window.blit(imagenActual, (posX, posY))
+                    FullScreen = False
                 else:
                     window.blit(imagenActual, (posX, posY))
 
@@ -541,7 +559,7 @@ while True:
                 ball_y_dist = abs(ball.body.position[1] - pocket[1])
                 ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
                 if ball_dist <= pocket_dia / 2:
-                    
+
                     if(ball.tipo == "lisa"):
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
@@ -658,21 +676,18 @@ while True:
         for i, ball in enumerate(potted_balls):
             window.blit(ball, (10 +(i*50), base_height - 5))
 
+
+        #CONDICIONES DE VICTORIA (PROTOTIPO)
         if not ballTeam:
-            #Prototipo de fin de partida
             #Meter las bochas correspondientes al equipo
             if(P1LISA == True and len(potted_balls_lisa)==7):
-                print("Ganó jugador 1")
                 p1_can_put_black = True
             elif(P1RAY == True and len(potted_balls_rayada)==7):
-                print("Ganó jugador 1")
                 p1_can_put_black = True
 
             if(P2LISA == True and len(potted_balls_lisa)==7):
-                print("Ganó jugador 2")
                 p2_can_put_black = True
             elif(P2RAY == True and len(potted_balls_rayada)==7):
-                print("Ganó jugador 2")
                 p2_can_put_black = True
 
             #Meter la negra antes de tiempo
@@ -682,6 +697,14 @@ while True:
             if(turn == False and potted_negra == True and p2_can_put_black == False):
                 print("Perdió jugador 2 por meter la negra antes de tiempo")
 
+            #Meter la negra para ganar
+            if(p1_can_put_black == True and potted_negra == True):
+                print("Ganó jugador 1")
+                sys.exit()
+
+            if(p2_can_put_black == True and potted_negra == True):
+                print("Ganó jugador 2")
+                sys.exit()
 
         # Event Handler
         for event in pygame.event.get():
@@ -700,7 +723,6 @@ while True:
             if event.type == pygame.QUIT:
                 sys.exit()
                 pygame.quit()
-
 
         if turn:
             print(f"Tirada jugador 1")

@@ -712,7 +712,7 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot is True:
                 powering_up = True
 
-                #Sistema de turnos
+                # Sistema de turnos
                 cont+=1
                 if cont > 1:
                     turn = not turn
@@ -725,7 +725,6 @@ while True:
 
             if event.type == pygame.QUIT:
                 sys.exit()
-                pygame.quit()
 
         if turn:
             print(f"Tirada jugador 1")

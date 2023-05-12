@@ -341,16 +341,16 @@ for col in range(5):
 
 # Cambiando las bolas de lugar
 
-changePos(0,14)
-changePos(1,5)
-changePos(2,13)
-changePos(13,8)
-changePos(4,12)
-changePos(4,9)
-changePos(7,10)
-changePos(10,6)
-changePos(3,12)
-changePos(12,10)
+changePos(0, 14)
+changePos(1, 5)
+changePos(2, 13)
+changePos(13, 8)
+changePos(4, 12)
+changePos(4, 9)
+changePos(7, 10)
+changePos(10, 6)
+changePos(3, 12)
+changePos(12, 10)
 
 
 
@@ -707,8 +707,7 @@ while True:
                 ball_y_dist = abs(ball.body.position[1] - pocket[1])
                 ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
                 if ball_dist <= pocket_dia / 2:
-
-                    if(ball.tipo == "lisa"):
+                    if ball.tipo == "lisa":
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
                         ball.body.position = (-1000,-1000)
@@ -717,7 +716,7 @@ while True:
                         balls.remove(ball)
                         ball_images.pop(i)
 
-                    elif(ball.tipo == "rayada"):
+                    elif ball.tipo == "rayada":
                         potted_balls.append(ball_images[i])
                         potted_balls_rayada.append(ball_images[i])
                         ball.body.position = (-1000, -1000)
@@ -726,14 +725,14 @@ while True:
                         balls.remove(ball)
                         ball_images.pop(i)
 
-                    elif(ball.tipo == "negra"):
+                    elif ball.tipo == "negra":
                         potted_negra = True
                         potted_balls.append(ball_images[i])
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
 
-                    elif(ball.tipo == "blanca"):
+                    elif ball.tipo == "blanca":
                         potted_blanca = True
                         ball.body.position = (-100, -100)
                         ball.body.velocity = (0.0, 0.0)

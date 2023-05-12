@@ -188,14 +188,24 @@ prePlayPlayerActiveImage = imageLoad("Images/PrePlayPlayerActive.png")
 prePlayBotActive = imageLoad("Images/PrePlayBotActive.png")
 prePlayBackActive = imageLoad("Images/PrePlayBackActive.png")
 
-#Jugadores y turnos
+#Jugadores, turnos y victorias
 jugador1Turno =imageLoad("Images/j1.png")
 jugador2Turno = imageLoad("Images/j2.png")
+
 turnoActual = imageLoad("Images/TurnoActual.png")
+
 turnosRestantes1 = imageLoad("Images/TR1.png")
 turnosRestantes2 = imageLoad("Images/TR2.png")
-j1eslisa = imageLoad("Images/j1eslisa.png")
+
+j1eslisa = imageLoad("Images/j1eslisas.png")
 j1esrayada = imageLoad("Images/j1esrayada.png")
+
+j2esrayada = imageLoad("Images/j2esrayada.png")
+j2eslisa = imageLoad("Images/j2eslisas.png")
+
+ganaj1 = imageLoad("Images/ganaj1.png")
+ganaj2 = imageLoad("Images/ganaj2.png")
+
 # BOTONES
 
 # BOTONES PANTALLA PRINCIPAL
@@ -357,6 +367,7 @@ for i in balls:
     print(f"{contBalls} : {i.tipo}")
     contBalls = contBalls + 1
 
+# NO BORREN ESTO NUNCA
 balls[0].tipo = "lisa"
 balls[8].tipo = "rayada"
 balls[7].tipo = "negra"
@@ -470,7 +481,7 @@ while True:
                     base_bottom_panel = 50
 
                     if FullScreen == False:
-                        window = pygame.display.set_mode((base_width+100, base_height+base_bottom_panel), pygame.RESIZABLE)
+                        window = pygame.display.set_mode((base_width+250, base_height+base_bottom_panel), pygame.RESIZABLE)
                     else:
                         screen_info = pygame.display.Info()
 
@@ -679,16 +690,14 @@ while True:
 
         if not ballTeam:
             if P1LISA:
-                print("Placeholder")
                 window.blit(j1eslisa, (1200, 100))
             elif P1RAY:
-                print("Placeholder")
                 window.blit(j1esrayada, (1200, 100))
 
             if P2LISA:
-                print("Placeholder")
+                window.blit(j2eslisa, (1200, 120))
             elif P2RAY:
-                print("Placeholder")
+                window.blit(j2esrayada, (1200, 120))
 
 
         # Fijarse si cualquier ball tocó un hoyo
@@ -750,7 +759,8 @@ while True:
             if int(ball.body.velocity[0]) != 0 or int(ball.body.velocity[1]) != 0:
                 taking_shot = False
 
-        #Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (cómo en el pool de verdad)
+        # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (cómo en el pool de verdad)
+        # NO MUEVAN ESTO DE ACÁ, PORQUE MÁS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARÍA
         if (potted_blanca == True):
             turn = not turn
             cont=-1
@@ -826,7 +836,7 @@ while True:
 
         #dibujar las bochas metidas en la parte de abajo
         for i, ball in enumerate(potted_balls):
-            window.blit(ball, (10 +(i*50), base_height - 5))
+            window.blit(ball, (10 +(i*50), base_height -10))
 
         #CONDICIONES DE VICTORIA (PROTOTIPO)
         if not ballTeam and taking_shot:
@@ -848,9 +858,7 @@ while True:
                 aux_rayada += 1
                 cont = -1
 
-
-
-            #Meter las bochas correspondientes al equipo
+            # Meter las bochas correspondientes al equipo
             if(P1LISA == True and len(potted_balls_lisa)==7):
                 p1_can_put_black = True
             elif(P1RAY == True and len(potted_balls_rayada)==7):
@@ -862,26 +870,23 @@ while True:
                 p2_can_put_black = True
 
 
-
-            # Meter la negra antes de tiempo
+        # Meter la negra antes de tiempo
         if(turn == True and potted_negra == True and p1_can_put_black == False):
             taking_shot = False
-            print("Perdió jugador 1 por meter la negra antes de tiempo")
-            sys.exit()
+            window.blit(ganaj2, (400, 300))
 
         if(turn == False and potted_negra == True and p2_can_put_black == False):
             taking_shot = False
-            print("Perdió jugador 2 por meter la negra antes de tiempo")
-            sys.exit()
+            window.blit(ganaj1, (400, 300))
 
         #Meter la negra para ganar
         if(p1_can_put_black == True and potted_negra == True):
-            print("Ganó jugador 1")
-            sys.exit()
+            taking_shot = False
+            window.blit(ganaj1, (400, 300))
 
         if(p2_can_put_black == True and potted_negra == True):
-            print("Ganó jugador 2")
-            sys.exit()
+            taking_shot = False
+            window.blit(ganaj2, (400, 300))
 
         # Event Handler
         for event in pygame.event.get():
@@ -894,14 +899,8 @@ while True:
 
                 # Sistema de turnos
                 cont += 1
-                print(f"Contador: {cont}")
                 if cont > 1:
                     turn = not turn
-
-                if turn:
-                    print(f"Tirada jugador 1")
-                else:
-                    print(f"Tirada jugador 2")
 
             if event.type == pygame.MOUSEBUTTONUP and taking_shot is True:
                 powering_up = False

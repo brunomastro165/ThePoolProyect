@@ -188,6 +188,14 @@ prePlayPlayerActiveImage = imageLoad("Images/PrePlayPlayerActive.png")
 prePlayBotActive = imageLoad("Images/PrePlayBotActive.png")
 prePlayBackActive = imageLoad("Images/PrePlayBackActive.png")
 
+#Jugadores y turnos
+jugador1Turno =imageLoad("Images/j1.png")
+jugador2Turno = imageLoad("Images/j2.png")
+turnoActual = imageLoad("Images/TurnoActual.png")
+turnosRestantes1 = imageLoad("Images/TR1.png")
+turnosRestantes2 = imageLoad("Images/TR2.png")
+j1eslisa = imageLoad("Images/j1eslisa.png")
+j1esrayada = imageLoad("Images/j1esrayada.png")
 # BOTONES
 
 # BOTONES PANTALLA PRINCIPAL
@@ -257,7 +265,7 @@ draw_options = pymunk.pygame_util.DrawOptions(window)
 
 # Clock
 clock = pygame.time.Clock()
-FPS = 60
+FPS = 75
 
 # Game variables
 diam = 40
@@ -650,6 +658,39 @@ while True:
         # draw pool table
         window.blit(table_image, (0, 0))
 
+        if turn:
+            window.blit(jugador1Turno, (1180, -50))
+            if cont >= 0:
+                window.blit(turnosRestantes1, (1195, 0))
+            elif cont == -1:
+                window.blit(turnosRestantes2, (1197, 0))
+            elif cont == -2:
+                print("3")
+
+        else:
+            window.blit(jugador2Turno, (1183, -50))
+            if cont >= 0:
+                window.blit(turnosRestantes1, (1195, 0))
+            elif cont == -1:
+                window.blit(turnosRestantes2, (1197, 0))
+            elif cont == -2:
+                print("3")
+
+
+        if not ballTeam:
+            if P1LISA:
+                print("Placeholder")
+                window.blit(j1eslisa, (1200, 100))
+            elif P1RAY:
+                print("Placeholder")
+                window.blit(j1esrayada, (1200, 100))
+
+            if P2LISA:
+                print("Placeholder")
+            elif P2RAY:
+                print("Placeholder")
+
+
         # Fijarse si cualquier ball tocó un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:
@@ -887,6 +928,6 @@ while True:
         #print(f"BallTeam{ballTeam}")
         # space.debug_draw(draw_options)
         pygame.display.update()
-    # print(pygame.mouse.get_pos())
+    print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

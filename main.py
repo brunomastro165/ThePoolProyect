@@ -5,145 +5,8 @@ import button
 import mesa
 import palo
 import math
+import funciones
 from pygame.locals import *
-
-
-
-# Funcion para cargar imagenes
-def imageLoad(name):
-    return pygame.image.load(name)
-
-
-# Funcion para hacer resposive los botones
-def resposiveHitbox(object, pos):
-    object.x = (window.get_width() - 800) / 2 + pos
-    object.hitbox = pygame.Rect(object.x, object.y, object.width, object.height)
-
-
-def playMusic():
-    pygame.mixer.music.play(-1)  # reproducir música en bucle
-
-
-# Funcion para crear objetos del escenario
-def create_table_border(poly_dims):
-    body = pymunk.Body(body_type=pymunk.Body.STATIC)
-    body.position = (0, 0)
-    shape = pymunk.Poly(body, poly_dims)
-    shape = pymunk.Poly(body, poly_dims)
-    shape.elasticity = 0.8
-
-    space.add(body, shape)
-
-
-# Funcion para actualizar las imagenes con hover
-def updateImage(hitbox, image):
-    if hitbox.hover(event):
-        window.blit(image, (posX, posY))
-
-
-def changePos(a, b):
-    auxiliar = balls[a].body.position
-    balls[a].body.position = balls[b].body.position
-    balls[b].body.position = auxiliar
-
-
-def makeNewGame():
-    # Crear las bolas para el juego
-    for ball in balls:
-        ball.body.position = (-1000, -1000)
-        ball.body.velocity = (0.0, 0.0)
-    balls.clear()
-    rows = 5
-    # Bolas numeradas
-
-    for col in range(5):
-        for row in range(rows):
-            pos = (250 + (col * (diam + 3)), 267 + (row * (diam + 3)) + (col * diam / 2))
-
-            # CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, SIMPLEMENTE
-            # ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS
-            # ASÍ QUE SE MODIFICÓ LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
-
-            if 8 > len(balls) > 0:
-                # print(f"Lisas: {len(balls)}")
-                new_ball = create_ball((diam / 2), pos, "lisas")
-                new_ball.tipo = "lisa"
-            if len(balls) == 0:  # LA ITERACION 0 POR ALGÚN MOTIVO ES LA NÚMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
-                # print(f"Rayadas: {len(balls)}")
-                new_ball = create_ball((diam / 2), pos, "rayadas")
-                new_ball.tipo = "rayada"
-            if len(balls) > 8:
-                # print(f"Rayadas: {len(balls)}")
-                new_ball = create_ball((diam / 2), pos, "rayadas")
-                new_ball.tipo = "rayada"
-            if len(balls) == 8:
-                # print(f"Negra: {len(balls)}")
-                new_ball = create_ball((diam / 2), pos, "negra")
-                new_ball.tipo = "negra"
-
-            if new_ball:
-                balls.append(new_ball)
-        rows -= 1
-
-    # Cambiando las bolas de lugar
-
-    changePos(0, 14)
-    changePos(1, 5)
-    changePos(2, 13)
-    changePos(13, 8)
-    changePos(4, 12)
-    changePos(4, 9)
-    changePos(7, 10)
-    changePos(10, 6)
-    changePos(3, 12)
-    changePos(12, 10)
-
-    # Bola blanca
-    pos = (888, (678 / 2))
-    print(pos)
-    cue_ball = create_ball((diam / 2), pos, "blanca")
-    cue_ball.tipo = "blanca"
-    balls.append(cue_ball)
-
-    contBalls = 0
-    for i in balls:
-        print(f"{contBalls} : {i.tipo}")
-        contBalls = contBalls + 1
-
-    balls[0].tipo = "lisa"
-    balls[8].tipo = "rayada"
-    balls[7].tipo = "negra"
-
-
-'''
-IMPORTANTÍSIMO
-'''
-
-
-# MODIFICACION DE LA CLASE CIRCLE DE PYMUNK (NECESARIO PARA NO TENER QUE REESCRIBIR ALL OF CODE)
-class MyCircle(pymunk.Circle):
-    def __init__(self, body, radius, tipo=""):
-        super().__init__(body, radius)
-        self.tipo = tipo
-
-
-# Funcion para crear bolas
-
-def create_ball(rad, pos):
-    body = pymunk.Body()
-    body.position = pos
-    shape = MyCircle(body, rad)
-    shape.mass = 5
-    shape.elasticity = 0.9
-    # use pivot joint to add friction
-    pivot = pymunk.PivotJoint(static_body, body, (0, 0), (0, 0))
-    pivot.max_bias = 0  # Disable joint correction
-    pivot.max_force = 1500  # emulate linear friction
-    tipo = ""
-
-    space.add(body, shape, pivot)
-    return shape
-
 
 # Variables de la Resolucion
 base_width = 800
@@ -163,59 +26,59 @@ window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 pygame.display.set_caption("PoolGame")
 
 # Cargando Imagenes
-icon = imageLoad("Images/icono.png")
+icon = funciones.imageLoad("Images/icono.png")
 pygame.display.set_icon(icon)
 # Pantalla Principal
-game = imageLoad("Images/PLAY.png")
-game_start_click = imageLoad("Images/PLAY (ACTIVE).png")
-game_menu_click = imageLoad("Images/MENU (ACTIVE).png")
-game_data_click = imageLoad("Images/PLAY DATOS.png")
+game = funciones.imageLoad("Images/PLAY.png")
+game_start_click = funciones.imageLoad("Images/PLAY (ACTIVE).png")
+game_menu_click = funciones.imageLoad("Images/MENU (ACTIVE).png")
+game_data_click = funciones.imageLoad("Images/PLAY DATOS.png")
 
 # Pantalla de Datos
-data_image = imageLoad("Images/DATOS (PAGINA).png")
-data_return = imageLoad("Images/DATOS (PAG ACTIVA).png")
+data_image = funciones.imageLoad("Images/DATOS (PAGINA).png")
+data_return = funciones.imageLoad("Images/DATOS (PAG ACTIVA).png")
 
 # Pantalla Menu
 # Cargamos Imagenes
-imagenPrincpal = imageLoad("Images/MENU_PRINCIPAL.png")
-imagenSiFacil = imageLoad("Images/M_P_SI_FACIL.png")
-imagenSiFacilBack = imageLoad("Images/M_P_SI_FACIL_BACK.png")
-imagenSiMedio = imageLoad("Images/M_P_SI_MEDIO.png")
-imagenSiMedioBack = imageLoad("Images/M_P_SI_MEDIO_BACK.png")
-imagenSiDificil = imageLoad("Images/M_P_SI_DIFICIL.png")
-imagenSiDificilBack = imageLoad("Images/M_P_SI_DIFICIL_BACK.png")
-imagenNoFacil = imageLoad("Images/M_P_NO_FACIL.png")
-imagenNoFacilBack = imageLoad("Images/M_P_NO_FACIL_BACK.png")
-imagenNoMedio = imageLoad("Images/M_P_NO_MEDIO.png")
-imagenNoMedioBack = imageLoad("Images/M_P_NO_MEDIO_BACK.png")
-imagenNoDificil = imageLoad("Images/M_P_NO_DIFICIL.png")
-imagenNoDificilBack = imageLoad("Images/M_P_NO_DIFICIL_BACK.png")
+imagenPrincpal = funciones.imageLoad("Images/MENU_PRINCIPAL.png")
+imagenSiFacil = funciones.imageLoad("Images/M_P_SI_FACIL.png")
+imagenSiFacilBack = funciones.imageLoad("Images/M_P_SI_FACIL_BACK.png")
+imagenSiMedio = funciones.imageLoad("Images/M_P_SI_MEDIO.png")
+imagenSiMedioBack = funciones.imageLoad("Images/M_P_SI_MEDIO_BACK.png")
+imagenSiDificil = funciones.imageLoad("Images/M_P_SI_DIFICIL.png")
+imagenSiDificilBack = funciones.imageLoad("Images/M_P_SI_DIFICIL_BACK.png")
+imagenNoFacil = funciones.imageLoad("Images/M_P_NO_FACIL.png")
+imagenNoFacilBack = funciones.imageLoad("Images/M_P_NO_FACIL_BACK.png")
+imagenNoMedio = funciones.imageLoad("Images/M_P_NO_MEDIO.png")
+imagenNoMedioBack = funciones.imageLoad("Images/M_P_NO_MEDIO_BACK.png")
+imagenNoDificil = funciones.imageLoad("Images/M_P_NO_DIFICIL.png")
+imagenNoDificilBack = funciones.imageLoad("Images/M_P_NO_DIFICIL_BACK.png")
 # Generamos variable para cambiar las imagenes de menu
 imagenActual = imagenNoMedio
 
 # Pantalla PrePlay
-prePlayInactive = imageLoad("Images/PrePlayInactive.png")
-prePlayPlayerActiveImage = imageLoad("Images/PrePlayPlayerActive.png")
-prePlayBotActive = imageLoad("Images/PrePlayBotActive.png")
-prePlayBackActive = imageLoad("Images/PrePlayBackActive.png")
+prePlayInactive = funciones.imageLoad("Images/PrePlayInactive.png")
+prePlayPlayerActiveImage = funciones.imageLoad("Images/PrePlayPlayerActive.png")
+prePlayBotActive = funciones.imageLoad("Images/PrePlayBotActive.png")
+prePlayBackActive = funciones.imageLoad("Images/PrePlayBackActive.png")
 
 # Jugadores, turnos y victorias
-jugador1Turno = imageLoad("Images/j1.png")
-jugador2Turno = imageLoad("Images/j2.png")
+jugador1Turno = funciones.imageLoad("Images/j1.png")
+jugador2Turno = funciones.imageLoad("Images/j2.png")
 
-turnoActual = imageLoad("Images/TurnoActual.png")
+turnoActual = funciones.imageLoad("Images/TurnoActual.png")
 
-turnosRestantes1 = imageLoad("Images/TR1.png")
-turnosRestantes2 = imageLoad("Images/TR2.png")
+turnosRestantes1 = funciones.imageLoad("Images/TR1.png")
+turnosRestantes2 = funciones.imageLoad("Images/TR2.png")
 
-j1eslisa = imageLoad("Images/j1eslisas.png")
-j1esrayada = imageLoad("Images/j1esrayada.png")
+j1eslisa = funciones.imageLoad("Images/j1eslisas.png")
+j1esrayada = funciones.imageLoad("Images/j1esrayada.png")
 
-j2esrayada = imageLoad("Images/j2esrayada.png")
-j2eslisa = imageLoad("Images/j2eslisas.png")
+j2esrayada = funciones.imageLoad("Images/j2esrayada.png")
+j2eslisa = funciones.imageLoad("Images/j2eslisas.png")
 
-ganaj1 = imageLoad("Images/ganaj1.png")
-ganaj2 = imageLoad("Images/ganaj2.png")
+ganaj1 = funciones.imageLoad("Images/ganaj1.png")
+ganaj2 = funciones.imageLoad("Images/ganaj2.png")
 
 # BOTONES
 
@@ -263,7 +126,7 @@ start = False
 data = False
 prePlay = False
 playing = False
-playMusic()
+funciones.playMusic()
 
 # Condiciones para los botones del menu
 screenSiPress = False
@@ -332,19 +195,19 @@ for col in range(5):
 
         if 8 > len(balls) > 0:
             # print(f"Lisas: {len(balls)}")
-            new_ball = create_ball((diam / 2), pos, "lisas")
+            new_ball = funciones.create_ball((diam / 2), pos, "lisas", static_body, space)
             new_ball.tipo = "lisa"
         if len(balls) == 0:  # LA ITERACION 0 POR ALGÚN MOTIVO ES LA NÚMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
             # print(f"Rayadas: {len(balls)}")
-            new_ball = create_ball((diam / 2), pos, "rayadas")
+            new_ball = funciones.create_ball((diam / 2), pos, "rayadas", static_body, space)
             new_ball.tipo = "rayada"
         if len(balls) > 8:
             # print(f"Rayadas: {len(balls)}")
-            new_ball = create_ball((diam / 2), pos, "rayadas")
+            new_ball = funciones.create_ball((diam / 2), pos, "rayadas", static_body, space)
             new_ball.tipo = "rayada"
         if len(balls) == 8:
             # print(f"Negra: {len(balls)}")
-            new_ball = create_ball((diam / 2), pos, "negra")
+            new_ball = funciones.create_ball((diam / 2), pos, "negra", static_body, space)
             new_ball.tipo = "negra"
 
         if new_ball:
@@ -353,21 +216,21 @@ for col in range(5):
 
 # Cambiando las bolas de lugar
 
-changePos(0, 14)
-changePos(1, 5)
-changePos(2, 13)
-changePos(13, 8)
-changePos(4, 12)
-changePos(4, 9)
-changePos(7, 10)
-changePos(10, 6)
-changePos(3, 12)
-changePos(12, 10)
+funciones.changePos(0, 14, balls)
+funciones.changePos(1, 5, balls)
+funciones.changePos(2, 13, balls)
+funciones.changePos(13, 8, balls)
+funciones.changePos(4, 12, balls)
+funciones.changePos(4, 9, balls)
+funciones.changePos(7, 10, balls)
+funciones.changePos(10, 6, balls)
+funciones.changePos(3, 12, balls)
+funciones.changePos(12, 10, balls)
 
 # Bola blanca
 pos = (888, (678 / 2))
 print(pos)
-cue_ball = create_ball((diam / 2), pos, "blanca")
+cue_ball = funciones.create_ball((diam / 2), pos, "blanca", static_body, space)
 cue_ball.tipo = "blanca"
 balls.append(cue_ball)
 
@@ -402,14 +265,14 @@ pockets = [
 ]
 
 for b in border:
-    create_table_border(b)
+    funciones.create_table_border(b,space)
 
 # Objeto palo (instancia de la clase palo)
 palo_p1 = palo.Palo(balls[-1].body.position)
 
 # Imagen para la barra de carga
-barra_placeholder = imageLoad('Assets/Images/MascaraHK.png')
-barra_placeholder2 = imageLoad('Assets/Images/Joni.png')
+barra_placeholder = funciones.imageLoad('Assets/Images/MascaraHK.png')
+barra_placeholder2 = funciones.imageLoad('Assets/Images/Joni.png')
 
 # Barra de poder del paliño
 power_bar = pygame.Surface((barra_placeholder.get_width(), barra_placeholder.get_height()))
@@ -437,7 +300,7 @@ while True:
                 for hitbox, value in zip(
                         [start_hitbox, menu_hitbox, data_hitbox, return_hitbox, prePlayPlayerActive_hitbox,
                          preBotActive_hitbox], [231, 300, 714, 12, 221, 221]):
-                    resposiveHitbox(hitbox, value)
+                    funciones.resposiveHitbox(hitbox, value, window)
                     window.fill(white_color)
                     posX = (window.get_width() - 800) / 2
                     posY = (window.get_height() - 800) / 2
@@ -448,14 +311,14 @@ while True:
 
                 window.blit(game, (posX, posY))
                 # START HOVER
-                updateImage(start_hitbox, game_start_click)
+                funciones.updateImage(start_hitbox, game_start_click, event, window, posX, posY)
                 # MENU HOVER
-                updateImage(menu_hitbox, game_menu_click)
+                funciones.updateImage(menu_hitbox, game_menu_click, event, window, posX, posY)
                 # DATOS HOVER
-                updateImage(data_hitbox, game_data_click)
+                funciones.updateImage(data_hitbox, game_data_click, event, window, posX, posY)
 
                 # START DOWN
-                if start_hitbox.down(event) == True:
+                if start_hitbox.down(event):
                     main = False
                     start = True
                 # MENU DOWN
@@ -474,9 +337,9 @@ while True:
 
                 window.blit(prePlayInactive, (posX, posY))
 
-                updateImage(return_hitbox, prePlayBackActive)
-                updateImage(prePlayPlayerActive_hitbox, prePlayPlayerActiveImage)
-                updateImage(preBotActive_hitbox, prePlayBotActive)
+                funciones.updateImage(return_hitbox, prePlayBackActive, event, window, posX, posY)
+                funciones.updateImage(prePlayPlayerActive_hitbox, prePlayPlayerActiveImage, event, window, posX, posY)
+                funciones.updateImage(preBotActive_hitbox, prePlayBotActive, event, window, posX, posY)
 
                 # DOWN EVENT
 
@@ -488,7 +351,7 @@ while True:
                     base_width = 1200
                     base_bottom_panel = 50
 
-                    if FullScreen == False:
+                    if not FullScreen:
                         window = pygame.display.set_mode((base_width + 250, base_height + base_bottom_panel),
                                                          pygame.RESIZABLE)
                     else:
@@ -511,7 +374,7 @@ while True:
                     main = True
 
                 if preBotActive_hitbox.down(event):
-                    playMusic()
+                    funciones.playMusic()
                     start = False
                     main = True
 
@@ -624,29 +487,29 @@ while True:
                     if Facil:
                         imagenActual = imagenSiFacil
                         window.blit(imagenActual, (posX, posY))
-                        updateImage(return_hitbox, imagenSiFacilBack)
+                        funciones.updateImage(return_hitbox, imagenSiFacilBack, event, window, posX, posY)
                     if Medio:
                         imagenActual = imagenSiMedio
                         window.blit(imagenActual, (posX, posY))
-                        updateImage(return_hitbox, imagenSiMedioBack)
+                        funciones.updateImage(return_hitbox, imagenSiMedioBack, event, window, posX, posY)
                     if dificil:
                         imagenActual = imagenSiDificil
                         window.blit(imagenActual, (posX, posY))
-                        updateImage(return_hitbox, imagenSiDificilBack)
+                        funciones.updateImage(return_hitbox, imagenSiDificilBack, event, window, posX, posY)
 
                 elif screenNoPress:
                     if Facil:
                         imagenActual = imagenNoFacil
                         window.blit(imagenActual, (posX, posY))
-                        updateImage(return_hitbox, imagenNoFacilBack)
+                        funciones.updateImage(return_hitbox, imagenNoFacilBack, event, window, posX, posY)
                     if Medio:
                         imagenActual = imagenNoMedio
                         window.blit(imagenActual, (posX, posY))
-                        updateImage(return_hitbox, imagenNoMedioBack)
+                        funciones.updateImage(return_hitbox, imagenNoMedioBack, event, window, posX, posY)
                     if dificil:
                         imagenActual = imagenNoDificil
                         window.blit(imagenActual, (posX, posY))
-                        updateImage(return_hitbox, imagenNoDificilBack)
+                        funciones.updateImage(return_hitbox, imagenNoDificilBack, event, window, posX, posY)
                 pygame.draw.rect(window, green_color, sound_bar)
                 pygame.draw.rect(window, yellow_color, cursor)
             # VENTANA DATOS
@@ -656,7 +519,7 @@ while True:
                     main = True
 
                 window.blit(data_image, (posX, posY))
-                updateImage(return_hitbox, data_return)
+                funciones.updateImage(return_hitbox, data_return, event, window, posX, posY)
 
             if event.type == QUIT:
                 sys.exit()
@@ -903,7 +766,7 @@ while True:
         for event in pygame.event.get():
             if event.type == KEYDOWN:  # Verificar si se presionó una tecla
                 if event.key == pygame.K_p:
-                    makeNewGame()
+                    funciones.makeNewGame(balls, diam, static_body, space)
             # Disparar la bola blanca
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot:
                 powering_up = True

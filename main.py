@@ -8,6 +8,7 @@ import math
 from pygame.locals import *
 
 
+
 # Funcion para cargar imagenes
 def imageLoad(name):
     return pygame.image.load(name)

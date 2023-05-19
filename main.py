@@ -1,3 +1,5 @@
+import random
+
 import pygame, sys
 import pymunk
 import pymunk.pygame_util
@@ -126,6 +128,7 @@ start = False
 data = False
 prePlay = False
 playing = False
+playing_bot = False
 funciones.playMusic()
 
 # Condiciones para los botones del menu
@@ -265,7 +268,7 @@ pockets = [
 ]
 
 for b in border:
-    funciones.create_table_border(b,space)
+    funciones.create_table_border(b, space)
 
 # Objeto palo (instancia de la clase palo)
 palo_p1 = palo.Palo(balls[-1].body.position)
@@ -284,10 +287,11 @@ power_bar2.blit(barra_placeholder2, (0, 0))
 aux_rayada = 0
 aux_lisa = 0
 print(balls[15].tipo)
+
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
 
-    if not playing:
+    if not playing and not playing_bot:
 
         # Este for revisa cada evento posible
         for event in pygame.event.get():
@@ -374,9 +378,29 @@ while True:
                     main = True
 
                 if preBotActive_hitbox.down(event):
-                    funciones.playMusic()
                     start = False
-                    main = True
+                    playing_bot = True
+                    base_height = 678
+                    base_width = 1200
+                    base_bottom_panel = 50
+
+                    if not FullScreen:
+                        window = pygame.display.set_mode((base_width + 250, base_height + base_bottom_panel),
+                                                         pygame.RESIZABLE)
+                    else:
+                        screen_info = pygame.display.Info()
+
+                        screen_width = screen_info.current_w
+                        screen_height = screen_info.current_h
+
+                        w = (screen_width - base_width) // 2
+                        h = (screen_height - base_height + base_bottom_panel) // 2
+
+                        screen_position = (w, h)
+
+                        window = pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel),
+                                                         pygame.RESIZABLE)
+                        pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel), w, h)
 
             # VENTANA MENU
             if menu:
@@ -527,6 +551,308 @@ while True:
             if event.type == event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
 
+    elif playing_bot:
+        # Time simulation
+        clock.tick(FPS)
+        space.step(1 / FPS)
+
+        # Fill background
+        window.fill(BG)
+
+        # draw pool table
+        window.blit(table_image, (0, 0))
+
+        if turn:
+            window.blit(jugador1Turno, (1180, -50))
+            if cont >= 0:
+                window.blit(turnosRestantes1, (1195, 0))
+            elif cont == -1:
+                window.blit(turnosRestantes2, (1197, 0))
+            elif cont == -2:
+                print("3")
+
+        else:
+            window.blit(jugador2Turno, (1183, -50))
+            if cont > 0:
+                window.blit(turnosRestantes1, (1195, 0))
+            elif cont == 0:
+                window.blit(turnosRestantes2, (1197, 0))
+            elif cont == -1:
+                print("3")
+
+        if not ballTeam:
+            if P1LISA:
+                window.blit(j1eslisa, (1200, 100))
+            elif P1RAY:
+                window.blit(j1esrayada, (1200, 100))
+
+            if P2LISA:
+                window.blit(j2eslisa, (1200, 120))
+            elif P2RAY:
+                window.blit(j2esrayada, (1200, 120))
+
+        # Fijarse si cualquier ball tocó un hoyo
+        for i, ball in enumerate(balls):
+            for pocket in pockets:
+                ball_x_dist = abs(ball.body.position[0] - pocket[0])
+                ball_y_dist = abs(ball.body.position[1] - pocket[1])
+                ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
+                if ball_dist <= pocket_dia / 2:
+                    if ball.tipo == "lisa":
+                        potted_balls.append(ball_images[i])
+                        potted_balls_lisa.append(ball_images[i])
+                        ball.body.position = (-1000, -1000)
+                        ball.body.velocity = (0.0, 0.0)
+                        space.remove(ball.body)
+                        balls.remove(ball)
+                        ball_images.pop(i)
+
+                    elif ball.tipo == "rayada":
+                        potted_balls.append(ball_images[i])
+                        potted_balls_rayada.append(ball_images[i])
+                        ball.body.position = (-1000, -1000)
+                        ball.body.velocity = (0.0, 0.0)
+                        space.remove(ball.body)
+                        balls.remove(ball)
+                        ball_images.pop(i)
+
+                    elif ball.tipo == "negra":
+                        potted_negra = True
+                        potted_balls.append(ball_images[i])
+                        space.remove(ball.body)
+                        balls.remove(ball)
+                        ball_images.pop(i)
+
+                    elif ball.tipo == "blanca":
+                        potted_blanca = True
+                        ball.body.position = (-100, -100)
+                        ball.body.velocity = (0.0, 0.0)
+
+                    contBalls = 0
+                    for i in balls:
+                        print(f"{contBalls} : {i.tipo}")
+                        contBalls = contBalls + 1
+
+                    print(f"Lisas: {potted_balls_lisa}")
+                    print(f"Rayadas: {potted_balls_rayada}")
+                    print(f"Negra: {potted_negra}")
+
+        # draw pool balls
+        # Utilizo el iterador i para obtener el número de la bola
+        # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
+        for i, ball in enumerate(balls):
+            window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
+
+        # Checkar si las bolas estan quietas
+        taking_shot = True
+        for ball in balls:
+            if int(ball.body.velocity[0]) != 0 or int(ball.body.velocity[1]) != 0:
+                taking_shot = False
+                changeTurn = True
+
+        # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (cómo en el pool de verdad)
+        # NO MUEVAN ESTO DE ACÁ, PORQUE MÁS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARÍA
+        if potted_blanca:
+            turn = not turn
+            cont = -1
+
+        # Tipos de bocha para cada jugador
+        if ballTeam:
+
+            # Jugador 1
+            if len(potted_balls_lisa) > 0 and turn:  # Probado y funciona
+                P1LISA = True
+                P1RAY = False
+                P2LISA = False
+                P2RAY = True
+                ballTeam = False
+                cont = 0
+
+            elif len(potted_balls_rayada) > 0 and turn:  # Probado y funciona
+                P1LISA = False
+                P1RAY = True
+                P2LISA = True
+                P2RAY = False
+                ballTeam = False
+                cont = 0
+
+            # Jugador 2
+            elif len(potted_balls_lisa) > 0 and not turn:  # Probado y funciona
+                P1LISA = False
+                P1RAY = True
+                P2LISA = True
+                P2RAY = False
+                ballTeam = False
+                cont = 0
+
+            elif len(potted_balls_rayada) > 0 and not turn:  # Probado y funciona
+                P1LISA = True
+                P1RAY = False
+                P2LISA = False
+                P2RAY = True
+                ballTeam = False
+                cont = 0
+
+        # dibujar las bochas metidas en la parte de abajo
+        for i, ball in enumerate(potted_balls):
+            window.blit(ball, (10 + (i * 50), base_height - 10))
+
+        # CONDICIONES DE VICTORIA (PROTOTIPO)
+        if not ballTeam and taking_shot:
+            if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
+                aux_rayada += 1
+                aux_lisa += 1
+            elif ((P1RAY and turn) or (P2RAY and not turn)) and len(potted_balls_rayada) > aux_rayada:
+                aux_rayada += 1
+                cont = 0
+            elif ((P1LISA and turn) or (P2LISA and not turn)) and len(potted_balls_lisa) > aux_lisa:
+                aux_lisa += 1
+                cont = 0
+            elif ((P1RAY and turn) or (P2RAY and not turn)) and len(potted_balls_lisa) > aux_lisa:
+                turn = not turn
+                aux_lisa += 1
+                cont = -1
+            elif ((P1LISA and turn) or (P2LISA and not turn)) and len(potted_balls_rayada) > aux_rayada:
+                turn = not turn
+                aux_rayada += 1
+                cont = -1
+
+            # Meter las bochas correspondientes al equipo
+            if P1LISA and len(potted_balls_lisa) == 7:
+                p1_can_put_black = True
+            elif P1RAY and len(potted_balls_rayada) == 7:
+                p1_can_put_black = True
+
+            if P2LISA and len(potted_balls_lisa) == 7:
+                p2_can_put_black = True
+            elif P2RAY and len(potted_balls_rayada) == 7:
+                p2_can_put_black = True
+
+        # Meter la negra antes de tiempo
+        if turn and potted_negra and not p1_can_put_black:
+            taking_shot = False
+            window.blit(ganaj2, (400, 300))
+
+        if not turn and potted_negra and not p2_can_put_black:
+            taking_shot = False
+            window.blit(ganaj1, (400, 300))
+
+        # Meter la negra para ganar
+        if p1_can_put_black and potted_negra:
+            taking_shot = False
+            window.blit(ganaj1, (400, 300))
+
+        if p2_can_put_black and potted_negra:
+            taking_shot = False
+            window.blit(ganaj2, (400, 300))
+        if taking_shot:
+            if changeTurn:
+                changeTurn = False
+                cont += 1
+                if cont > 1:
+                    turn = not turn
+            if turn:
+
+                # Sistema de turnos
+
+                if potted_blanca:
+                    balls[-1].body.position = (888, base_height / 2)
+                    potted_blanca = False
+                # Calcular el angulo
+
+                mouse_pos = pygame.mouse.get_pos()
+                palo_p1.rect.center = balls[-1].body.position
+                x_dist = balls[-1].body.position[0] - mouse_pos[0]
+                y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
+                palo_angle = math.degrees(math.atan2(y_dist, x_dist))
+                # print(palo_angle)
+                palo_p1.update(palo_angle)
+                # dibujar palo
+                palo_p1.draw(window)
+                # Fuerza del golpe
+                if powering_up is True:
+                    force += 100 * force_direction
+                    if force >= max_force or force <= 0:
+                        force_direction *= -1
+                    # Dibujar las barras de poder
+                    for b in range(math.ceil(force / 2000)):
+                        if b == 4:
+                            window.blit(power_bar2,
+                                        (balls[-1].body.position[0] - 30 + (b * 15),
+                                         balls[-1].body.position[1] + 30))
+                        else:
+                            window.blit(power_bar,
+                                        (balls[-1].body.position[0] - 30 + (b * 15),
+                                         balls[-1].body.position[1] + 30))
+                elif powering_up is False and taking_shot is True:
+                    x_impulse = math.cos(math.radians(palo_angle))
+                    y_impulse = math.sin(math.radians(palo_angle))
+                    balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
+                    force = 0
+                    force_direction = 1
+
+            else:
+                powering_up = True
+                # Sistema de turnos
+                if potted_blanca:
+                    balls[-1].body.position = (888, base_height / 2)
+                    potted_blanca = False
+                if powering_up:
+                    changeTurn = True
+                    powering_up = False
+                    # Calcular el angulo
+                    mouse_pos = pygame.mouse.get_pos()
+                    palo_p1.rect.center = balls[-1].body.position
+                    x_dist = balls[-1].body.position[0] - mouse_pos[0]
+                    y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
+                    palo_angle = random.uniform(-180, 180)
+                    # print(palo_angle)
+                    palo_p1.update(palo_angle)
+                    # dibujar palo
+                    palo_p1.draw(window)
+                    # Fuerza del golpe
+
+                    force = random.randint(1000, 10000)
+                    x_impulse = math.cos(math.radians(palo_angle))
+                    y_impulse = math.sin(math.radians(palo_angle))
+                    balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
+                    force = 0
+                    force_direction = 1
+
+        # Event Handler
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:  # Verificar si se presionó una tecla
+                if event.key == pygame.K_p:
+                    funciones.makeNewGame(balls, diam, static_body, space)
+            # Disparar la bola blanca
+            if event.type == pygame.MOUSEBUTTONDOWN and taking_shot and turn:
+                powering_up = True
+
+            if event.type == pygame.MOUSEBUTTONUP and taking_shot and turn:
+                powering_up = False
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                sys.exit()
+
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+        '''
+        if not ballTeam:
+            if P1LISA == True:
+                print(f"Jugador 1 juega con lisas {P1LISA}")
+            else:
+                print(f"Jugador 1 juega con rayadas {P1RAY}")
+
+            if P2LISA == True:
+                print(f"Jugador 2 juega con lisas {P2LISA}")
+            else:
+                print(f"Jugador 2 juega con raydas {P2RAY}")
+        '''
+
+        # print(f"BallTeam{ballTeam}")
+        # space.debug_draw(draw_options)
+        pygame.display.update()
     else:
         # Time simulation
         clock.tick(FPS)
@@ -737,6 +1063,7 @@ while True:
             x_dist = balls[-1].body.position[0] - mouse_pos[0]
             y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
             palo_angle = math.degrees(math.atan2(y_dist, x_dist))
+            print(palo_angle)
             palo_p1.update(palo_angle)
             # dibujar palo
             palo_p1.draw(window)

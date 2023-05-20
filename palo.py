@@ -1,12 +1,6 @@
-import pygame, sys
-
-import pymunk
-from pygame.locals import *
+import pygame
 
 ImagePalo = pygame.image.load("Assets/Images/paloNeutro.png")
-
-
-# pos = pygame.mouse.get_pos()
 
 
 class Palo:

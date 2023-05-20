@@ -1,20 +1,17 @@
-import pygame, sys
+import pygame
 import pymunk
 import pymunk.pygame_util
-import button
-import mesa
-import palo
-import math
-from pygame.locals import *
+
+
 # Funcion para cargar imagenes
 def imageLoad(name):
     return pygame.image.load(name)
 
 
 # Funcion para hacer resposive los botones
-def resposiveHitbox(object, pos, window):
-    object.x = (window.get_width() - 800) / 2 + pos
-    object.hitbox = pygame.Rect(object.x, object.y, object.width, object.height)
+def resposiveHitbox(obj, pos, window):
+    obj.x = (window.get_width() - 800) / 2 + pos
+    obj.hitbox = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
 
 
 def playMusic():

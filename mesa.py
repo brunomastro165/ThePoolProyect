@@ -1,7 +1,7 @@
-import pygame,sys
-from pygame.locals import *
+import pygame
 
-#clase del objeto mesa, funciona igual que en java
+
+# clase del objeto mesa, funciona igual que en java
 class MesaObject:
     def __init__(self, x, y, width, height):
         self.x = x

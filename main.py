@@ -1,6 +1,7 @@
 import random
 
-import pygame, sys
+import pygame
+import sys
 import pymunk
 import pymunk.pygame_util
 import button
@@ -21,6 +22,8 @@ posY = 0
 white_color = (255, 255, 255)
 green_color = (52, 130, 43)
 yellow_color = (238, 182, 2)
+BG = (50, 50, 50)
+RED = (255, 0, 0)
 
 # Iniciar Pygame, hacer la ventana como una variable con la resolucion y poner el nombre del juego
 pygame.init()
@@ -143,6 +146,7 @@ cont = 1
 suma_hecha = False
 changeTurn = False
 turn = True
+
 # COSAS DE PYMUNK
 
 # Pymunk space
@@ -172,9 +176,6 @@ ballTeam = True
 p1_can_put_black = False
 p2_can_put_black = False
 FullScreen = False
-# Colores
-BG = (50, 50, 50)
-RED = (255, 0, 0)
 
 # load images
 table_image = pygame.image.load("Assets/Images/table.png").convert_alpha()
@@ -193,7 +194,8 @@ for col in range(5):
     for row in range(rows):
         pos = (250 + (col * (diam + 3)), 267 + (row * (diam + 3)) + (col * diam / 2))
 
-        # CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, SIMPLEMENTE ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS
+        '''CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, 
+        SIMPLEMENTE ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS'''
         # ASÍ QUE SE MODIFICÓ LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
 
         if 8 > len(balls) > 0:

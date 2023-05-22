@@ -14,7 +14,7 @@ class Button:
         # dibujar el objeto
         pygame.draw.rect(surface, (255, 0, 0), (self.x, self.y, self.width, self.height))
 
-    def up(self,event):
+    def up(self, event):
         mouse_pos = pygame.mouse.get_pos()
 
         if self.hitbox.collidepoint(mouse_pos) and event.type == pygame.MOUSEBUTTONUP:
@@ -28,7 +28,7 @@ class Button:
             if event.button == 1:
                 return True
 
-    def hover(self, event):
+    def hover(self):
         mouse_pos = pygame.mouse.get_pos()
 
         if self.hitbox.collidepoint(mouse_pos):

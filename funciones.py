@@ -114,26 +114,24 @@ IMPORTANTÍSIMO
 '''
 
 
-# MODIFICACION DE LA CLASE CIRCLE DE PYMUNK (NECESARIO PARA NO TENER QUE REESCRIBIR ALL OF CODE)
+# MODIFICACION DE LA CLASE CIRCLE DE PYMUNK
 class MyCircle(pymunk.Circle):
     def __init__(self, body, radius, tipo=""):
         super().__init__(body, radius)
         self.tipo = tipo
 
 
-# Funcion para crear bolas
-
-def create_ball(rad, pos, type, static_body, space):
+# Funcion para crear objetos ball
+def create_ball(rad, pos, tipo, static_body, space):
     body = pymunk.Body()
     body.position = pos
     shape = MyCircle(body, rad)
     shape.mass = 5
     shape.elasticity = 0.9
-    # use pivot joint to add friction
     pivot = pymunk.PivotJoint(static_body, body, (0, 0), (0, 0))
-    pivot.max_bias = 0  # Disable joint correction
-    pivot.max_force = 1500  # emulate linear friction
+    pivot.max_bias = 0
+    pivot.max_force = 1500
     tipo = ""
-
+    # Espacio
     space.add(body, shape, pivot)
     return shape

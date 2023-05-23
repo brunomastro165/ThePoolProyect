@@ -286,7 +286,7 @@ barra_placeholder3 = funciones.image_load('Assets/Images/power_bar3.png')
 
 barra_placeholder4 = funciones.image_load('Assets/Images/power_bar4.png')
 
-# Barra de poder del paliño
+# Barra de poder del palo
 
 power_bar = pygame.Surface((barra_placeholder.get_width(), barra_placeholder.get_height()))
 power_bar.blit(barra_placeholder, (0, 0))

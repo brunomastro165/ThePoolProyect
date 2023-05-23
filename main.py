@@ -1,8 +1,6 @@
 import random
-
 import pygame
 import sys
-import pymunk
 import pymunk.pygame_util
 import button
 import mesa
@@ -327,7 +325,7 @@ while True:
                     window.fill(white_color)
                     posX = (window.get_width() - 800) / 2
                     posY = (window.get_height() - 800) / 2
-            # Animacion de Botones y cambio de pestañas
+            # Animacion de Botones y cambio de pestanas
 
             # PANTALLA PRINCIPAL
             if main:
@@ -648,8 +646,8 @@ while True:
                         ball.body.velocity = (0.0, 0.0)
 
                     contBalls = 0
-                    for i in balls:
-                        print(f"{contBalls} : {i.tipo}")
+                    for j in balls:
+                        print(f"{contBalls} : {j.tipo}")
                         contBalls = contBalls + 1
 
                     print(f"Lisas: {potted_balls_lisa}")

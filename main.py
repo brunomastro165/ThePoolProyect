@@ -1,12 +1,12 @@
-import random
 import pygame
 import sys
 import pymunk.pygame_util
 import button
 import mesa
 import palo
-import math
 import funciones
+import math
+import random
 from pygame.locals import *
 
 # Variables de la Resolucion

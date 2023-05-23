@@ -29,8 +29,6 @@ window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 pygame.display.set_caption("PoolGame")
 
 # Cargando Imagenes
-icon = funciones.image_load("Images/icono.png")
-pygame.display.set_icon(icon)
 # Pantalla Principal
 game = funciones.image_load("Images/PLAY.png")
 game_start_click = funciones.image_load("Images/PLAY (ACTIVE).png")

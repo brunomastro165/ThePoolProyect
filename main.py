@@ -276,15 +276,32 @@ for b in border:
 palo_p1 = palo.Palo(balls[-1].body.position)
 
 # Imagen para la barra de carga
-barra_placeholder = funciones.image_load('Assets/Images/MascaraHK.png')
-barra_placeholder2 = funciones.image_load('Assets/Images/Joni.png')
+barra_placeholder = funciones.image_load("Assets/Images/power_bar.png")
+
+barra_placeholder1 = funciones.image_load("Assets/Images/power_bar1.png")
+
+barra_placeholder2 = funciones.image_load("Assets/Images/power_bar2.png")
+
+barra_placeholder3 = funciones.image_load('Assets/Images/power_bar3.png')
+
+barra_placeholder4 = funciones.image_load('Assets/Images/power_bar4.png')
 
 # Barra de poder del paliño
+
 power_bar = pygame.Surface((barra_placeholder.get_width(), barra_placeholder.get_height()))
 power_bar.blit(barra_placeholder, (0, 0))
 
+power_bar1 = pygame.Surface((barra_placeholder1.get_width(), barra_placeholder1.get_height()))
+power_bar1.blit(barra_placeholder1, (0, 0))
+
 power_bar2 = pygame.Surface((barra_placeholder2.get_width(), barra_placeholder2.get_height()))
 power_bar2.blit(barra_placeholder2, (0, 0))
+
+power_bar3 = pygame.Surface((barra_placeholder3.get_width(), barra_placeholder3.get_height()))
+power_bar3.blit(barra_placeholder3, (0, 0))
+
+power_bar4 = pygame.Surface((barra_placeholder4.get_width(), barra_placeholder4.get_height()))
+power_bar4.blit(barra_placeholder4, (0, 0))
 
 aux_rayada = 0
 aux_lisa = 0
@@ -779,7 +796,19 @@ while True:
                     # Dibujar las barras de poder
                     for b in range(math.ceil(force / 2000)):
                         if b == 4:
+                            window.blit(power_bar4,
+                                        (balls[-1].body.position[0] - 30 + (b * 15),
+                                         balls[-1].body.position[1] + 30))
+                        elif b == 3:
+                            window.blit(power_bar3,
+                                        (balls[-1].body.position[0] - 30 + (b * 15),
+                                         balls[-1].body.position[1] + 30))
+                        elif b == 2:
                             window.blit(power_bar2,
+                                        (balls[-1].body.position[0] - 30 + (b * 15),
+                                         balls[-1].body.position[1] + 30))
+                        elif b == 1:
+                            window.blit(power_bar1,
                                         (balls[-1].body.position[0] - 30 + (b * 15),
                                          balls[-1].body.position[1] + 30))
                         else:
@@ -1077,7 +1106,19 @@ while True:
                 # Dibujar las barras de poder
                 for b in range(math.ceil(force / 2000)):
                     if b == 4:
+                        window.blit(power_bar4,
+                                    (balls[-1].body.position[0] - 30 + (b * 15),
+                                     balls[-1].body.position[1] + 30))
+                    elif b == 3:
+                        window.blit(power_bar3,
+                                    (balls[-1].body.position[0] - 30 + (b * 15),
+                                     balls[-1].body.position[1] + 30))
+                    elif b == 2:
                         window.blit(power_bar2,
+                                    (balls[-1].body.position[0] - 30 + (b * 15),
+                                     balls[-1].body.position[1] + 30))
+                    elif b == 1:
+                        window.blit(power_bar1,
                                     (balls[-1].body.position[0] - 30 + (b * 15),
                                      balls[-1].body.position[1] + 30))
                     else:

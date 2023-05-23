@@ -14,7 +14,7 @@ def image_load(name):
 
 # Funcion para actualizar las imagenes con hover
 def update_image(hitbox, image, event, window, pos_x, pos_y):
-    if hitbox.hover(event):
+    if hitbox.hover():
         window.blit(image, (pos_x, pos_y))
 
 

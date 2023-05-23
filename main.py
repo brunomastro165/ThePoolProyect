@@ -92,10 +92,10 @@ start_hitbox = button.Button(231, 568, 575 - 231, 675 - 568)
 menu_hitbox = button.Button(300, 696, 500 - 300, 759 - 696)
 data_hitbox = button.Button(714, 706, 778 - 714, 782 - 706)
 
-# BOTÓN BACK
+# BOTON BACK
 return_hitbox = button.Button(12, 18, 165 - 12, 74 - 18)
 
-# BOTONES DE LA PANTALLA DE JUEGO BÁSICA
+# BOTONES DE LA PANTALLA DE JUEGO BASICA
 prePlayPlayerActive_hitbox = button.Button(221, 319, 577 - 210, 585 - 502)
 preBotActive_hitbox = button.Button(221, 441, 577 - 210, 585 - 502)
 
@@ -106,8 +106,8 @@ diffFacil_hitbox = button.Button(404, 474, 695 - 404, 560 - 474)
 diffMedio_hitbox = button.Button(405, 574, 693 - 405, 657 - 574)
 diffDificil_hitbox = button.Button(407, 684, 697 - 407, 760 - 684)
 
-# SECCIÓN DE MÚSICA
-pygame.mixer.music.load('easy-lifestyle-137766.mp3')  # agregar música
+# SECCION DE MUSICA
+pygame.mixer.music.load('easy-lifestyle-137766.mp3')  # agregar musica
 pygame.mixer.music.set_volume(0.1)  # setear volumen
 # VARIABLES DE LA BARRA DE VOLUMEN
 moving_cursor = False
@@ -116,7 +116,7 @@ cursor = pygame.Rect(0, 0, 0, 0)
 default_sound = True
 actual_resolution = 800
 
-# hacer cada línea individualmente, para poder rodear la imagen con la hitbox
+# hacer cada linea individualmente, para poder rodear la imagen con la hitbox
 topLine = mesa.MesaObject(100, 50, 500, 10)
 leftLine = mesa.MesaObject(100, 50, 10, 650)
 botLine = mesa.MesaObject(100, 700, 500, 10)
@@ -141,7 +141,7 @@ Facil = False
 Medio = True
 dificil = False
 
-# Condición para los turnos
+# Condicion para los turnos
 cont = 1
 suma_hecha = False
 changeTurn = False
@@ -194,15 +194,15 @@ for col in range(5):
     for row in range(rows):
         pos = (250 + (col * (diam + 3)), 267 + (row * (diam + 3)) + (col * diam / 2))
 
-        '''CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, 
-        SIMPLEMENTE ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS'''
-        # ASÍ QUE SE MODIFICÓ LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
+        '''COMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARAMETROS, 
+        SIMPLEMENTE ES UNA FUNCION QUE DEVUELVE CIERTOS NUMEROS'''
+        # ASI QUE SE MODIFICO LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
 
         if 8 > len(balls) > 0:
             # print(f"Lisas: {len(balls)}")
             new_ball = funciones.create_ball((diam / 2), pos, static_body, space)
             new_ball.tipo = "lisa"
-        if len(balls) == 0:  # LA ITERACION 0 POR ALGÚN MOTIVO ES LA NÚMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
+        if len(balls) == 0:  # LA ITERACION 0 POR ALGUN MOTIVO ES LA NUMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
             # print(f"Rayadas: {len(balls)}")
             new_ball = funciones.create_ball((diam / 2), pos, static_body, space)
             new_ball.tipo = "rayada"
@@ -308,7 +308,7 @@ aux_lisa = 0
 print(balls[15].tipo)
 
 while True:
-    # mouse_x, mouse_y = pygame.mouse.get_pos()  # posición cartesiana del mouse
+    # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
 
     if not playing and not playing_bot:
 
@@ -454,12 +454,12 @@ while True:
                 elif event.type == pygame.MOUSEBUTTONUP:
                     moving_cursor = False
                     moving_bar = False
-                    x_cursor, y_cursor = event.pos  # actualizar posición del cursor
+                    x_cursor, y_cursor = event.pos  # actualizar posicion del cursor
 
                 elif event.type == pygame.MOUSEMOTION:
                     if moving_cursor:
                         x_cursor, y_cursor = event.pos
-                        # asegurarse de que el cursor no se mueva fuera de los límites de la barra
+                        # asegurarse de que el cursor no se mueva fuera de los limites de la barra
                         if x_cursor < bar_x:
                             x_cursor = bar_x
                         elif x_cursor > bar_x + bar_width - cursor_width:
@@ -467,14 +467,14 @@ while True:
                         cursor.x = x_cursor - (cursor_width / 2)
                     elif moving_bar:
                         x_cursor, y_cursor = event.pos
-                        # asegurarse de que el cursor no se mueva fuera de los límites de la barra
+                        # asegurarse de que el cursor no se mueva fuera de los limites de la barra
                         if x_cursor < bar_x:
                             x_cursor = bar_x
                         elif x_cursor > bar_x + bar_width - cursor_width:
                             x_cursor = bar_x + bar_width - cursor_width
                         cursor.x = x_cursor - (cursor_width / 2)
 
-                # Calcular el volumen y actualizar la música
+                # Calcular el volumen y actualizar la musica
                 sound = (cursor.x - bar_x) / bar_width
                 pygame.mixer.music.set_volume(sound)
 
@@ -610,7 +610,7 @@ while True:
             elif P2RAY:
                 window.blit(j2esrayada, (1200, 120))
 
-        # Fijarse si cualquier ball tocó un hoyo
+        # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:
                 ball_x_dist = abs(ball.body.position[0] - pocket[0])
@@ -657,7 +657,7 @@ while True:
                     print(f"Negra: {potted_negra}")
 
         # draw pool balls
-        # Utilizo el iterador i para obtener el número de la bola
+        # Utilizo el iterador i para obtener el numero de la bola
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
@@ -669,8 +669,8 @@ while True:
                 taking_shot = False
                 changeTurn = True
 
-        # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (cómo en el pool de verdad)
-        # NO MUEVAN ESTO DE ACÁ, PORQUE MÁS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARÍA
+        # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
+        # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
         if potted_blanca:
             turn = not turn
             cont = -1
@@ -852,7 +852,7 @@ while True:
 
         # Event Handler
         for event in pygame.event.get():
-            if event.type == KEYDOWN:  # Verificar si se presionó una tecla
+            if event.type == KEYDOWN:  # Verificar si se presiono una tecla
                 if event.key == pygame.K_p:
                     funciones.make_new_game(balls, diam, static_body, space)
             # Disparar la bola blanca
@@ -924,7 +924,7 @@ while True:
             elif P2RAY:
                 window.blit(j2esrayada, (1200, 120))
 
-        # Fijarse si cualquier ball tocó un hoyo
+        # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:
                 ball_x_dist = abs(ball.body.position[0] - pocket[0])
@@ -971,7 +971,7 @@ while True:
                     print(f"Negra: {potted_negra}")
 
         # draw pool balls
-        # Utilizo el iterador i para obtener el número de la bola
+        # Utilizo el iterador i para obtener el numero de la bola
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
@@ -983,8 +983,8 @@ while True:
                 taking_shot = False
                 changeTurn = True
 
-        # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (cómo en el pool de verdad)
-        # NO MUEVAN ESTO DE ACÁ, PORQUE MÁS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARÍA
+        # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
+        # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
         if potted_blanca:
             turn = not turn
             cont = -1
@@ -1134,7 +1134,7 @@ while True:
 
         # Event Handler
         for event in pygame.event.get():
-            if event.type == KEYDOWN:  # Verificar si se presionó una tecla
+            if event.type == KEYDOWN:  # Verificar si se presiono una tecla
                 if event.key == pygame.K_p:
                     funciones.make_new_game(balls, diam, static_body, space)
             # Disparar la bola blanca

@@ -1,5 +1,7 @@
 # ThePoolProyect
-¡Bienvenidos al proyecto de pool!
+**¡Bienvenidos al proyecto de pool!**
+
+
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/9003c84c-9e81-4e4c-b7d7-e8ce11b73b5f)
 
 
@@ -81,6 +83,20 @@ Python, por defecto, viene instalado en las distribuciones linux más utilizadas
     
 **Y listo, está disfrutando de nuestro juego de pool**  
 
+# Avances en el proyecto
+
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/90e8aacb-ec12-48e5-8f3b-de3431808671)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/c91b75f1-e078-4cd0-a354-819e1c8863c9)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/565341cd-7608-40b3-9519-15bbee2000d7)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/dac813f2-c5c6-4a55-8e37-469e78e297de)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/83f4844f-c3ec-48e3-b9f5-e96daac95318)
+https://github.com/brunomastro165/ThePoolProyect/assets/127962081/1c12737b-6235-42c2-9d92-56987df8998c
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/8dee2e71-f64c-4d26-81f2-e362fcf51f28)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/704aaa36-f488-493f-bcb3-63382ae1e503)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/f853c4e5-337d-497c-ae1f-8800cb540592)
+
+
+
 # ADVERTENCIA
 
 Puede suceder que se dé el siguiente error al completar todos los pasos:
@@ -90,3 +106,5 @@ Puede suceder que se dé el siguiente error al completar todos los pasos:
 Esto se debe a una incompatibilidad del sistema de caracteres por defecto de linux, y puede ser solucionado con el siguiente comando:
 
       sudo apt install unifont
+      
+

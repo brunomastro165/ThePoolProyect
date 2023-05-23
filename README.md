@@ -64,6 +64,11 @@ Python, por defecto, viene instalado en las distribuciones linux más utilizadas
     pip install pymunk
    
    
+**Corrección de un error importante**
+    Correción de error de compatibilidad con diferentes tipos de pantallas y sistemas:
+    
+    sudo apt install unifont
+    
 **Clonar el repositorio**
 
     git clone https://github.com/brunomastro165/ThePoolProyect.git

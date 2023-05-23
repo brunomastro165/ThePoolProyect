@@ -17,7 +17,7 @@ class MesaObject:
         pygame.draw.rect(surface, (255, 0, 0), (self.x, self.y, self.width, self.height))
 
     def check_collision(self, other_rect):
-        # comprobar si hay colisión con otra hitbox
+        # comprobar si hay colision con otra hitbox
         return self.hitbox.colliderect(other_rect)
 
 

@@ -4,7 +4,7 @@ import pymunk.pygame_util
 
 
 def play_music():
-    pygame.mixer.music.play(-1)  # reproducir música en bucle
+    pygame.mixer.music.play(-1)  # reproducir musica en bucle
 
 
 # Funcion para cargar imagenes
@@ -75,15 +75,15 @@ def make_new_game(balls, diam, static_body, space):
         for row in range(rows):
             pos = (250 + (col * (diam + 3)), 267 + (row * (diam + 3)) + (col * diam / 2))
 
-            # CÓMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARÁMETROS, SIMPLEMENTE
-            # ES UNA FUNCIÓN QUE DEVUELVE CIERTOS NÚMEROS
-            # ASÍ QUE SE MODIFICÓ LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
+            # COMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARAMETROS, SIMPLEMENTE
+            # ES UNA FUNCION QUE DEVUELVE CIERTOS NUMEROS
+            # ASI QUE SE MODIFICO LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
 
             if 8 > len(balls) > 0:
                 # print(f"Lisas: {len(balls)}")
                 new_ball = create_ball((diam / 2), pos, static_body, space)
                 new_ball.tipo = "lisa"
-            if len(balls) == 0:  # LA ITERACION 0 POR ALGÚN MOTIVO ES LA NÚMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
+            if len(balls) == 0:  # LA ITERACION 0 POR ALGUN MOTIVO ES LA NUMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
                 # print(f"Rayadas: {len(balls)}")
                 new_ball = create_ball((diam / 2), pos, static_body, space)
                 new_ball.tipo = "rayada"

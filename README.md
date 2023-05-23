@@ -90,7 +90,7 @@ Python, por defecto, viene instalado en las distribuciones linux más utilizadas
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/565341cd-7608-40b3-9519-15bbee2000d7)
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/dac813f2-c5c6-4a55-8e37-469e78e297de)
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/83f4844f-c3ec-48e3-b9f5-e96daac95318)
-https://github.com/brunomastro165/ThePoolProyect/assets/127962081/1c12737b-6235-42c2-9d92-56987df8998c
+![17-12-20](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/cab2e5c0-d497-4985-99fe-dae0e19b5ccb)
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/8dee2e71-f64c-4d26-81f2-e362fcf51f28)
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/704aaa36-f488-493f-bcb3-63382ae1e503)
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/f853c4e5-337d-497c-ae1f-8800cb540592)

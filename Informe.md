@@ -1,4 +1,4 @@
-# Informe del Nuestro Proyecto 
+# Informe de Nuestro Proyecto 
 
 ## Fase de Planificación  y Definición 
 

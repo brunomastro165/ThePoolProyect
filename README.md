@@ -5,6 +5,12 @@
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/9003c84c-9e81-4e4c-b7d7-e8ce11b73b5f)
 
 
+# Breve descripción del proyecto
+
+La idea del proyecto que estamos realizando es la de un juego clásico de Pool, al cual hemos querido darle una estética minimalista y un funcionamiento realista, principalmente en las reglas y condiciones de victoria del mismo. 
+
+Para llevar a cabo el proyecto que tenemos entre manos, hemos utilizado el lenguaje Python junto con las librerías Pygame y Pymunk.
+El mismo tiene incorporadas ya todas las reglas básicas del juego, las físicas, las colisiones y turnos, además de una estética visual agradable, una interfaz de usuario bonita y amigable para la vista y una música relajante para agregar un ambiente de tranquilidad a la experiencia de juego.
 
 # Integrantes y tareas
 

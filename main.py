@@ -420,7 +420,7 @@ while True:
                     x_cursor = bar_x + bar_width / 2
                     y_cursor = bar_y - (cursor_height / 2)
                     cursor = pygame.Rect(x_cursor - cursor_width / 2, y_cursor, cursor_width, cursor_height)
-                print(cursor.x)
+
                 # pygame.mixer.music.stop()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if cursor.collidepoint(event.pos):

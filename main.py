@@ -28,6 +28,39 @@ pygame.init()
 window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 pygame.display.set_caption("PoolGame")
 
+# Cargado de Imagenes
+# MENU PRINCIPAL
+game = pygame.image.load("Images/PLAY.png")
+game_start_click = pygame.image.load("Images/PLAY (ACTIVE).png")
+game_menu_click = pygame.image.load("Images/MENU (ACTIVE).png")
+game_data_click = pygame.image.load("Images/PLAY DATOS.png")
+
+# VENTANA PRE-JUEGO
+prePlayInactive = pygame.image.load("Images/PrePlayInactive.png")
+prePlayPlayerActiveImage = pygame.image.load("Images/PrePlayPlayerActive.png")
+prePlayBotActive = pygame.image.load("Images/PrePlayBotActive.png")
+prePlayBackActive = pygame.image.load("Images/PrePlayBackActive.png")
+
+# VENTANA MENU
+imagenSiFacil = pygame.image.load("Images/M_P_SI_FACIL.png")
+imagenSiFacilBack = pygame.image.load("Images/M_P_SI_FACIL_BACK.png")
+imagenSiMedio = pygame.image.load("Images/M_P_SI_MEDIO.png")
+imagenSiMedioBack = pygame.image.load("Images/M_P_SI_MEDIO_BACK.png")
+imagenSiDificil = pygame.image.load("Images/M_P_SI_DIFICIL.png")
+imagenSiDificilBack = pygame.image.load("Images/M_P_SI_DIFICIL_BACK.png")
+imagenNoFacil = pygame.image.load("Images/M_P_NO_FACIL.png")
+imagenNoFacilBack = pygame.image.load("Images/M_P_NO_FACIL_BACK.png")
+imagenNoMedio = pygame.image.load("Images/M_P_NO_MEDIO.png")
+imagenNoMedioBack = pygame.image.load("Images/M_P_NO_MEDIO_BACK.png")
+imagenNoDificil = pygame.image.load("Images/M_P_NO_DIFICIL.png")
+imagenNoDificilBack = pygame.image.load("Images/M_P_NO_DIFICIL_BACK.png")
+# Generamos variable para cambiar las imagenes de menu
+imagenActual = imagenNoMedio
+
+# VENTANA DATOS
+data_image = pygame.image.load("Images/DATOS (PAGINA).png")
+data_return = pygame.image.load("Images/DATOS (PAG ACTIVA).png")
+
 # ESTO DE ABAJO HAY QUE BORRARLO
 j1eslisa = pygame.image.load("Images/j1eslisas.png")
 j1esrayada = pygame.image.load("Images/j1esrayada.png")
@@ -282,11 +315,6 @@ while True:
 
             # PANTALLA PRINCIPAL
             if main:
-                game = pygame.image.load("Images/PLAY.png")
-                game_start_click = pygame.image.load("Images/PLAY (ACTIVE).png")
-                game_menu_click = pygame.image.load("Images/MENU (ACTIVE).png")
-                game_data_click = pygame.image.load("Images/PLAY DATOS.png")
-
                 window.blit(game, (posX, posY))
                 # START HOVER
                 funciones.update_image(start_hitbox, game_start_click, event, window, posX, posY)
@@ -310,12 +338,6 @@ while True:
 
             # VENTANA DE PRE JUEGO
             if start:
-                # Imagenes
-                prePlayInactive = pygame.image.load("Images/PrePlayInactive.png")
-                prePlayPlayerActiveImage = pygame.image.load("Images/PrePlayPlayerActive.png")
-                prePlayBotActive = pygame.image.load("Images/PrePlayBotActive.png")
-                prePlayBackActive = pygame.image.load("Images/PrePlayBackActive.png")
-
                 pygame.mixer.music.stop()
 
                 window.blit(prePlayInactive, (posX, posY))
@@ -383,12 +405,6 @@ while True:
 
             # VENTANA MENU
             if menu:
-                # Cargamos Imagenes
-                imagenPrincpal = pygame.image.load("Images/MENU_PRINCIPAL.png")
-                imagenNoMedio = pygame.image.load("Images/M_P_NO_MEDIO.png")
-                # Generamos variable para cambiar las imagenes de menu
-                imagenActual = imagenNoMedio
-
                 # BARRA DE VOLUMEN
                 # Definir la barra
                 bar_width = 300
@@ -455,7 +471,6 @@ while True:
                 # SI ESTA APRETADO SI
 
                 if fullscreenSi_hitbox.down(event):
-                    imagenSiMedio = pygame.image.load("Images/M_P_SI_MEDIO.png")
                     screenSiPress = True
                     screenNoPress = False
                     imagenActual = imagenSiMedio
@@ -495,39 +510,28 @@ while True:
                 # Cosas de frontEnd
                 if screenSiPress:
                     if Facil:
-                        imagenSiFacil = pygame.image.load("Images/M_P_SI_FACIL.png")
-                        imagenSiFacilBack = pygame.image.load("Images/M_P_SI_FACIL_BACK.png")
                         imagenActual = imagenSiFacil
                         window.blit(imagenActual, (posX, posY))
                         funciones.update_image(return_hitbox, imagenSiFacilBack, event, window, posX, posY)
                     if Medio:
-                        imagenSiMedio = pygame.image.load("Images/M_P_SI_MEDIO.png")
-                        imagenSiMedioBack = pygame.image.load("Images/M_P_SI_MEDIO_BACK.png")
                         imagenActual = imagenSiMedio
                         window.blit(imagenActual, (posX, posY))
                         funciones.update_image(return_hitbox, imagenSiMedioBack, event, window, posX, posY)
                     if dificil:
-                        imagenSiDificil = pygame.image.load("Images/M_P_SI_DIFICIL.png")
-                        imagenSiDificilBack = pygame.image.load("Images/M_P_SI_DIFICIL_BACK.png")
                         imagenActual = imagenSiDificil
                         window.blit(imagenActual, (posX, posY))
                         funciones.update_image(return_hitbox, imagenSiDificilBack, event, window, posX, posY)
 
                 elif screenNoPress:
                     if Facil:
-                        imagenNoFacil = pygame.image.load("Images/M_P_NO_FACIL.png")
-                        imagenNoFacilBack = pygame.image.load("Images/M_P_NO_FACIL_BACK.png")
                         imagenActual = imagenNoFacil
                         window.blit(imagenActual, (posX, posY))
                         funciones.update_image(return_hitbox, imagenNoFacilBack, event, window, posX, posY)
                     if Medio:
-                        imagenNoMedioBack = pygame.image.load("Images/M_P_NO_MEDIO_BACK.png")
                         imagenActual = imagenNoMedio
                         window.blit(imagenActual, (posX, posY))
                         funciones.update_image(return_hitbox, imagenNoMedioBack, event, window, posX, posY)
                     if dificil:
-                        imagenNoDificil = pygame.image.load("Images/M_P_NO_DIFICIL.png")
-                        imagenNoDificilBack = pygame.image.load("Images/M_P_NO_DIFICIL_BACK.png")
                         imagenActual = imagenNoDificil
                         window.blit(imagenActual, (posX, posY))
                         funciones.update_image(return_hitbox, imagenNoDificilBack, event, window, posX, posY)
@@ -535,9 +539,6 @@ while True:
                 pygame.draw.rect(window, yellow_color, cursor)
             # VENTANA DATOS
             if data:
-                data_image = pygame.image.load("Images/DATOS (PAGINA).png")
-                data_return = pygame.image.load("Images/DATOS (PAG ACTIVA).png")
-
                 if return_hitbox.down(event):
                     data = False
                     main = True

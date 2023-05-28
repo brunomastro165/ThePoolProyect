@@ -251,6 +251,7 @@ print(balls[15].tipo)
 change_image = True
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
+    # print(mouse_x ,",", mouse_y)
     if not playing and not playing_bot:
         # Este for revisa cada evento posible
         for event in pygame.event.get():
@@ -360,6 +361,7 @@ while True:
             # VENTANA MENU
             if menu:
                 # BARRA DE VOLUMEN
+                pygame.draw.rect(window, (255, 255, 255), pygame.Rect(389, 222, 736-389, 319-222))
                 # Definir la barra
                 bar_width = 300
                 bar_height = 10
@@ -417,73 +419,92 @@ while True:
                     change_image = True
                     menu = False
                     main = True
+                if change_image and not return_hitbox.hover():
+                    change_image = False
+                    window.blit(imagenActual, (posX, posY))
                 # SI ESTA APRETADO SI
                 if fullscreenSi_hitbox.down(event):
+                    change_image = True
                     screenSiPress = True
                     screenNoPress = False
                     imagenActual = imagenSiMedio
-                    window.blit(imagenActual, (posX, posY))
                     FullScreen = True
-                else:
-                    window.blit(imagenActual, (posX, posY))
                 # DIFERENCIADOS POR DIFICULTADO
                 if diffFacil_hitbox.down(event):
+                    change_image = True
                     Medio = False
                     Facil = True
                     dificil = False
                 if diffMedio_hitbox.down(event):
+                    change_image = True
                     Medio = True
                     Facil = False
                     dificil = False
                 if diffDificil_hitbox.down(event):
+                    change_image = True
                     Medio = False
                     Facil = False
                     dificil = True
                 # SI ESTA APRETADO NO
                 if fullscreenNo_hitbox.down(event):
+                    change_image = True
                     screenNoPress = True
                     screenSiPress = False
                     imagenActual = imagenNoMedio
-                    window.blit(imagenActual, (posX, posY))
                     FullScreen = False
-                else:
-                    window.blit(imagenActual, (posX, posY))
                 # Cosas de frontEnd
                 if screenSiPress:
                     if Facil:
                         imagenActual = imagenSiFacil
-                        window.blit(imagenActual, (posX, posY))
-                        funciones.update_image(return_hitbox, imagenSiFacilBack, event, window, posX, posY)
+                        if not change_image and return_hitbox.hover():
+                            change_image = True
+                            window.blit(imagenSiFacilBack, (posX, posY))
+
                     if Medio:
                         imagenActual = imagenSiMedio
-                        window.blit(imagenActual, (posX, posY))
-                        funciones.update_image(return_hitbox, imagenSiMedioBack, event, window, posX, posY)
+                        if not change_image and return_hitbox.hover():
+                            change_image = True
+                            window.blit(imagenSiMedioBack, (posX, posY))
+
                     if dificil:
                         imagenActual = imagenSiDificil
-                        window.blit(imagenActual, (posX, posY))
-                        funciones.update_image(return_hitbox, imagenSiDificilBack, event, window, posX, posY)
+                        if not change_image and return_hitbox.hover():
+                            change_image = True
+                            window.blit(imagenSiDificilBack, (posX, posY))
+
                 elif screenNoPress:
                     if Facil:
                         imagenActual = imagenNoFacil
-                        window.blit(imagenActual, (posX, posY))
-                        funciones.update_image(return_hitbox, imagenNoFacilBack, event, window, posX, posY)
+                        if not change_image and return_hitbox.hover():
+                            change_image = True
+                            window.blit(imagenNoFacilBack, (posX, posY))
+
                     if Medio:
                         imagenActual = imagenNoMedio
-                        window.blit(imagenActual, (posX, posY))
-                        funciones.update_image(return_hitbox, imagenNoMedioBack, event, window, posX, posY)
+                        if not change_image and return_hitbox.hover():
+                            change_image = True
+                            window.blit(imagenNoMedioBack, (posX, posY))
+
                     if dificil:
                         imagenActual = imagenNoDificil
-                        window.blit(imagenActual, (posX, posY))
-                        funciones.update_image(return_hitbox, imagenNoDificilBack, event, window, posX, posY)
+                        if not change_image and return_hitbox.hover():
+                            change_image = True
+                            window.blit(imagenNoDificilBack, (posX, posY))
+
                 pygame.draw.rect(window, green_color, sound_bar)
                 pygame.draw.rect(window, yellow_color, cursor)
             # VENTANA DATOS
             if data:
                 if return_hitbox.down(event):
+                    change_image = True
                     data = False
                     main = True
-                window.blit(data_image, (posX, posY))
-                funciones.update_image(return_hitbox, data_return, event, window, posX, posY)
+                if change_image and not return_hitbox.hover():
+                    change_image = False
+                    window.blit(data_image, (posX, posY))
+                if not change_image and return_hitbox.hover():
+                    change_image = True
+                    window.blit(data_return, (posX, posY))
             if event.type == QUIT:
                 sys.exit()
             if event.type == event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:

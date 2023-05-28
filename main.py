@@ -68,6 +68,23 @@ j2esrayada = pygame.image.load("Images/j2esrayada.png")
 j2eslisa = pygame.image.load("Images/j2eslisas.png")
 ganaj1 = pygame.image.load("Images/ganaj1.png")
 ganaj2 = pygame.image.load("Images/ganaj2.png")
+# Bolas con poca opacidad
+bola1PO = pygame.image.load('Assets/Images/ball1LO.png')
+bola2PO = pygame.image.load('Assets/Images/ball2LO.png')
+bola3PO = pygame.image.load('Assets/Images/ball3LO.png')
+bola4PO = pygame.image.load('Assets/Images/ball4LO.png')
+bola5PO = pygame.image.load('Assets/Images/ball5LO.png')
+bola6PO = pygame.image.load('Assets/Images/ball6LO.png')
+bola7PO = pygame.image.load('Assets/Images/ball7LO.png')
+bola8PO = pygame.image.load('Assets/Images/ball8LO.png')
+bola9PO = pygame.image.load('Assets/Images/ball9LO.png')
+bola10PO = pygame.image.load('Assets/Images/ball10LO.png')
+bola11PO = pygame.image.load('Assets/Images/ball11LO.png')
+bola12PO = pygame.image.load('Assets/Images/ball12LO.png')
+bola13PO = pygame.image.load('Assets/Images/ball13LO.png')
+bola14PO = pygame.image.load('Assets/Images/ball14LO.png')
+bola15PO = pygame.image.load('Assets/Images/ball15LO.png')
+
 # BOTONES
 # BOTONES PANTALLA PRINCIPAL
 start_hitbox = button.Button(231, 568, 575 - 231, 675 - 568)
@@ -535,13 +552,38 @@ while True:
                 print("3")
         if not ballTeam:
             if P1LISA:
-                window.blit(j1eslisa, (1200, 100))
+                window.blit(bola1PO, (1185, 90))
+                window.blit(bola2PO, (1230, 90))
+                window.blit(bola3PO, (1275, 90))
+                window.blit(bola4PO, (1320, 90))
+                window.blit(bola5PO, (1207.5, 135))
+                window.blit(bola6PO, (1252.5, 135))
+                window.blit(bola7PO, (1297.5, 135))
             elif P1RAY:
-                window.blit(j1esrayada, (1200, 100))
+                window.blit(bola9PO, (1185, 90))
+                window.blit(bola10PO, (1230, 90))
+                window.blit(bola11PO, (1275, 90))
+                window.blit(bola12PO, (1320, 90))
+                window.blit(bola13PO, (1207.5, 135))
+                window.blit(bola14PO, (1252.5, 135))
+                window.blit(bola15PO, (1297.5, 135))
+
             if P2LISA:
-                window.blit(j2eslisa, (1200, 120))
+                window.blit(bola1PO, (1185, 320))
+                window.blit(bola2PO, (1230, 320))
+                window.blit(bola3PO, (1275, 320))
+                window.blit(bola4PO, (1320, 320))
+                window.blit(bola5PO, (1207.5, 365))
+                window.blit(bola6PO, (1252.5, 365))
+                window.blit(bola7PO, (1297.5, 365))
             elif P2RAY:
-                window.blit(j2esrayada, (1200, 120))
+                window.blit(bola9PO, (1185, 320))
+                window.blit(bola10PO, (1230, 320))
+                window.blit(bola11PO, (1275, 320))
+                window.blit(bola12PO, (1320, 320))
+                window.blit(bola13PO, (1207.5, 365))
+                window.blit(bola14PO, (1252.5, 365))
+                window.blit(bola15PO, (1297.5, 365))
         # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:
@@ -809,13 +851,38 @@ while True:
                 print("3")
         if not ballTeam:
             if P1LISA:
-                window.blit(j1eslisa, (1200, 100))
+                window.blit(bola1PO, (1185, 90))
+                window.blit(bola2PO, (1230, 90))
+                window.blit(bola3PO, (1275, 90))
+                window.blit(bola4PO, (1320, 90))
+                window.blit(bola5PO, (1207.5, 135))
+                window.blit(bola6PO, (1252.5, 135))
+                window.blit(bola7PO, (1297.5, 135))
             elif P1RAY:
-                window.blit(j1esrayada, (1200, 100))
+                window.blit(bola9PO, (1185, 90))
+                window.blit(bola10PO, (1230, 90))
+                window.blit(bola11PO, (1275, 90))
+                window.blit(bola12PO, (1320, 90))
+                window.blit(bola13PO, (1207.5, 135))
+                window.blit(bola14PO, (1252.5, 135))
+                window.blit(bola15PO, (1297.5, 135))
+
             if P2LISA:
-                window.blit(j2eslisa, (1200, 120))
+                window.blit(bola1PO, (1185, 320))
+                window.blit(bola2PO, (1230, 320))
+                window.blit(bola3PO, (1275, 320))
+                window.blit(bola4PO, (1320, 320))
+                window.blit(bola5PO, (1207.5, 365))
+                window.blit(bola6PO, (1252.5, 365))
+                window.blit(bola7PO, (1297.5, 365))
             elif P2RAY:
-                window.blit(j2esrayada, (1200, 120))
+                window.blit(bola9PO, (1185, 320))
+                window.blit(bola10PO, (1230, 320))
+                window.blit(bola11PO, (1275, 320))
+                window.blit(bola12PO, (1320, 320))
+                window.blit(bola13PO, (1207.5, 365))
+                window.blit(bola14PO, (1252.5, 365))
+                window.blit(bola15PO, (1297.5, 365))
         # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:

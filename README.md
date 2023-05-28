@@ -1,8 +1,16 @@
 # ThePoolProyect
-¡Bienvenidos al proyecto de pool!
+**¡Bienvenidos al proyecto de pool!**
+
+
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/9003c84c-9e81-4e4c-b7d7-e8ce11b73b5f)
 
 
+# Breve descripción del proyecto
+
+La idea del proyecto que estamos realizando es la de un juego clásico de Pool, al cual hemos querido darle una estética minimalista y un funcionamiento realista, principalmente en las reglas y condiciones de victoria del mismo. 
+
+Para llevar a cabo el proyecto que tenemos entre manos, hemos utilizado el lenguaje Python junto con las librerías Pygame y Pymunk.
+El mismo tiene incorporadas ya todas las reglas básicas del juego, las físicas, las colisiones y turnos, además de una estética visual agradable, una interfaz de usuario bonita y amigable para la vista y una música relajante para agregar un ambiente de tranquilidad a la experiencia de juego.
 
 # Integrantes y tareas
 
@@ -81,6 +89,20 @@ Python, por defecto, viene instalado en las distribuciones linux más utilizadas
     
 **Y listo, está disfrutando de nuestro juego de pool**  
 
+# Avances en el proyecto
+
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/90e8aacb-ec12-48e5-8f3b-de3431808671)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/c91b75f1-e078-4cd0-a354-819e1c8863c9)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/565341cd-7608-40b3-9519-15bbee2000d7)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/dac813f2-c5c6-4a55-8e37-469e78e297de)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/83f4844f-c3ec-48e3-b9f5-e96daac95318)
+![17-12-20](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/cab2e5c0-d497-4985-99fe-dae0e19b5ccb)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/8dee2e71-f64c-4d26-81f2-e362fcf51f28)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/704aaa36-f488-493f-bcb3-63382ae1e503)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/f853c4e5-337d-497c-ae1f-8800cb540592)
+
+
+
 # ADVERTENCIA
 
 Puede suceder que se dé el siguiente error al completar todos los pasos:
@@ -90,3 +112,5 @@ Puede suceder que se dé el siguiente error al completar todos los pasos:
 Esto se debe a una incompatibilidad del sistema de caracteres por defecto de linux, y puede ser solucionado con el siguiente comando:
 
       sudo apt install unifont
+      
+

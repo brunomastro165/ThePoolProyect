@@ -28,58 +28,46 @@ pygame.init()
 window = pygame.display.set_mode((base_width, base_height), pygame.RESIZABLE)
 pygame.display.set_caption("PoolGame")
 
-# Cargando Imagenes
-# Pantalla Principal
-game = funciones.image_load("Images/PLAY.png")
-game_start_click = funciones.image_load("Images/PLAY (ACTIVE).png")
-game_menu_click = funciones.image_load("Images/MENU (ACTIVE).png")
-game_data_click = funciones.image_load("Images/PLAY DATOS.png")
+# Cargado de Imagenes
+# MENU PRINCIPAL
+game = pygame.image.load("Images/PLAY.png")
+game_start_click = pygame.image.load("Images/PLAY (ACTIVE).png")
+game_menu_click = pygame.image.load("Images/MENU (ACTIVE).png")
+game_data_click = pygame.image.load("Images/PLAY DATOS.png")
 
-# Pantalla de Datos
-data_image = funciones.image_load("Images/DATOS (PAGINA).png")
-data_return = funciones.image_load("Images/DATOS (PAG ACTIVA).png")
+# VENTANA PRE-JUEGO
+prePlayInactive = pygame.image.load("Images/PrePlayInactive.png")
+prePlayPlayerActiveImage = pygame.image.load("Images/PrePlayPlayerActive.png")
+prePlayBotActive = pygame.image.load("Images/PrePlayBotActive.png")
+prePlayBackActive = pygame.image.load("Images/PrePlayBackActive.png")
 
-# Pantalla Menu
-# Cargamos Imagenes
-imagenPrincpal = funciones.image_load("Images/MENU_PRINCIPAL.png")
-imagenSiFacil = funciones.image_load("Images/M_P_SI_FACIL.png")
-imagenSiFacilBack = funciones.image_load("Images/M_P_SI_FACIL_BACK.png")
-imagenSiMedio = funciones.image_load("Images/M_P_SI_MEDIO.png")
-imagenSiMedioBack = funciones.image_load("Images/M_P_SI_MEDIO_BACK.png")
-imagenSiDificil = funciones.image_load("Images/M_P_SI_DIFICIL.png")
-imagenSiDificilBack = funciones.image_load("Images/M_P_SI_DIFICIL_BACK.png")
-imagenNoFacil = funciones.image_load("Images/M_P_NO_FACIL.png")
-imagenNoFacilBack = funciones.image_load("Images/M_P_NO_FACIL_BACK.png")
-imagenNoMedio = funciones.image_load("Images/M_P_NO_MEDIO.png")
-imagenNoMedioBack = funciones.image_load("Images/M_P_NO_MEDIO_BACK.png")
-imagenNoDificil = funciones.image_load("Images/M_P_NO_DIFICIL.png")
-imagenNoDificilBack = funciones.image_load("Images/M_P_NO_DIFICIL_BACK.png")
+# VENTANA MENU
+imagenSiFacil = pygame.image.load("Images/M_P_SI_FACIL.png")
+imagenSiFacilBack = pygame.image.load("Images/M_P_SI_FACIL_BACK.png")
+imagenSiMedio = pygame.image.load("Images/M_P_SI_MEDIO.png")
+imagenSiMedioBack = pygame.image.load("Images/M_P_SI_MEDIO_BACK.png")
+imagenSiDificil = pygame.image.load("Images/M_P_SI_DIFICIL.png")
+imagenSiDificilBack = pygame.image.load("Images/M_P_SI_DIFICIL_BACK.png")
+imagenNoFacil = pygame.image.load("Images/M_P_NO_FACIL.png")
+imagenNoFacilBack = pygame.image.load("Images/M_P_NO_FACIL_BACK.png")
+imagenNoMedio = pygame.image.load("Images/M_P_NO_MEDIO.png")
+imagenNoMedioBack = pygame.image.load("Images/M_P_NO_MEDIO_BACK.png")
+imagenNoDificil = pygame.image.load("Images/M_P_NO_DIFICIL.png")
+imagenNoDificilBack = pygame.image.load("Images/M_P_NO_DIFICIL_BACK.png")
 # Generamos variable para cambiar las imagenes de menu
 imagenActual = imagenNoMedio
 
-# Pantalla PrePlay
-prePlayInactive = funciones.image_load("Images/PrePlayInactive.png")
-prePlayPlayerActiveImage = funciones.image_load("Images/PrePlayPlayerActive.png")
-prePlayBotActive = funciones.image_load("Images/PrePlayBotActive.png")
-prePlayBackActive = funciones.image_load("Images/PrePlayBackActive.png")
+# VENTANA DATOS
+data_image = pygame.image.load("Images/DATOS (PAGINA).png")
+data_return = pygame.image.load("Images/DATOS (PAG ACTIVA).png")
 
-# Jugadores, turnos y victorias
-jugador1Turno = funciones.image_load("Images/j1.png")
-jugador2Turno = funciones.image_load("Images/j2.png")
+# ESTO DE ABAJO HAY QUE BORRARLO
+j1eslisa = pygame.image.load("Images/j1eslisas.png")
+j1esrayada = pygame.image.load("Images/j1esrayada.png")
 
-turnoActual = funciones.image_load("Images/TurnoActual.png")
-
-turnosRestantes1 = funciones.image_load("Images/TR1.png")
-turnosRestantes2 = funciones.image_load("Images/TR2.png")
-
-j1eslisa = funciones.image_load("Images/j1eslisas.png")
-j1esrayada = funciones.image_load("Images/j1esrayada.png")
-
-j2esrayada = funciones.image_load("Images/j2esrayada.png")
-j2eslisa = funciones.image_load("Images/j2eslisas.png")
-
-ganaj1 = funciones.image_load("Images/ganaj1.png")
-ganaj2 = funciones.image_load("Images/ganaj2.png")
+j2esrayada = pygame.image.load("Images/j2esrayada.png")
+j2eslisa = pygame.image.load("Images/j2eslisas.png")
+# ESTO DE ARRIBA HAY QUE BORRARLO
 
 # BOTONES
 
@@ -272,15 +260,15 @@ for b in border:
 palo_p1 = palo.Palo(balls[-1].body.position)
 
 # Imagen para la barra de carga
-barra_placeholder = funciones.image_load("Assets/Images/power_bar.png")
+barra_placeholder = pygame.image.load("Assets/Images/power_bar.png")
 
-barra_placeholder1 = funciones.image_load("Assets/Images/power_bar1.png")
+barra_placeholder1 = pygame.image.load("Assets/Images/power_bar1.png")
 
-barra_placeholder2 = funciones.image_load("Assets/Images/power_bar2.png")
+barra_placeholder2 = pygame.image.load("Assets/Images/power_bar2.png")
 
-barra_placeholder3 = funciones.image_load('Assets/Images/power_bar3.png')
+barra_placeholder3 = pygame.image.load('Assets/Images/power_bar3.png')
 
-barra_placeholder4 = funciones.image_load('Assets/Images/power_bar4.png')
+barra_placeholder4 = pygame.image.load('Assets/Images/power_bar4.png')
 
 # Barra de poder del palo
 
@@ -327,7 +315,6 @@ while True:
 
             # PANTALLA PRINCIPAL
             if main:
-
                 window.blit(game, (posX, posY))
                 # START HOVER
                 funciones.update_image(start_hitbox, game_start_click, event, window, posX, posY)
@@ -351,7 +338,6 @@ while True:
 
             # VENTANA DE PRE JUEGO
             if start:
-
                 pygame.mixer.music.stop()
 
                 window.blit(prePlayInactive, (posX, posY))
@@ -434,7 +420,7 @@ while True:
                     x_cursor = bar_x + bar_width / 2
                     y_cursor = bar_y - (cursor_height / 2)
                     cursor = pygame.Rect(x_cursor - cursor_width / 2, y_cursor, cursor_width, cursor_height)
-                print(cursor.x)
+
                 # pygame.mixer.music.stop()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if cursor.collidepoint(event.pos):
@@ -567,6 +553,12 @@ while True:
                 sys.exit()
 
     elif playing_bot:
+        # Carga de Imagenes
+        turnosRestantes1 = pygame.image.load("Images/TR1.png")
+        turnosRestantes2 = pygame.image.load("Images/TR2.png")
+        ganaj1 = pygame.image.load("Images/ganaj1.png")
+        ganaj2 = pygame.image.load("Images/ganaj2.png")
+
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)
@@ -578,6 +570,7 @@ while True:
         window.blit(table_image, (0, 0))
 
         if turn:
+            jugador1Turno = pygame.image.load("Images/j1.png")
             window.blit(jugador1Turno, (1180, -50))
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
@@ -587,6 +580,7 @@ while True:
                 print("3")
 
         else:
+            jugador2Turno = pygame.image.load("Images/j2.png")
             window.blit(jugador2Turno, (1183, -50))
             if cont > 0:
                 window.blit(turnosRestantes1, (1195, 0))
@@ -881,6 +875,12 @@ while True:
         # space.debug_draw(draw_options)
         pygame.display.update()
     else:
+        # Carga de Imagenes
+        turnosRestantes1 = pygame.image.load("Images/TR1.png")
+        turnosRestantes2 = pygame.image.load("Images/TR2.png")
+        ganaj1 = pygame.image.load("Images/ganaj1.png")
+        ganaj2 = pygame.image.load("Images/ganaj2.png")
+
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)
@@ -892,6 +892,7 @@ while True:
         window.blit(table_image, (0, 0))
 
         if turn:
+            jugador1Turno = pygame.image.load("Images/j1.png")
             window.blit(jugador1Turno, (1180, -50))
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
@@ -901,6 +902,7 @@ while True:
                 print("3")
 
         else:
+            jugador2Turno = pygame.image.load("Images/j2.png")
             window.blit(jugador2Turno, (1183, -50))
             if cont > 0:
                 window.blit(turnosRestantes1, (1195, 0))

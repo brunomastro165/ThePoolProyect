@@ -7,11 +7,6 @@ def play_music():
     pygame.mixer.music.play(-1)  # reproducir musica en bucle
 
 
-# Funcion para cargar imagenes
-def image_load(name):
-    return pygame.image.load(name)
-
-
 # Funcion para actualizar las imagenes con hover
 def update_image(hitbox, image, event, window, pos_x, pos_y):
     if hitbox.hover():

@@ -534,20 +534,21 @@ while True:
         window.fill(BG)
         # draw pool table
         window.blit(table_image, (0, 0))
+        # Aparecen los jugadores al mismo tiempo
+        window.blit(jugador1Turno, (1180, -50))
+        window.blit(jugador2Turno, (1183, 185))
         if turn:
-            window.blit(jugador1Turno, (1180, -50))
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
             elif cont == -1:
-                window.blit(turnosRestantes2, (1197, 0))
+                window.blit(turnosRestantes2, (1195, 0))
             elif cont == -2:
                 print("3")
         else:
-            window.blit(jugador2Turno, (1183, -50))
             if cont > 0:
-                window.blit(turnosRestantes1, (1195, 0))
+                window.blit(turnosRestantes1, (1195, 232))
             elif cont == 0:
-                window.blit(turnosRestantes2, (1197, 0))
+                window.blit(turnosRestantes2, (1195, 232))
             elif cont == -1:
                 print("3")
         if not ballTeam:
@@ -833,20 +834,21 @@ while True:
         window.fill(BG)
         # draw pool table
         window.blit(table_image, (0, 0))
+        # Aparecen los jugadores al mismo tiempo
+        window.blit(jugador1Turno, (1180, -50))
+        window.blit(jugador2Turno, (1183, 185))
         if turn:
-            window.blit(jugador1Turno, (1180, -50))
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
             elif cont == -1:
-                window.blit(turnosRestantes2, (1197, 0))
+                window.blit(turnosRestantes2, (1195, 0))
             elif cont == -2:
                 print("3")
         else:
-            window.blit(jugador2Turno, (1183, -50))
             if cont > 0:
-                window.blit(turnosRestantes1, (1195, 0))
+                window.blit(turnosRestantes1, (1195, 232))
             elif cont == 0:
-                window.blit(turnosRestantes2, (1197, 0))
+                window.blit(turnosRestantes2, (1195, 232))
             elif cont == -1:
                 print("3")
         if not ballTeam:
@@ -1097,6 +1099,6 @@ while True:
         # print(f"BallTeam{ballTeam}")
         # space.debug_draw(draw_options)
         pygame.display.update()
-    # print(pygame.mouse.get_pos())
+    print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

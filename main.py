@@ -7,6 +7,7 @@ import palo
 import funciones
 import math
 import random
+import pygame.mixer
 from pygame.locals import *
 
 # Variables de la Resolucion
@@ -102,6 +103,8 @@ diffFacil_hitbox = button.Button(404, 474, 695 - 404, 560 - 474)
 diffMedio_hitbox = button.Button(405, 574, 693 - 405, 657 - 574)
 diffDificil_hitbox = button.Button(407, 684, 697 - 407, 760 - 684)
 # SECCION DE MUSICA
+# Inicializo el mixer
+pygame.mixer.init()
 pygame.mixer.music.load('easy-lifestyle-137766.mp3')  # agregar musica
 pygame.mixer.music.set_volume(0.1)  # setear volumen
 # VARIABLES DE LA BARRA DE VOLUMEN
@@ -142,6 +145,8 @@ space = pymunk.Space()
 static_body = space.static_body
 # Con esta funcion le puedo pedir a pymunk que dibuje las formar que creo, en la ventana
 draw_options = pymunk.pygame_util.DrawOptions(window)
+# Collision Handler
+funciones.register_collision_handler(space)
 # Clock
 clock = pygame.time.Clock()
 FPS = 75
@@ -211,7 +216,7 @@ funciones.change_pos(3, 12, balls)
 funciones.change_pos(12, 10, balls)
 # Bola blanca
 pos = (888, (678 / 2))
-print(pos)
+# print(pos)
 cue_ball = funciones.create_ball((diam / 2), pos, static_body, space)
 cue_ball.tipo = "blanca"
 balls.append(cue_ball)
@@ -1034,7 +1039,7 @@ while True:
             x_dist = balls[-1].body.position[0] - mouse_pos[0]
             y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
             palo_angle = math.degrees(math.atan2(y_dist, x_dist))
-            print(palo_angle)
+            # print(palo_angle)
             palo_p1.update(palo_angle)
             # dibujar palo
             palo_p1.draw(window)
@@ -1099,6 +1104,6 @@ while True:
         # print(f"BallTeam{ballTeam}")
         # space.debug_draw(draw_options)
         pygame.display.update()
-    print(pygame.mouse.get_pos())
+    # print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

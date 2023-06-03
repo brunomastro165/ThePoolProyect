@@ -1,7 +1,10 @@
 import pygame
 import pymunk
 import pymunk.pygame_util
+import pygame.mixer
 
+pygame.mixer.init()
+sound = pygame.mixer.Sound('computer(turn off).wav')
 
 def play_music():
     pygame.mixer.music.play(-1)  # reproducir musica en bucle
@@ -43,6 +46,7 @@ def create_ball(rad, pos, static_body, space):
     shape = MyCircle(body, rad)
     shape.mass = 5
     shape.elasticity = 0.9
+    shape.collision_type = 0  # Establecer el collision_type aquí
     pivot = pymunk.PivotJoint(static_body, body, (0, 0), (0, 0))
     pivot.max_bias = 0
     pivot.max_force = 1500
@@ -123,3 +127,22 @@ def make_new_game(balls, diam, static_body, space):
     balls[0].tipo = "lisa"
     balls[8].tipo = "rayada"
     balls[7].tipo = "negra"
+
+
+# Callback de colisión
+def handle_collision(arbiter, space, data):
+    # Obtener las formas colisionadas
+    shape_a, shape_b = arbiter.shapes
+
+    # Comprobar si las formas son bolas
+    if isinstance(shape_a, MyCircle) and isinstance(shape_b, MyCircle):
+        # Realizar las acciones necesarias cuando hay colisión entre las bolas
+        sound.play()
+
+    return True
+
+
+# Función para registrar el controlador de colisiones
+def register_collision_handler(space):
+    handler = space.add_collision_handler(0, 0)  # Ajusta los tipos de colisión según tus necesidades
+    handler.pre_solve = handle_collision

@@ -28,63 +28,63 @@ pygame.display.set_caption("PoolGame")
 
 # Cargando Imagenes
 # Pantalla Principal
-game = pygame.image.load("Images/PLAY.png")
-game_start_click = pygame.image.load("Images/PLAY (ACTIVE).png")
-game_menu_click = pygame.image.load("Images/MENU (ACTIVE).png")
-game_data_click = pygame.image.load("Images/PLAY DATOS.png")
+game = pygame.image.load("Assets/Menus/PLAY.png")
+game_start_click = pygame.image.load("Assets/Menus/PLAY (ACTIVE).png")
+game_menu_click = pygame.image.load("Assets/Menus/MENU (ACTIVE).png")
+game_data_click = pygame.image.load("Assets/Menus/PLAY DATOS.png")
 # Pantalla de Datos
-data_image = pygame.image.load("Images/DATOS (PAGINA).png")
-data_return = pygame.image.load("Images/DATOS (PAG ACTIVA).png")
+data_image = pygame.image.load("Assets/Menus/DATOS (PAGINA).png")
+data_return = pygame.image.load("Assets/Menus/DATOS (PAG ACTIVA).png")
 # Pantalla Menu
 # Cargamos Imagenes
-imagenPrincpal = pygame.image.load("Images/MENU_PRINCIPAL.png")
-imagenSiFacil = pygame.image.load("Images/M_P_SI_FACIL.png")
-imagenSiFacilBack = pygame.image.load("Images/M_P_SI_FACIL_BACK.png")
-imagenSiMedio = pygame.image.load("Images/M_P_SI_MEDIO.png")
-imagenSiMedioBack = pygame.image.load("Images/M_P_SI_MEDIO_BACK.png")
-imagenSiDificil = pygame.image.load("Images/M_P_SI_DIFICIL.png")
-imagenSiDificilBack = pygame.image.load("Images/M_P_SI_DIFICIL_BACK.png")
-imagenNoFacil = pygame.image.load("Images/M_P_NO_FACIL.png")
-imagenNoFacilBack = pygame.image.load("Images/M_P_NO_FACIL_BACK.png")
-imagenNoMedio = pygame.image.load("Images/M_P_NO_MEDIO.png")
-imagenNoMedioBack = pygame.image.load("Images/M_P_NO_MEDIO_BACK.png")
-imagenNoDificil = pygame.image.load("Images/M_P_NO_DIFICIL.png")
-imagenNoDificilBack = pygame.image.load("Images/M_P_NO_DIFICIL_BACK.png")
+imagenPrincpal = pygame.image.load("Assets/Menus/MENU_PRINCIPAL.png")
+imagenSiFacil = pygame.image.load("Assets/Menus/M_P_SI_FACIL.png")
+imagenSiFacilBack = pygame.image.load("Assets/Menus/M_P_SI_FACIL_BACK.png")
+imagenSiMedio = pygame.image.load("Assets/Menus/M_P_SI_MEDIO.png")
+imagenSiMedioBack = pygame.image.load("Assets/Menus/M_P_SI_MEDIO_BACK.png")
+imagenSiDificil = pygame.image.load("Assets/Menus/M_P_SI_DIFICIL.png")
+imagenSiDificilBack = pygame.image.load("Assets/Menus/M_P_SI_DIFICIL_BACK.png")
+imagenNoFacil = pygame.image.load("Assets/Menus/M_P_NO_FACIL.png")
+imagenNoFacilBack = pygame.image.load("Assets/Menus/M_P_NO_FACIL_BACK.png")
+imagenNoMedio = pygame.image.load("Assets/Menus/M_P_NO_MEDIO.png")
+imagenNoMedioBack = pygame.image.load("Assets/Menus/M_P_NO_MEDIO_BACK.png")
+imagenNoDificil = pygame.image.load("Assets/Menus/M_P_NO_DIFICIL.png")
+imagenNoDificilBack = pygame.image.load("Assets/Menus/M_P_NO_DIFICIL_BACK.png")
 # Generamos variable para cambiar las imagenes de menu
 imagenActual = imagenNoMedio
 # Pantalla PrePlay
-prePlayInactive = pygame.image.load("Images/PrePlayInactive.png")
-prePlayPlayerActiveImage = pygame.image.load("Images/PrePlayPlayerActive.png")
-prePlayBotActive = pygame.image.load("Images/PrePlayBotActive.png")
-prePlayBackActive = pygame.image.load("Images/PrePlayBackActive.png")
+prePlayInactive = pygame.image.load("Assets/Menus/PrePlayInactive.png")
+prePlayPlayerActiveImage = pygame.image.load("Assets/Menus/PrePlayPlayerActive.png")
+prePlayBotActive = pygame.image.load("Assets/Menus/PrePlayBotActive.png")
+prePlayBackActive = pygame.image.load("Assets/Menus/PrePlayBackActive.png")
 # Jugadores, turnos y victorias
-jugador1Turno = pygame.image.load("Images/j1.png")
-jugador2Turno = pygame.image.load("Images/j2.png")
-turnoActual = pygame.image.load("Images/TurnoActual.png")
-turnosRestantes1 = pygame.image.load("Images/TR1.png")
-turnosRestantes2 = pygame.image.load("Images/TR2.png")
-j1eslisa = pygame.image.load("Images/j1eslisas.png")
-j1esrayada = pygame.image.load("Images/j1esrayada.png")
-j2esrayada = pygame.image.load("Images/j2esrayada.png")
-j2eslisa = pygame.image.load("Images/j2eslisas.png")
-ganaj1 = pygame.image.load("Images/ganaj1.png")
-ganaj2 = pygame.image.load("Images/ganaj2.png")
+jugador1Turno = pygame.image.load("Assets/Menus/j1.png")
+jugador2Turno = pygame.image.load("Assets/Menus/j2.png")
+turnoActual = pygame.image.load("Assets/Menus/TurnoActual.png")
+turnosRestantes1 = pygame.image.load("Assets/Menus/TR1.png")
+turnosRestantes2 = pygame.image.load("Assets/Menus/TR2.png")
+j1eslisa = pygame.image.load("Assets/Menus/j1eslisas.png")
+j1esrayada = pygame.image.load("Assets/Menus/j1esrayada.png")
+j2esrayada = pygame.image.load("Assets/Menus/j2esrayada.png")
+j2eslisa = pygame.image.load("Assets/Menus/j2eslisas.png")
+ganaj1 = pygame.image.load("Assets/Menus/ganaj1.png")
+ganaj2 = pygame.image.load("Assets/Menus/ganaj2.png")
 # Bolas con poca opacidad
-bola1PO = pygame.image.load('Assets/Images/ball1LO.png')
-bola2PO = pygame.image.load('Assets/Images/ball2LO.png')
-bola3PO = pygame.image.load('Assets/Images/ball3LO.png')
-bola4PO = pygame.image.load('Assets/Images/ball4LO.png')
-bola5PO = pygame.image.load('Assets/Images/ball5LO.png')
-bola6PO = pygame.image.load('Assets/Images/ball6LO.png')
-bola7PO = pygame.image.load('Assets/Images/ball7LO.png')
-bola8PO = pygame.image.load('Assets/Images/ball8LO.png')
-bola9PO = pygame.image.load('Assets/Images/ball9LO.png')
-bola10PO = pygame.image.load('Assets/Images/ball10LO.png')
-bola11PO = pygame.image.load('Assets/Images/ball11LO.png')
-bola12PO = pygame.image.load('Assets/Images/ball12LO.png')
-bola13PO = pygame.image.load('Assets/Images/ball13LO.png')
-bola14PO = pygame.image.load('Assets/Images/ball14LO.png')
-bola15PO = pygame.image.load('Assets/Images/ball15LO.png')
+bola1PO = pygame.image.load('Assets/GameAssets/ball1LO.png')
+bola2PO = pygame.image.load('Assets/GameAssets/ball2LO.png')
+bola3PO = pygame.image.load('Assets/GameAssets/ball3LO.png')
+bola4PO = pygame.image.load('Assets/GameAssets/ball4LO.png')
+bola5PO = pygame.image.load('Assets/GameAssets/ball5LO.png')
+bola6PO = pygame.image.load('Assets/GameAssets/ball6LO.png')
+bola7PO = pygame.image.load('Assets/GameAssets/ball7LO.png')
+bola8PO = pygame.image.load('Assets/GameAssets/ball8LO.png')
+bola9PO = pygame.image.load('Assets/GameAssets/ball9LO.png')
+bola10PO = pygame.image.load('Assets/GameAssets/ball10LO.png')
+bola11PO = pygame.image.load('Assets/GameAssets/ball11LO.png')
+bola12PO = pygame.image.load('Assets/GameAssets/ball12LO.png')
+bola13PO = pygame.image.load('Assets/GameAssets/ball13LO.png')
+bola14PO = pygame.image.load('Assets/GameAssets/ball14LO.png')
+bola15PO = pygame.image.load('Assets/GameAssets/ball15LO.png')
 
 # BOTONES
 # BOTONES PANTALLA PRINCIPAL
@@ -105,8 +105,11 @@ diffDificil_hitbox = button.Button(407, 684, 697 - 407, 760 - 684)
 # SECCION DE MUSICA
 # Inicializo el mixer
 pygame.mixer.init()
-pygame.mixer.music.load('easy-lifestyle-137766.mp3')  # agregar musica
+# Musica
+pygame.mixer.music.load("Assets/Sound/easy-lifestyle-137766.mp3")  # agregar musica
 pygame.mixer.music.set_volume(0.1)  # setear volumen
+# Sonidos
+palo_sound = pygame.mixer.Sound("Assets/Sound/attack variation.wav")
 # VARIABLES DE LA BARRA DE VOLUMEN
 moving_cursor = False
 moving_bar = False
@@ -158,6 +161,7 @@ max_force = 10000
 force_direction = 1
 taking_shot = True
 powering_up = False
+game_started = False
 potted_balls = []
 potted_balls_lisa = []
 potted_balls_rayada = []
@@ -168,10 +172,10 @@ p1_can_put_black = False
 p2_can_put_black = False
 FullScreen = False
 # load images
-table_image = pygame.image.load("Assets/Images/table.png").convert_alpha()
+table_image = pygame.image.load("Assets/GameAssets/table.png").convert_alpha()
 ball_images = []
 for i in range(1, 17):
-    ball_image = pygame.image.load(f"Assets/Images/bola{i}.png").convert_alpha()
+    ball_image = pygame.image.load(f"Assets/GameAssets/bola{i}.png").convert_alpha()
     ball_image = pygame.transform.scale(ball_image, (diam * 2, diam * 2))
     ball_images.append(ball_image)
 # Crear las bolas para el juego
@@ -251,11 +255,11 @@ for b in border:
 # Objeto palo (instancia de la clase palo)
 palo_p1 = palo.Palo(balls[-1].body.position)
 # Imagen para la barra de carga
-barra_placeholder = pygame.image.load("Assets/Images/power_bar.png")
-barra_placeholder1 = pygame.image.load("Assets/Images/power_bar1.png")
-barra_placeholder2 = pygame.image.load("Assets/Images/power_bar2.png")
-barra_placeholder3 = pygame.image.load('Assets/Images/power_bar3.png')
-barra_placeholder4 = pygame.image.load('Assets/Images/power_bar4.png')
+barra_placeholder = pygame.image.load("Assets/GameAssets/power_bar.png")
+barra_placeholder1 = pygame.image.load("Assets/GameAssets/power_bar1.png")
+barra_placeholder2 = pygame.image.load("Assets/GameAssets/power_bar2.png")
+barra_placeholder3 = pygame.image.load('Assets/GameAssets/power_bar3.png')
+barra_placeholder4 = pygame.image.load('Assets/GameAssets/power_bar4.png')
 # Barra de poder del palo
 power_bar = pygame.Surface((barra_placeholder.get_width(), barra_placeholder.get_height()))
 power_bar.blit(barra_placeholder, (0, 0))
@@ -811,8 +815,11 @@ while True:
             # Disparar la bola blanca
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot and turn:
                 powering_up = True
+                game_started = True
             if event.type == pygame.MOUSEBUTTONUP and taking_shot and turn:
                 powering_up = False
+                if game_started:
+                    palo_sound.play()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
             if event.type == pygame.QUIT:
@@ -1084,8 +1091,11 @@ while True:
             # Disparar la bola blanca
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot:
                 powering_up = True
+                game_started = True
             if event.type == pygame.MOUSEBUTTONUP and taking_shot:
                 powering_up = False
+                if game_started:
+                    palo_sound.play()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
             if event.type == pygame.QUIT:

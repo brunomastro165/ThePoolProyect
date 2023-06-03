@@ -1,6 +1,6 @@
 import pygame
 
-ImagePalo = pygame.image.load("Assets/Images/paloNeutro.png")
+ImagePalo = pygame.image.load("Assets/GameAssets/paloNeutro.png")
 
 
 class Palo:

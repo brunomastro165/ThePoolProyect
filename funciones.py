@@ -6,8 +6,10 @@ import pygame.mixer
 pygame.mixer.init()
 sound = pygame.mixer.Sound("Assets/Sound/computer(turn off).wav")
 
+
 def play_music():
     pygame.mixer.music.play(-1)  # reproducir musica en bucle
+
 
 
 # Funcion para actualizar las imagenes con hover
@@ -61,7 +63,7 @@ def change_pos(a, b, balls):
     balls[b].body.position = auxiliar
 
 
-def make_new_game(balls, diam, static_body, space):
+def make_new_game(balls, diam, static_body, space, potted_balls, potted_balls_lisa, potted_balls_rayada):
     # Crear las bolas para el juego
     for ball in balls:
         ball.body.position = (-1000, -1000)
@@ -128,6 +130,11 @@ def make_new_game(balls, diam, static_body, space):
     balls[8].tipo = "rayada"
     balls[7].tipo = "negra"
 
+    potted_balls_lisa.clear()
+    potted_balls.clear()
+    potted_balls_rayada.clear()
+
+
 
 # Callback de colisión
 def handle_collision(arbiter, space, data):
@@ -137,7 +144,8 @@ def handle_collision(arbiter, space, data):
     # Comprobar si las formas son bolas
     if isinstance(shape_a, MyCircle) and isinstance(shape_b, MyCircle):
         # Realizar las acciones necesarias cuando hay colisión entre las bolas
-        sound.play()
+          sound.play()
+
 
     return True
 
@@ -146,3 +154,6 @@ def handle_collision(arbiter, space, data):
 def register_collision_handler(space):
     handler = space.add_collision_handler(0, 0)  # Ajusta los tipos de colisión según tus necesidades
     handler.pre_solve = handle_collision
+
+
+

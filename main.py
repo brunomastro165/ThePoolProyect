@@ -136,6 +136,8 @@ doom = pygame.mixer.Sound("Assets/Sound/DMusic.mp3")
 # Sonidos
 palo_sound = pygame.mixer.Sound("Assets/Sound/Strike.wav")
 change_turn_sound = pygame.mixer.Sound("Assets/Sound/cturn.wav")
+ball_in = pygame.mixer.Sound("Assets/Sound/sound_ball_in.mp3")
+win_sound = pygame.mixer.Sound("Assets/Sound/win_sound.mp3")
 change_turn_sound.set_volume(0.1)
 
 lost_sound = pygame.mixer.Sound("Assets/Sound/lost.mp3")
@@ -178,6 +180,7 @@ win = False
 p1win = False
 p2win = False
 defeat_sound = False
+winnin_sound = False
 one_time = True
 
 # COSAS DE PYMUNK
@@ -674,6 +677,7 @@ while True:
                 ball_y_dist = abs(ball.body.position[1] - pocket[1])
                 ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
                 if ball_dist <= pocket_dia / 2:
+                    ball_in.play()
                     if ball.tipo == "lisa":
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
@@ -714,7 +718,7 @@ while True:
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
-        # Checkar si las bolas estan quietas
+            # Checkar si las bolas estan quietas
         taking_shot = True
         for ball in balls:
             if int(ball.body.velocity[0]) != 0 or int(ball.body.velocity[1]) != 0:
@@ -760,12 +764,11 @@ while True:
                 cont = 0
         # dibujar las bochas metidas en la parte de abajo
         for i, ball in enumerate(potted_balls):
-            window.blit(ball, (10 + (i * 50), base_height - 10))
-        # CONDICIONES DE VICTORIA (PROTOTIPO)
-        if not ballTeam and taking_shot:
-            if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
-                aux_rayada += 1
-                aux_lisa += 1
+        #CONDICIONES DE VICTORIA (PROTOTIPO)
+            if not ballTeam and taking_shot:
+                if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
+                    aux_rayada += 1
+                    aux_lisa += 1
             elif ((P1RAY and turn) or (P2RAY and not turn)) and len(potted_balls_rayada) > aux_rayada:
                 aux_rayada += 1
                 cont = 0
@@ -918,7 +921,7 @@ while True:
                             force = random.randint(4000, 10000)
                         else:
                             palo_angle = random.randint(-8, 8) + IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1], diam,
-                                                                      window)
+                                                                                              window)
                             # Fuerza del golpe
                             force = random.randint(7000, 10000)
                     if Medio:
@@ -930,7 +933,7 @@ while True:
                             force = random.randint(7000, 10000)
                         else:
                             palo_angle = random.randint(-5, 5) + IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1], diam,
-                                                                      window)
+                                                                                              window)
                             # Fuerza del golpe
                             force = random.randint(8500, 10000)
                     if dificil:
@@ -1053,6 +1056,7 @@ while True:
                 ball_y_dist = abs(ball.body.position[1] - pocket[1])
                 ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
                 if ball_dist <= pocket_dia / 2:
+                    ball_in.play()
                     if ball.tipo == "lisa":
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
@@ -1101,14 +1105,17 @@ while True:
             if int(ball.body.velocity[0]) != 0 or int(ball.body.velocity[1]) != 0:
                 taking_shot = False
                 changeTurn = True
+
         # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
         # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
         if potted_blanca and not unicaVez:
             turn = not turn
             cont = -1
             unicaVez = True
+
         # Tipos de bocha para cada jugador
         if ballTeam:
+
             # Jugador 1
             if len(potted_balls_lisa) > 0 and turn:  # Probado y funciona
                 P1LISA = True
@@ -1124,6 +1131,7 @@ while True:
                 P2RAY = False
                 ballTeam = False
                 cont = 0
+
             # Jugador 2
             elif len(potted_balls_lisa) > 0 and not turn:  # Probado y funciona
                 P1LISA = False
@@ -1139,9 +1147,11 @@ while True:
                 P2RAY = True
                 ballTeam = False
                 cont = 0
+
         # dibujar las bochas metidas en la parte de abajo
         for i, ball in enumerate(potted_balls):
             window.blit(ball, (10 + (i * 50), base_height - 10))
+
         # CONDICIONES DE VICTORIA (PROTOTIPO)
         if not ballTeam and taking_shot:
             if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
@@ -1161,19 +1171,24 @@ while True:
                 turn = not turn
                 aux_rayada += 1
                 cont = -1
+
             # Meter las bochas correspondientes al equipo
             if (P1LISA and len(potted_balls_lisa) == 7) or (P1RAY and len(potted_balls_rayada) == 7):
                 p1_can_put_black = True
             if (P2LISA and len(potted_balls_lisa) == 7) or (P2RAY and len(potted_balls_rayada) == 7):
                 p2_can_put_black = True
+
         # Meter la negra antes de tiempo
         if turn and potted_negra and not p1_can_put_black:
             taking_shot = False
             window.blit(ganaj2, (400, 300))
+
         if not turn and potted_negra and not p2_can_put_black:
             taking_shot = False
             window.blit(ganaj1, (400, 300))
+
         # Meter la negra para ganar
+
         if not win:
             if p1_can_put_black and potted_negra and turn == True:
                 taking_shot = False

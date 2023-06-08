@@ -131,8 +131,15 @@ pygame.mixer.init()
 # Musica
 pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")  # agregar musica
 pygame.mixer.music.set_volume(0.5)  # setear volumen
+doom = pygame.mixer.Sound("Assets/Sound/DMusic.mp3")
+
 # Sonidos
 palo_sound = pygame.mixer.Sound("Assets/Sound/Strike.wav")
+change_turn_sound = pygame.mixer.Sound("Assets/Sound/cturn.wav")
+change_turn_sound.set_volume(0.1)
+
+lost_sound = pygame.mixer.Sound("Assets/Sound/lost.mp3")
+lost_sound.set_volume(0.5)
 # VARIABLES DE LA BARRA DE VOLUMEN
 moving_cursor = False
 moving_bar = False
@@ -158,13 +165,21 @@ funciones.play_music()
 screenSiPress = False
 screenNoPress = True
 Facil = False
-Medio = False
-dificil = True
+Medio = True
+dificil = False
 # Condicion para los turnos
 cont = 1
 suma_hecha = False
 changeTurn = False
 turn = True
+soundTurn = False
+# Condicion de victoria
+win = False
+p1win = False
+p2win = False
+defeat_sound = False
+one_time = True
+
 # COSAS DE PYMUNK
 # Pymunk space
 space = pymunk.Space()
@@ -361,7 +376,7 @@ while True:
                     main = False
             # VENTANA DE PRE JUEGO
             if start:
-                pygame.mixer.music.stop()
+
                 if change_image and not return_hitbox.hover() and not prePlayPlayerActive_hitbox.hover() and not preBotActive_hitbox.hover():
                     change_image = False
                     window.blit(prePlayInactive, (posX, posY))
@@ -377,6 +392,7 @@ while True:
                 # DOWN EVENT
                 if prePlayPlayerActive_hitbox.down(event):
                     # playMusic()
+                    pygame.mixer.music.stop()
                     start = False
                     playing = True
                     base_height = 678
@@ -400,6 +416,10 @@ while True:
                     start = False
                     main = True
                 if preBotActive_hitbox.down(event):
+                    if not dificil:
+                        print("hola")
+                        pygame.mixer.music.stop()
+
                     start = False
                     playing_bot = True
                     base_height = 678
@@ -495,16 +515,26 @@ while True:
                     Medio = False
                     Facil = True
                     dificil = False
+                    doom.stop()
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")
+                    pygame.mixer.music.play()
                 if diffMedio_hitbox.down(event):
                     change_image = True
                     Medio = True
                     Facil = False
                     dificil = False
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")
+                    pygame.mixer.music.play()
                 if diffDificil_hitbox.down(event):
                     change_image = True
                     Medio = False
                     Facil = False
                     dificil = True
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
+                    pygame.mixer.music.play()
                 # SI ESTA APRETADO NO
                 if fullscreenNo_hitbox.down(event):
                     change_image = True
@@ -581,6 +611,10 @@ while True:
         window.blit(jugador1Turno, (1180, -50))
         window.blit(jugador2Turno, (1183, 185))
         if turn:
+
+            if soundTurn:
+                change_turn_sound.play()
+                soundTurn = False
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
             elif cont == 0:
@@ -588,6 +622,10 @@ while True:
             elif cont == -1:
                 print("3")
         else:
+
+            if soundTurn:
+                change_turn_sound.play()
+                soundTurn = False
             if cont > 0:
                 window.blit(turnosRestantes1, (1195, 232))
             elif cont == 0:
@@ -747,27 +785,52 @@ while True:
                 p1_can_put_black = True
             if (P2LISA and len(potted_balls_lisa) == 7) or (P2RAY and len(potted_balls_rayada) == 7):
                 p2_can_put_black = True
+
         # Meter la negra antes de tiempo
         if turn and potted_negra and not p1_can_put_black:
             taking_shot = False
             window.blit(ganaj2, (400, 300))
+            p2win = True
         if not turn and potted_negra and not p2_can_put_black:
             taking_shot = False
             window.blit(ganaj1, (400, 300))
+            p1win = True
+
         # Meter la negra para ganar
-        if p1_can_put_black and potted_negra:
-            taking_shot = False
+        if not win:
+            # No cambien el == True por turn porque no funciona
+            if p1_can_put_black and potted_negra and turn == True:
+                taking_shot = False
+                window.blit(ganaj1, (400, 300))
+                win = True
+                p1win = True
+
+            # No cambien el == False por not turn porque no funciona
+            if p2_can_put_black and potted_negra and not turn == False:
+                taking_shot = False
+                window.blit(ganaj2, (400, 300))
+                win = True
+                p2win = True
+
+        if p1win:
             window.blit(ganaj1, (400, 300))
-        if p2_can_put_black and potted_negra:
-            taking_shot = False
+        elif p2win:
             window.blit(ganaj2, (400, 300))
+            defeat_sound = True
+
+        if p2win == True and one_time:
+            lost_sound.play()
+            one_time = False
+
         if taking_shot:
             if changeTurn:
+                soundTurn = True
                 changeTurn = False
                 cont += 1
                 if cont > 1:
                     turn = not turn
             if turn:
+
                 # Sistema de turnos
                 if potted_blanca:
                     balls[-1].body.position = (888, base_height / 2)
@@ -816,6 +879,7 @@ while True:
                     force = 0
                     force_direction = 1
             else:
+
                 powering_up = True
                 # Sistema de turnos
                 if potted_blanca:
@@ -929,6 +993,9 @@ while True:
         window.blit(jugador1Turno, (1180, -50))
         window.blit(jugador2Turno, (1183, 185))
         if turn:
+            if soundTurn:
+                change_turn_sound.play()
+                soundTurn = False
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
             elif cont == 0:
@@ -936,6 +1003,9 @@ while True:
             elif cont == -1:
                 print("3")
         else:
+            if soundTurn:
+                change_turn_sound.play()
+                soundTurn = False
             if cont > 0:
                 window.blit(turnosRestantes1, (1195, 232))
             elif cont == 0:
@@ -1104,15 +1174,25 @@ while True:
             taking_shot = False
             window.blit(ganaj1, (400, 300))
         # Meter la negra para ganar
-        if p1_can_put_black and potted_negra:
-            taking_shot = False
+        if not win:
+            if p1_can_put_black and potted_negra and turn == True:
+                taking_shot = False
+                window.blit(ganaj1, (400, 300))
+                p1win = True
+            if p2_can_put_black and potted_negra and turn == False:
+                taking_shot = False
+                window.blit(ganaj2, (400, 300))
+                p2win = True
+
+        if p1win:
             window.blit(ganaj1, (400, 300))
-        if p2_can_put_black and potted_negra:
-            taking_shot = False
+        elif p2win:
             window.blit(ganaj2, (400, 300))
+
         if taking_shot:
             # Sistema de turnos
             if changeTurn:
+                soundTurn = True
                 changeTurn = False
                 cont += 1
                 if cont > 1:

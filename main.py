@@ -109,10 +109,10 @@ diffDificil_hitbox = button.Button(407, 684, 697 - 407, 760 - 684)
 # Inicializo el mixer
 pygame.mixer.init()
 # Musica
-pygame.mixer.music.load("Assets/Sound/easy-lifestyle-137766.mp3")  # agregar musica
+pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")  # agregar musica
 pygame.mixer.music.set_volume(0.1)  # setear volumen
 # Sonidos
-palo_sound = pygame.mixer.Sound("Assets/Sound/attack variation.wav")
+palo_sound = pygame.mixer.Sound("Assets/Sound/Strike.wav")
 # VARIABLES DE LA BARRA DE VOLUMEN
 moving_cursor = False
 moving_bar = False

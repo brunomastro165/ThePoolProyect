@@ -6,7 +6,7 @@ import pymunk.pygame_util
 import pygame.mixer
 
 pygame.mixer.init()
-sound = pygame.mixer.Sound("Assets/Sound/computer(turn off).wav")
+sound = pygame.mixer.Sound("Assets/Sound/BallsCollide-old1.wav")
 
 
 def play_music():

@@ -22,7 +22,7 @@ def handle_collision(arbiter, space, data):
         # Realizar las acciones necesarias cuando hay colisión entre las bolas
         print(taking_shot)
         if not taking_shot:
-            sound.play()
+            sound_ball.play()
     return True
 
 # Función para registrar el controlador de colisiones
@@ -30,7 +30,7 @@ def register_collision_handler(space):
     handler = space.add_collision_handler(0, 0)  # Ajusta los tipos de colisión según tus necesidades
     handler.pre_solve = lambda arbiter, space, data:handle_collision(arbiter, space, data)
 
-sound = pygame.mixer.Sound("Assets/Sound/BallsCollide-old1.wav")
+sound_ball = pygame.mixer.Sound("Assets/Sound/BallsCollide-old1.wav")
 # Variables de la Resolucion
 tS = True
 taking_shot = True

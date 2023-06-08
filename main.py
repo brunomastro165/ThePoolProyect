@@ -12,8 +12,28 @@ import random
 import pygame.mixer
 from pygame.locals import *
 import IATest
+# Callback de colisión
+def handle_collision(arbiter, space, data):
+    # Obtener las formas colisionadas
+    shape_a, shape_b = arbiter.shapes
 
+    # Comprobar si las formas son bolas
+    if isinstance(shape_a, funciones.MyCircle) and isinstance(shape_b, funciones.MyCircle):
+        # Realizar las acciones necesarias cuando hay colisión entre las bolas
+        print(taking_shot)
+        if not taking_shot:
+            sound.play()
+    return True
+
+# Función para registrar el controlador de colisiones
+def register_collision_handler(space):
+    handler = space.add_collision_handler(0, 0)  # Ajusta los tipos de colisión según tus necesidades
+    handler.pre_solve = lambda arbiter, space, data:handle_collision(arbiter, space, data)
+
+sound = pygame.mixer.Sound("Assets/Sound/BallsCollide-old1.wav")
 # Variables de la Resolucion
+tS = True
+taking_shot = True
 base_width = 800
 base_height = 800
 posX = 0
@@ -110,7 +130,7 @@ diffDificil_hitbox = button.Button(407, 684, 697 - 407, 760 - 684)
 pygame.mixer.init()
 # Musica
 pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")  # agregar musica
-pygame.mixer.music.set_volume(0.1)  # setear volumen
+pygame.mixer.music.set_volume(0.5)  # setear volumen
 # Sonidos
 palo_sound = pygame.mixer.Sound("Assets/Sound/Strike.wav")
 # VARIABLES DE LA BARRA DE VOLUMEN
@@ -152,7 +172,7 @@ static_body = space.static_body
 # Con esta funcion le puedo pedir a pymunk que dibuje las formar que creo, en la ventana
 draw_options = pymunk.pygame_util.DrawOptions(window)
 # Collision Handler
-funciones.register_collision_handler(space)
+register_collision_handler(space)
 # Clock
 clock = pygame.time.Clock()
 FPS = 75
@@ -162,7 +182,7 @@ pocket_dia = 66
 force = 0
 max_force = 10000
 force_direction = 1
-taking_shot = True
+
 powering_up = False
 game_started = False
 potted_balls = []
@@ -287,6 +307,7 @@ aux_lisa = 0
 print(balls[15].tipo)
 change_image = True
 contPottedBalls = 0
+unicaVez = False
 
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
@@ -451,8 +472,8 @@ while True:
                 # Calcular el volumen y actualizar la musica
                 sound = (cursor.x - bar_x) / bar_width
                 pygame.mixer.music.set_volume(sound)
-                soud = (x_cursor - bar_x) / bar_width
-                pygame.mixer.music.set_volume(soud)
+                sound = (cursor.y - bar_y) / bar_height
+                pygame.mixer.music.set_volume(sound)
                 # VOLVER AL PRINCIPAL
                 if return_hitbox.down(event):
                     change_image = True
@@ -562,9 +583,9 @@ while True:
         if turn:
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
-            elif cont == -1:
+            elif cont == 0:
                 window.blit(turnosRestantes2, (1195, 0))
-            elif cont == -2:
+            elif cont == -1:
                 print("3")
         else:
             if cont > 0:
@@ -573,6 +594,7 @@ while True:
                 window.blit(turnosRestantes2, (1195, 232))
             elif cont == -1:
                 print("3")
+
         if not ballTeam:
             if P1LISA:
                 window.blit(bola1PO, (1185, 90))
@@ -662,9 +684,10 @@ while True:
                 changeTurn = True
         # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
         # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
-        if potted_blanca:
+        if potted_blanca and not unicaVez:
             turn = not turn
             cont = -1
+            unicaVez = True
         # Tipos de bocha para cada jugador
         if ballTeam:
             # Jugador 1
@@ -871,6 +894,7 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot and turn:
                 powering_up = True
                 game_started = True
+                unicaVez = False
             if event.type == pygame.MOUSEBUTTONUP and taking_shot and turn:
                 powering_up = False
                 if game_started:
@@ -907,9 +931,9 @@ while True:
         if turn:
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
-            elif cont == -1:
+            elif cont == 0:
                 window.blit(turnosRestantes2, (1195, 0))
-            elif cont == -2:
+            elif cont == -1:
                 print("3")
         else:
             if cont > 0:
@@ -1009,9 +1033,10 @@ while True:
                 changeTurn = True
         # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
         # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
-        if potted_blanca:
+        if potted_blanca and not unicaVez:
             turn = not turn
             cont = -1
+            unicaVez = True
         # Tipos de bocha para cada jugador
         if ballTeam:
             # Jugador 1
@@ -1147,6 +1172,7 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot:
                 powering_up = True
                 game_started = True
+                unicaVez = False
             if event.type == pygame.MOUSEBUTTONUP and taking_shot:
                 powering_up = False
                 if game_started:

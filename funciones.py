@@ -6,7 +6,7 @@ import pymunk.pygame_util
 import pygame.mixer
 
 pygame.mixer.init()
-sound = pygame.mixer.Sound("Assets/Sound/BallsCollide-old1.wav")
+
 
 
 def play_music():
@@ -137,25 +137,6 @@ def make_new_game(balls, diam, static_body, space, potted_balls, potted_balls_li
     potted_balls_rayada.clear()
 
 
-
-# Callback de colisión
-def handle_collision(arbiter, space, data):
-    # Obtener las formas colisionadas
-    shape_a, shape_b = arbiter.shapes
-
-    # Comprobar si las formas son bolas
-    if isinstance(shape_a, MyCircle) and isinstance(shape_b, MyCircle):
-        # Realizar las acciones necesarias cuando hay colisión entre las bolas
-          sound.play()
-
-
-    return True
-
-
-# Función para registrar el controlador de colisiones
-def register_collision_handler(space):
-    handler = space.add_collision_handler(0, 0)  # Ajusta los tipos de colisión según tus necesidades
-    handler.pre_solve = handle_collision
 
 
 def calcular_probabilidad(prob):

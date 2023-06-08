@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import pymunk
 import pymunk.pygame_util
@@ -156,4 +158,8 @@ def register_collision_handler(space):
     handler.pre_solve = handle_collision
 
 
-
+def calcular_probabilidad(prob):
+    if random.randint(0,100) > prob:
+        return True
+    else:
+        return False

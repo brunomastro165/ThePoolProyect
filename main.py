@@ -286,7 +286,7 @@ aux_rayada = 0
 aux_lisa = 0
 print(balls[15].tipo)
 change_image = True
-
+contPottedBalls = 0
 
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
@@ -617,19 +617,21 @@ while True:
                     if ball.tipo == "lisa":
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
-                        ball.body.position = (-1000, -1000)
+                        ball.body.position = (-1000, contPottedBalls)
                         ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
+                        contPottedBalls = contPottedBalls - 100
                     elif ball.tipo == "rayada":
                         potted_balls.append(ball_images[i])
                         potted_balls_rayada.append(ball_images[i])
-                        ball.body.position = (-1000, -1000)
+                        ball.body.position = (-1000, contPottedBalls)
                         ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
+                        contPottedBalls = contPottedBalls - 100
                     elif ball.tipo == "negra":
                         potted_negra = True
                         potted_balls.append(ball_images[i])
@@ -960,19 +962,23 @@ while True:
                     if ball.tipo == "lisa":
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
-                        ball.body.position = (-1000, -1000)
+                        ball.body.position = (-1000, contPottedBalls)
                         ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
+                        contPottedBalls = contPottedBalls - 100
+
                     elif ball.tipo == "rayada":
                         potted_balls.append(ball_images[i])
                         potted_balls_rayada.append(ball_images[i])
-                        ball.body.position = (-1000, -1000)
+                        ball.body.position = (-1000, contPottedBalls)
                         ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
+                        contPottedBalls = contPottedBalls - 100
+
                     elif ball.tipo == "negra":
                         potted_negra = True
                         potted_balls.append(ball_images[i])

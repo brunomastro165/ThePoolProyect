@@ -1,3 +1,5 @@
+import time
+
 import pygame
 import sys
 import pymunk.pygame_util
@@ -9,6 +11,7 @@ import math
 import random
 import pygame.mixer
 from pygame.locals import *
+import IATest
 
 # Variables de la Resolucion
 base_width = 800
@@ -135,8 +138,8 @@ funciones.play_music()
 screenSiPress = False
 screenNoPress = True
 Facil = False
-Medio = True
-dificil = False
+Medio = False
+dificil = True
 # Condicion para los turnos
 cont = 1
 suma_hecha = False
@@ -250,6 +253,14 @@ pockets = [
     (592, 629),
     (1134, 616)
 ]
+bot_pockets = [
+    (82, 86),
+    (594, 74),
+    (1112, 86),
+    (82, 592),
+    (594, 600),
+    (1112, 590)
+]
 for b in border:
     funciones.create_table_border(b, space)
 # Objeto palo (instancia de la clase palo)
@@ -275,7 +286,8 @@ aux_rayada = 0
 aux_lisa = 0
 print(balls[15].tipo)
 change_image = True
-contPottedBalls = 0
+
+
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
     # print(mouse_x ,",", mouse_y)
@@ -536,7 +548,6 @@ while True:
                 sys.exit()
             if event.type == event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
-
     elif playing_bot:
         # Time simulation
         clock.tick(FPS)
@@ -571,7 +582,6 @@ while True:
                 window.blit(bola5PO, (1207.5, 135))
                 window.blit(bola6PO, (1252.5, 135))
                 window.blit(bola7PO, (1297.5, 135))
-
             elif P1RAY:
                 window.blit(bola9PO, (1185, 90))
                 window.blit(bola10PO, (1230, 90))
@@ -589,7 +599,6 @@ while True:
                 window.blit(bola5PO, (1207.5, 365))
                 window.blit(bola6PO, (1252.5, 365))
                 window.blit(bola7PO, (1297.5, 365))
-
             elif P2RAY:
                 window.blit(bola9PO, (1185, 320))
                 window.blit(bola10PO, (1230, 320))
@@ -598,7 +607,6 @@ while True:
                 window.blit(bola13PO, (1207.5, 365))
                 window.blit(bola14PO, (1252.5, 365))
                 window.blit(bola15PO, (1297.5, 365))
-
         # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:
@@ -609,49 +617,36 @@ while True:
                     if ball.tipo == "lisa":
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
-
-                        ball.body.position = (-1000, contPottedBalls)
-                        print(ball.body.position.x, ball.body.position.y)
+                        ball.body.position = (-1000, -1000)
                         ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
-                        contPottedBalls = contPottedBalls-100
-
                     elif ball.tipo == "rayada":
                         potted_balls.append(ball_images[i])
                         potted_balls_rayada.append(ball_images[i])
-
-                        ball.body.position = (-1000, contPottedBalls)
-                        print(ball.body.position.x, ball.body.position.y)
+                        ball.body.position = (-1000, -1000)
                         ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
-                        contPottedBalls = contPottedBalls - 100
-
-
                     elif ball.tipo == "negra":
                         potted_negra = True
                         potted_balls.append(ball_images[i])
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
-
                     elif ball.tipo == "blanca":
                         potted_blanca = True
                         ball.body.position = (-100, -100)
                         ball.body.velocity = (0.0, 0.0)
-
                     contBalls = 0
-
                     for j in balls:
                         print(f"{contBalls} : {j.tipo}")
                         contBalls = contBalls + 1
                     print(f"Lisas: {potted_balls_lisa}")
                     print(f"Rayadas: {potted_balls_rayada}")
                     print(f"Negra: {potted_negra}")
-
         # draw pool balls
         # Utilizo el iterador i para obtener el numero de la bola
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
@@ -659,18 +654,15 @@ while True:
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
         # Checkar si las bolas estan quietas
         taking_shot = True
-
         for ball in balls:
             if int(ball.body.velocity[0]) != 0 or int(ball.body.velocity[1]) != 0:
                 taking_shot = False
                 changeTurn = True
-
         # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
         # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
         if potted_blanca:
             turn = not turn
             cont = -1
-
         # Tipos de bocha para cada jugador
         if ballTeam:
             # Jugador 1
@@ -681,7 +673,6 @@ while True:
                 P2RAY = True
                 ballTeam = False
                 cont = 0
-
             elif len(potted_balls_rayada) > 0 and turn:  # Probado y funciona
                 P1LISA = False
                 P1RAY = True
@@ -689,7 +680,6 @@ while True:
                 P2RAY = False
                 ballTeam = False
                 cont = 0
-
             # Jugador 2
             elif len(potted_balls_lisa) > 0 and not turn:  # Probado y funciona
                 P1LISA = False
@@ -698,7 +688,6 @@ while True:
                 P2RAY = False
                 ballTeam = False
                 cont = 0
-
             elif len(potted_balls_rayada) > 0 and not turn:  # Probado y funciona
                 P1LISA = True
                 P1RAY = False
@@ -706,11 +695,9 @@ while True:
                 P2RAY = True
                 ballTeam = False
                 cont = 0
-
         # dibujar las bochas metidas en la parte de abajo
         for i, ball in enumerate(potted_balls):
             window.blit(ball, (10 + (i * 50), base_height - 10))
-
         # CONDICIONES DE VICTORIA (PROTOTIPO)
         if not ballTeam and taking_shot:
             if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
@@ -730,26 +717,18 @@ while True:
                 turn = not turn
                 aux_rayada += 1
                 cont = -1
-
             # Meter las bochas correspondientes al equipo
-            if P1LISA and len(potted_balls_lisa) == 7:
+            if (P1LISA and len(potted_balls_lisa) == 7) or (P1RAY and len(potted_balls_rayada) == 7):
                 p1_can_put_black = True
-            elif P1RAY and len(potted_balls_rayada) == 7:
-                p1_can_put_black = True
-            if P2LISA and len(potted_balls_lisa) == 7:
+            if (P2LISA and len(potted_balls_lisa) == 7) or (P2RAY and len(potted_balls_rayada) == 7):
                 p2_can_put_black = True
-            elif P2RAY and len(potted_balls_rayada) == 7:
-                p2_can_put_black = True
-
         # Meter la negra antes de tiempo
         if turn and potted_negra and not p1_can_put_black:
             taking_shot = False
             window.blit(ganaj2, (400, 300))
-
         if not turn and potted_negra and not p2_can_put_black:
             taking_shot = False
             window.blit(ganaj1, (400, 300))
-
         # Meter la negra para ganar
         if p1_can_put_black and potted_negra:
             taking_shot = False
@@ -779,7 +758,7 @@ while True:
                 # dibujar palo
                 palo_p1.draw(window)
                 # Fuerza del golpe
-                if powering_up is True:
+                if powering_up:
                     force += 100 * force_direction
                     if force >= max_force or force <= 0:
                         force_direction *= -1
@@ -825,13 +804,57 @@ while True:
                     palo_p1.rect.center = balls[-1].body.position
                     x_dist = balls[-1].body.position[0] - mouse_pos[0]
                     y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
-                    palo_angle = random.uniform(-180, 180)
+                    if ballTeam:
+                        bot_balls = balls
+                    else:
+                        bot_balls = []
+                        if p2_can_put_black:
+                            for ball in balls:
+                                if ball.tipo == "negra":
+                                    bot_balls.append(ball)
+                        if P2LISA:
+                            for ball in balls:
+                                if ball.tipo == "lisa":
+                                    bot_balls.append(ball)
+                        elif P2RAY:
+                            for ball in balls:
+                                if ball.tipo == "rayada":
+                                    bot_balls.append(ball)
+
+                    if Facil:
+                        if funciones.calcular_probabilidad(30):
+                            palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1], diam,
+                                                                      window)
+                            # Fuerza del golpe
+                            force = random.randint(4000, 10000)
+                        else:
+                            palo_angle = random.randint(-8, 8) + IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1], diam,
+                                                                      window)
+                            # Fuerza del golpe
+                            force = random.randint(7000, 10000)
+                    if Medio:
+                        print(len(balls))
+                        if funciones.calcular_probabilidad(60):
+                            palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1], diam,
+                                                                      window)
+                            # Fuerza del golpe
+                            force = random.randint(7000, 10000)
+                        else:
+                            palo_angle = random.randint(-5, 5) + IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1], diam,
+                                                                      window)
+                            # Fuerza del golpe
+                            force = random.randint(8500, 10000)
+                    if dificil:
+                        palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls)-1], diam, window)
+                        # Fuerza del golpe
+                        force = random.randint(9000, 10000)
+
+
                     # print(palo_angle)
                     palo_p1.update(palo_angle)
                     # dibujar palo
                     palo_p1.draw(window)
-                    # Fuerza del golpe
-                    force = random.randint(1000, 10000)
+
                     x_impulse = math.cos(math.radians(palo_angle))
                     y_impulse = math.sin(math.radians(palo_angle))
                     balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
@@ -854,7 +877,19 @@ while True:
                 sys.exit()
             if event.type == pygame.QUIT:
                 sys.exit()
-
+        '''
+        if not ballTeam:
+            if P1LISA == True:
+                print(f"Jugador 1 juega con lisas {P1LISA}")
+            else:
+                print(f"Jugador 1 juega con rayadas {P1RAY}")
+            if P2LISA == True:
+                print(f"Jugador 2 juega con lisas {P2LISA}")
+            else:
+                print(f"Jugador 2 juega con raydas {P2RAY}")
+        '''
+        # print(f"BallTeam{ballTeam}")
+        # space.debug_draw(draw_options)
         pygame.display.update()
     else:
         # Time simulation
@@ -867,7 +902,6 @@ while True:
         # Aparecen los jugadores al mismo tiempo
         window.blit(jugador1Turno, (1180, -50))
         window.blit(jugador2Turno, (1183, 185))
-
         if turn:
             if cont >= 0:
                 window.blit(turnosRestantes1, (1195, 0))
@@ -875,7 +909,6 @@ while True:
                 window.blit(turnosRestantes2, (1195, 0))
             elif cont == -2:
                 print("3")
-
         else:
             if cont > 0:
                 window.blit(turnosRestantes1, (1195, 232))
@@ -883,7 +916,6 @@ while True:
                 window.blit(turnosRestantes2, (1195, 232))
             elif cont == -1:
                 print("3")
-
         if not ballTeam:
             if P1LISA:
                 window.blit(bola1PO, (1185, 90))
@@ -893,7 +925,6 @@ while True:
                 window.blit(bola5PO, (1207.5, 135))
                 window.blit(bola6PO, (1252.5, 135))
                 window.blit(bola7PO, (1297.5, 135))
-
             elif P1RAY:
                 window.blit(bola9PO, (1185, 90))
                 window.blit(bola10PO, (1230, 90))
@@ -911,7 +942,6 @@ while True:
                 window.blit(bola5PO, (1207.5, 365))
                 window.blit(bola6PO, (1252.5, 365))
                 window.blit(bola7PO, (1297.5, 365))
-
             elif P2RAY:
                 window.blit(bola9PO, (1185, 320))
                 window.blit(bola10PO, (1230, 320))
@@ -920,7 +950,6 @@ while True:
                 window.blit(bola13PO, (1207.5, 365))
                 window.blit(bola14PO, (1252.5, 365))
                 window.blit(bola15PO, (1297.5, 365))
-
         # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:
@@ -931,25 +960,19 @@ while True:
                     if ball.tipo == "lisa":
                         potted_balls.append(ball_images[i])
                         potted_balls_lisa.append(ball_images[i])
-
-                        ball.body.position = (-1000, contPottedBalls)
-                        print(ball.body.position.x, ball.body.position.y)
+                        ball.body.position = (-1000, -1000)
                         ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
-                        contPottedBalls = contPottedBalls - 100
                     elif ball.tipo == "rayada":
                         potted_balls.append(ball_images[i])
                         potted_balls_rayada.append(ball_images[i])
-
-                        ball.body.position = (-1000, contPottedBalls)
-                        print(ball.body.position.x, ball.body.position.y)
+                        ball.body.position = (-1000, -1000)
                         ball.body.velocity = (0.0, 0.0)
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
-                        contPottedBalls = contPottedBalls - 100
                     elif ball.tipo == "negra":
                         potted_negra = True
                         potted_balls.append(ball_images[i])
@@ -961,20 +984,17 @@ while True:
                         ball.body.position = (-100, -100)
                         ball.body.velocity = (0.0, 0.0)
                     contBalls = 0
-
                     for i in balls:
                         print(f"{contBalls} : {i.tipo}")
                         contBalls = contBalls + 1
                     print(f"Lisas: {potted_balls_lisa}")
                     print(f"Rayadas: {potted_balls_rayada}")
                     print(f"Negra: {potted_negra}")
-
         # draw pool balls
         # Utilizo el iterador i para obtener el numero de la bola
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
-
         # Checkar si las bolas estan quietas
         taking_shot = True
         for ball in balls:
@@ -983,11 +1003,9 @@ while True:
                 changeTurn = True
         # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
         # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
-
         if potted_blanca:
             turn = not turn
             cont = -1
-
         # Tipos de bocha para cada jugador
         if ballTeam:
             # Jugador 1
@@ -998,7 +1016,6 @@ while True:
                 P2RAY = True
                 ballTeam = False
                 cont = 0
-
             elif len(potted_balls_rayada) > 0 and turn:  # Probado y funciona
                 P1LISA = False
                 P1RAY = True
@@ -1006,7 +1023,6 @@ while True:
                 P2RAY = False
                 ballTeam = False
                 cont = 0
-
             # Jugador 2
             elif len(potted_balls_lisa) > 0 and not turn:  # Probado y funciona
                 P1LISA = False
@@ -1015,7 +1031,6 @@ while True:
                 P2RAY = False
                 ballTeam = False
                 cont = 0
-
             elif len(potted_balls_rayada) > 0 and not turn:  # Probado y funciona
                 P1LISA = True
                 P1RAY = False
@@ -1023,11 +1038,9 @@ while True:
                 P2RAY = True
                 ballTeam = False
                 cont = 0
-
         # dibujar las bochas metidas en la parte de abajo
         for i, ball in enumerate(potted_balls):
             window.blit(ball, (10 + (i * 50), base_height - 10))
-
         # CONDICIONES DE VICTORIA (PROTOTIPO)
         if not ballTeam and taking_shot:
             if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
@@ -1048,34 +1061,24 @@ while True:
                 aux_rayada += 1
                 cont = -1
             # Meter las bochas correspondientes al equipo
-            if P1LISA and len(potted_balls_lisa) == 7:
+            if (P1LISA and len(potted_balls_lisa) == 7) or (P1RAY and len(potted_balls_rayada) == 7):
                 p1_can_put_black = True
-            elif P1RAY and len(potted_balls_rayada) == 7:
-                p1_can_put_black = True
-            if P2LISA and len(potted_balls_lisa) == 7:
+            if (P2LISA and len(potted_balls_lisa) == 7) or (P2RAY and len(potted_balls_rayada) == 7):
                 p2_can_put_black = True
-            elif P2RAY and len(potted_balls_rayada) == 7:
-                p2_can_put_black = True
-
-
         # Meter la negra antes de tiempo
         if turn and potted_negra and not p1_can_put_black:
             taking_shot = False
             window.blit(ganaj2, (400, 300))
-
         if not turn and potted_negra and not p2_can_put_black:
             taking_shot = False
             window.blit(ganaj1, (400, 300))
-
         # Meter la negra para ganar
         if p1_can_put_black and potted_negra:
             taking_shot = False
             window.blit(ganaj1, (400, 300))
-
         if p2_can_put_black and potted_negra:
             taking_shot = False
             window.blit(ganaj2, (400, 300))
-
         if taking_shot:
             # Sistema de turnos
             if changeTurn:
@@ -1123,14 +1126,12 @@ while True:
                         window.blit(power_bar,
                                     (balls[-1].body.position[0] - 30 + (b * 15),
                                      balls[-1].body.position[1] + 30))
-
             elif powering_up is False and taking_shot is True:
                 x_impulse = math.cos(math.radians(palo_angle))
                 y_impulse = math.sin(math.radians(palo_angle))
                 balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
                 force = 0
                 force_direction = 1
-
         # Event Handler
         for event in pygame.event.get():
             if event.type == KEYDOWN:  # Verificar si se presiono una tecla
@@ -1148,7 +1149,17 @@ while True:
                 sys.exit()
             if event.type == pygame.QUIT:
                 sys.exit()
-
+        '''
+        if not ballTeam:
+            if P1LISA == True:
+                print(f"Jugador 1 juega con lisas {P1LISA}")
+            else:
+                print(f"Jugador 1 juega con rayadas {P1RAY}")
+            if P2LISA == True:
+                print(f"Jugador 2 juega con lisas {P2LISA}")
+            else:
+                print(f"Jugador 2 juega con raydas {P2RAY}")
+        '''
         # print(f"BallTeam{ballTeam}")
         # space.debug_draw(draw_options)
         pygame.display.update()

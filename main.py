@@ -38,6 +38,7 @@ tS = True
 taking_shot = True
 base_width = 800
 base_height = 800
+#pos X e Y de la pantalla
 posX = 0
 posY = 0
 # Colores

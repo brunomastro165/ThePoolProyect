@@ -1182,10 +1182,13 @@ while True:
         if turn and potted_negra and not p1_can_put_black:
             taking_shot = False
             window.blit(ganaj2, (400, 300))
+            p2win = True
 
         if not turn and potted_negra and not p2_can_put_black:
             taking_shot = False
             window.blit(ganaj1, (400, 300))
+            p1win = True
+
 
         # Meter la negra para ganar
 
@@ -1203,6 +1206,14 @@ while True:
             window.blit(ganaj1, (400, 300))
         elif p2win:
             window.blit(ganaj2, (400, 300))
+
+        if p1win == True and one_time:
+         win_sound.play()
+         one_time = False
+
+        if p2win == True and one_time:
+         win_sound.play()
+         one_time = False
 
         if taking_shot:
             # Sistema de turnos

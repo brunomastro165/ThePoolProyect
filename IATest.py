@@ -162,23 +162,25 @@ def determinar_mejor_bola(balls, pockets, blanca, diam, window):
     mejor_pocket = 0
     index = 0
     index2 = 0
-    for ball in balls:
-        if index != len(balls)-1:
-            index2 = 0
-            for pocket in pockets:
-                if se_puede(blanca.body.position.x, blanca.body.position.y, ball.body.position.x, ball.body.position.y, pocket[0], pocket[1], diam):
-                    distancia_bola = sacar_hipotenusa_puntos(ball.body.position.x, ball.body.position.y, blanca.body.position.x, blanca.body.position.y)
-                    distancia_hoyo = sacar_hipotenusa_puntos(ball.body.position.x, ball.body.position.y, pocket[0], pocket[1])
-                    if distancia_bola + distancia_hoyo < distancia_Mejor:
-                        distancia_Mejor = distancia_hoyo + distancia_bola
-                        mejor_bola = index
-                        mejor_pocket = index2
-                index2 += 1
-        index += 1
-    return triangulo_de_tirada(blanca.body.position.x, blanca.body.position.y,
-                        balls[mejor_bola].body.position.x, balls[mejor_bola].body.position.y, pockets[mejor_pocket][0],
-                        pockets[mejor_pocket][1], diam,window)
-
+    try:
+        for ball in balls:
+            if index != len(balls)-1:
+                index2 = 0
+                for pocket in pockets:
+                    if se_puede(blanca.body.position.x, blanca.body.position.y, ball.body.position.x, ball.body.position.y, pocket[0], pocket[1], diam):
+                        distancia_bola = sacar_hipotenusa_puntos(ball.body.position.x, ball.body.position.y, blanca.body.position.x, blanca.body.position.y)
+                        distancia_hoyo = sacar_hipotenusa_puntos(ball.body.position.x, ball.body.position.y, pocket[0], pocket[1])
+                        if distancia_bola + distancia_hoyo < distancia_Mejor:
+                            distancia_Mejor = distancia_hoyo + distancia_bola
+                            mejor_bola = index
+                            mejor_pocket = index2
+                    index2 += 1
+            index += 1
+        return triangulo_de_tirada(blanca.body.position.x, blanca.body.position.y,
+                            balls[mejor_bola].body.position.x, balls[mejor_bola].body.position.y, pockets[mejor_pocket][0],
+                            pockets[mejor_pocket][1], diam,window)
+    except Exception as e:
+        print("")
 
 
 

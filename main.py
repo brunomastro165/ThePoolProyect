@@ -335,6 +335,10 @@ print(balls[15].tipo)
 change_image = True
 contPottedBalls = 0
 unicaVez = False
+mostrarBochas = False
+bot_active = True
+music = False
+musicExist = False
 
 num = random.randint(0, 2)
 
@@ -551,6 +555,8 @@ while True:
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
                     pygame.mixer.music.play()
+                    music = True
+                    musicExist = True
                 # SI ESTA APRETADO NO
                 if fullscreenNo_hitbox.down(event):
                     change_image = True
@@ -625,8 +631,8 @@ while True:
         # draw pool table
         window.blit(table_image, (0, 0))
         # Aparecen los jugadores al mismo tiempo
-        window.blit(jugador1Turno, (1100, -50))
-        window.blit(jugador2Turno, (1183, 185))
+        window.blit(jugador1Turno, (1200, 5))
+        window.blit(jugador2Turno, (1200, 235))
         if turn:
 
             if soundTurn:
@@ -650,6 +656,7 @@ while True:
             elif cont == -1:
                 print("3")
 
+        '''
         if not ballTeam:
             if P1LISA:
                 window.blit(bola1PO, (1185, 100))
@@ -684,6 +691,8 @@ while True:
                 window.blit(bola13PO, (1207.5, 375))
                 window.blit(bola14PO, (1252.5, 375))
                 window.blit(bola15PO, (1297.5, 375))
+            '''
+
         # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:
@@ -753,6 +762,7 @@ while True:
                 P2LISA = False
                 P2RAY = True
                 ballTeam = False
+                mostrarBochas = True
                 cont = 0
             elif len(potted_balls_rayada) > 0 and turn:  # Probado y funciona
                 P1LISA = False
@@ -760,6 +770,7 @@ while True:
                 P2LISA = True
                 P2RAY = False
                 ballTeam = False
+                mostrarBochas = True
                 cont = 0
             # Jugador 2
             elif len(potted_balls_lisa) > 0 and not turn:  # Probado y funciona
@@ -768,6 +779,7 @@ while True:
                 P2LISA = True
                 P2RAY = False
                 ballTeam = False
+                mostrarBochas = True
                 cont = 0
             elif len(potted_balls_rayada) > 0 and not turn:  # Probado y funciona
                 P1LISA = True
@@ -775,11 +787,29 @@ while True:
                 P2LISA = False
                 P2RAY = True
                 ballTeam = False
+                mostrarBochas = True
                 cont = 0
         # dibujar las bochas metidas en la parte de abajo
-        for i, ball in enumerate(potted_balls):
-            window.blit(ball, (10 + (i * 50), base_height - 10))
-        #CONDICIONES DE VICTORIA (PROTOTIPO)
+
+        # este comentario
+        if mostrarBochas:
+            if P1LISA:
+                for i, ball in enumerate(potted_balls_lisa):
+                        window.blit(ball, (1200 + (i * 20), 110))
+
+                for i, ball in enumerate(potted_balls_rayada):
+                        window.blit(ball, (1200 + (i * 20), 335))
+
+            else:
+                for i, ball in enumerate(potted_balls_lisa):
+                        window.blit(ball, (1200 + (i * 20), 335))
+
+                for i, ball in enumerate(potted_balls_rayada):
+                        window.blit(ball, (1200 + (i * 20), 110))
+
+
+
+        #CONDICIONES DE VICTORIA
         if not ballTeam and taking_shot:
             if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
                 aux_rayada += 1
@@ -805,15 +835,7 @@ while True:
             if (P2LISA and len(potted_balls_lisa) == 7) or (P2RAY and len(potted_balls_rayada) == 7):
                 p2_can_put_black = True
 
-        # Meter la negra antes de tiempo
-        if turn and potted_negra and not p1_can_put_black:
-            taking_shot = False
-            window.blit(ganaj2, (400, 300))
-            p2win = True
-        if not turn and potted_negra and not p2_can_put_black:
-            taking_shot = False
-            window.blit(ganaj1, (400, 300))
-            p1win = True
+
 
         # Meter la negra para ganar
         if not win:
@@ -831,10 +853,26 @@ while True:
                 win = True
                 p2win = True
 
+            # Meter la negra antes de tiempo
+            if turn and potted_negra and not p1_can_put_black:
+                taking_shot = False
+                window.blit(ganaj2, (400, 300))
+                p2win = True
+
+            if not turn and potted_negra and not p2_can_put_black:
+                taking_shot = False
+                window.blit(ganaj1, (400, 300))
+                p1win = True
+
+
         if p1win:
             window.blit(ganaj1, (400, 300))
+            bot_active = False
+            taking_shot = False
         elif p2win:
             window.blit(ganaj2, (400, 300))
+            bot_active = False
+            taking_shot = False
             # defeat_sound = True
 
         if p1win == True and one_time:
@@ -907,7 +945,7 @@ while True:
                     balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
                     force = 0
                     force_direction = 1
-            else:
+            elif turn == False and bot_active == True:
 
                 powering_up = True
                 # Sistema de turnos
@@ -967,7 +1005,7 @@ while True:
                         # Fuerza del golpe
                         force = random.randint(9000, 10000)
 
-
+                try:
                     # print(palo_angle)
                     palo_p1.update(palo_angle)
                     # dibujar palo
@@ -978,6 +1016,9 @@ while True:
                     balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
                     force = 0
                     force_direction = 1
+                except Exception as e:
+                    print("")
+
         # Event Handler
         for event in pygame.event.get():
             if event.type == KEYDOWN:  # Verificar si se presiono una tecla
@@ -993,10 +1034,21 @@ while True:
                 powering_up = False
                 if game_started:
                     palo_sound.play()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
+                if musicExist:
+                    if music:
+                        pygame.mixer.music.pause()
+                        music = False
+                    else:
+                        pygame.mixer.music.unpause()
+                        music = True
+
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
             if event.type == pygame.QUIT:
                 sys.exit()
+
         '''
         if not ballTeam:
             if P1LISA == True:
@@ -1042,6 +1094,8 @@ while True:
                 window.blit(turnosRestantes2, (1200, 312))
             elif cont == -1:
                 print("3")
+
+        '''
         if not ballTeam:
             if P1LISA:
                 window.blit(bola1PO, (1185, 100))
@@ -1076,6 +1130,24 @@ while True:
                 window.blit(bola13PO, (1207.5, 375))
                 window.blit(bola14PO, (1252.5, 375))
                 window.blit(bola15PO, (1297.5, 375))
+            '''
+
+        if mostrarBochas:
+            if P1LISA:
+                for i, ball in enumerate(potted_balls_lisa):
+                    window.blit(ball, (1200 + (i * 20), 110))
+
+                for i, ball in enumerate(potted_balls_rayada):
+                    window.blit(ball, (1200 + (i * 20), 335))
+
+            else:
+                for i, ball in enumerate(potted_balls_lisa):
+                    window.blit(ball, (1200 + (i * 20), 335))
+
+                for i, ball in enumerate(potted_balls_rayada):
+                    window.blit(ball, (1200 + (i * 20), 110))
+
+
         # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
             for pocket in pockets:
@@ -1151,6 +1223,7 @@ while True:
                 P2LISA = False
                 P2RAY = True
                 ballTeam = False
+                mostrarBochas = True
                 cont = 0
             elif len(potted_balls_rayada) > 0 and turn:  # Probado y funciona
                 P1LISA = False
@@ -1158,6 +1231,7 @@ while True:
                 P2LISA = True
                 P2RAY = False
                 ballTeam = False
+                mostrarBochas = True
                 cont = 0
 
             # Jugador 2
@@ -1167,6 +1241,7 @@ while True:
                 P2LISA = True
                 P2RAY = False
                 ballTeam = False
+                mostrarBochas = True
                 cont = 0
             elif len(potted_balls_rayada) > 0 and not turn:  # Probado y funciona
                 P1LISA = True
@@ -1174,13 +1249,11 @@ while True:
                 P2LISA = False
                 P2RAY = True
                 ballTeam = False
+                mostrarBochas = True
                 cont = 0
 
-        # dibujar las bochas metidas en la parte de abajo
-        for i, ball in enumerate(potted_balls):
-            window.blit(ball, (10 + (i * 50), base_height - 10))
 
-        # CONDICIONES DE VICTORIA (PROTOTIPO)
+        # CONDICIONES DE VICTORIA
         if not ballTeam and taking_shot:
             if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
                 aux_rayada += 1
@@ -1312,6 +1385,16 @@ while True:
                 powering_up = False
                 if game_started:
                     palo_sound.play()
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
+                if musicExist:
+                    if music:
+                        pygame.mixer.music.pause()
+                        music = False
+                    else:
+                        pygame.mixer.music.unpause()
+                        music = True
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
             if event.type == pygame.QUIT:

@@ -11,6 +11,7 @@ import math
 import random
 import pygame.mixer
 from pygame.locals import *
+import pygame.font
 import IATest
 # Callback de colisión
 def handle_collision(arbiter, space, data):
@@ -30,8 +31,9 @@ def register_collision_handler(space):
     handler = space.add_collision_handler(0, 0)  # Ajusta los tipos de colisión según tus necesidades
     handler.pre_solve = lambda arbiter, space, data:handle_collision(arbiter, space, data)
 
-sound_ball = pygame.mixer.Sound("Assets/Sound/BallsCollide-old1.wav")
+
 # Variables de la Resolucion
+
 tS = True
 taking_shot = True
 base_width = 800
@@ -44,6 +46,10 @@ green_color = (52, 130, 43)
 yellow_color = (238, 182, 2)
 BG = (50, 50, 50)
 RED = (255, 0, 0)
+GREEN = (96, 108, 56)
+WOOD = (221, 161, 94)
+LIGHT_BROWN = (127, 79, 36)
+DARK_BLUE = (20, 33, 61)
 # Iniciar Pygame, hacer la ventana como una variable con la resolucion y poner el nombre del juego
 pygame.init()
 window = pygame.display.set_mode((base_width, base_height))
@@ -138,6 +144,8 @@ palo_sound = pygame.mixer.Sound("Assets/Sound/Strike.wav")
 change_turn_sound = pygame.mixer.Sound("Assets/Sound/cturn.wav")
 ball_in = pygame.mixer.Sound("Assets/Sound/sound_ball_in.mp3")
 win_sound = pygame.mixer.Sound("Assets/Sound/win_sound.mp3")
+sound_ball = pygame.mixer.Sound("Assets/Sound/BallsCollide-old1.wav")
+
 change_turn_sound.set_volume(0.1)
 
 lost_sound = pygame.mixer.Sound("Assets/Sound/lost.mp3")
@@ -327,6 +335,8 @@ change_image = True
 contPottedBalls = 0
 unicaVez = False
 
+num = random.randint(0, 2)
+
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
     # print(mouse_x ,",", mouse_y)
@@ -404,6 +414,7 @@ while True:
                     if not FullScreen:
                         window = pygame.display.set_mode((base_width + 250, base_height + base_bottom_panel),
                                                          pygame.RESIZABLE)
+
                     else:
                         screen_info = pygame.display.Info()
                         screen_width = screen_info.current_w
@@ -414,13 +425,13 @@ while True:
                         window = pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel),
                                                          pygame.RESIZABLE)
                         pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel), w, h)
+
                 if return_hitbox.down(event):
                     change_image = True
                     start = False
                     main = True
                 if preBotActive_hitbox.down(event):
                     if not dificil:
-                        print("hola")
                         pygame.mixer.music.stop()
 
                     start = False
@@ -441,6 +452,7 @@ while True:
                         window = pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel),
                                                          pygame.RESIZABLE)
                         pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel), w, h)
+                    # window.blit(nombre_bot, (100, 100))
             # VENTANA MENU
             if menu:
                 # BARRA DE VOLUMEN
@@ -603,11 +615,12 @@ while True:
             if event.type == event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
     elif playing_bot:
+        # window.blit(nombre_bot, (1215, 521))
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)
         # Fill background
-        window.fill(BG)
+        window.fill(DARK_BLUE)
         # draw pool table
         window.blit(table_image, (0, 0))
         # Aparecen los jugadores al mismo tiempo
@@ -764,11 +777,12 @@ while True:
                 cont = 0
         # dibujar las bochas metidas en la parte de abajo
         for i, ball in enumerate(potted_balls):
+            window.blit(ball, (10 + (i * 50), base_height - 10))
         #CONDICIONES DE VICTORIA (PROTOTIPO)
-            if not ballTeam and taking_shot:
-                if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
-                    aux_rayada += 1
-                    aux_lisa += 1
+        if not ballTeam and taking_shot:
+            if len(potted_balls_lisa) > aux_lisa and len(potted_balls_rayada) > aux_rayada:
+                aux_rayada += 1
+                aux_lisa += 1
             elif ((P1RAY and turn) or (P2RAY and not turn)) and len(potted_balls_rayada) > aux_rayada:
                 aux_rayada += 1
                 cont = 0
@@ -783,6 +797,7 @@ while True:
                 turn = not turn
                 aux_rayada += 1
                 cont = -1
+
             # Meter las bochas correspondientes al equipo
             if (P1LISA and len(potted_balls_lisa) == 7) or (P1RAY and len(potted_balls_rayada) == 7):
                 p1_can_put_black = True
@@ -819,12 +834,22 @@ while True:
             window.blit(ganaj1, (400, 300))
         elif p2win:
             window.blit(ganaj2, (400, 300))
-            defeat_sound = True
+            # defeat_sound = True
+
+        if p1win == True and one_time:
+            pygame.mixer.music.stop()
+            win_sound.play()
+            one_time = False
 
         if p2win == True and one_time:
+            pygame.mixer.music.stop()
             lost_sound.play()
             one_time = False
 
+
+        # text = picanteo_bot[num]
+        # window.blit((text), (1214, 582))
+        print(pygame.mouse.get_pos())
         if taking_shot:
             if changeTurn:
                 soundTurn = True
@@ -963,6 +988,7 @@ while True:
                 game_started = True
                 unicaVez = False
             if event.type == pygame.MOUSEBUTTONUP and taking_shot and turn:
+                num = random.randint(0, 2)
                 powering_up = False
                 if game_started:
                     palo_sound.play()
@@ -989,7 +1015,7 @@ while True:
         clock.tick(FPS)
         space.step(1 / FPS)
         # Fill background
-        window.fill(BG)
+        window.fill(DARK_BLUE)
         # draw pool table
         window.blit(table_image, (0, 0))
         # Aparecen los jugadores al mismo tiempo
@@ -1099,6 +1125,7 @@ while True:
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
             window.blit(ball_images[i], (ball.body.position[0] - diam, ball.body.position[1] - diam))
+
         # Checkar si las bolas estan quietas
         taking_shot = True
         for ball in balls:
@@ -1189,7 +1216,6 @@ while True:
             window.blit(ganaj1, (400, 300))
             p1win = True
 
-
         # Meter la negra para ganar
 
         if not win:
@@ -1208,12 +1234,14 @@ while True:
             window.blit(ganaj2, (400, 300))
 
         if p1win == True and one_time:
-         win_sound.play()
-         one_time = False
+            pygame.mixer.music.stop()
+            win_sound.play()
+            one_time = False
 
         if p2win == True and one_time:
-         win_sound.play()
-         one_time = False
+            pygame.mixer.music.stop()
+            win_sound.play()
+            one_time = False
 
         if taking_shot:
             # Sistema de turnos

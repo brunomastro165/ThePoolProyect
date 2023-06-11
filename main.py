@@ -656,42 +656,6 @@ while True:
             elif cont == -1:
                 print("3")
 
-        '''
-        if not ballTeam:
-            if P1LISA:
-                window.blit(bola1PO, (1185, 100))
-                window.blit(bola2PO, (1230, 100))
-                window.blit(bola3PO, (1275, 100))
-                window.blit(bola4PO, (1320, 100))
-                window.blit(bola5PO, (1207.5, 145))
-                window.blit(bola6PO, (1252.5, 145))
-                window.blit(bola7PO, (1297.5, 145))
-            elif P1RAY:
-                window.blit(bola9PO, (1185, 100))
-                window.blit(bola10PO, (1230, 100))
-                window.blit(bola11PO, (1275, 100))
-                window.blit(bola12PO, (1320, 100))
-                window.blit(bola13PO, (1207.5, 145))
-                window.blit(bola14PO, (1252.5, 145))
-                window.blit(bola15PO, (1297.5, 145))
-
-            if P2LISA:
-                window.blit(bola1PO, (1185, 330))
-                window.blit(bola2PO, (1230, 330))
-                window.blit(bola3PO, (1275, 330))
-                window.blit(bola4PO, (1320, 330))
-                window.blit(bola5PO, (1207.5, 375))
-                window.blit(bola6PO, (1252.5, 375))
-                window.blit(bola7PO, (1297.5, 375))
-            elif P2RAY:
-                window.blit(bola9PO, (1185, 330))
-                window.blit(bola10PO, (1230, 330))
-                window.blit(bola11PO, (1275, 330))
-                window.blit(bola12PO, (1320, 330))
-                window.blit(bola13PO, (1207.5, 375))
-                window.blit(bola14PO, (1252.5, 375))
-                window.blit(bola15PO, (1297.5, 375))
-            '''
 
         # Fijarse si cualquier ball toco un hoyo
         for i, ball in enumerate(balls):
@@ -1094,43 +1058,6 @@ while True:
                 window.blit(turnosRestantes2, (1200, 312))
             elif cont == -1:
                 print("3")
-
-        '''
-        if not ballTeam:
-            if P1LISA:
-                window.blit(bola1PO, (1185, 100))
-                window.blit(bola2PO, (1230, 100))
-                window.blit(bola3PO, (1275, 100))
-                window.blit(bola4PO, (1320, 100))
-                window.blit(bola5PO, (1207.5, 145))
-                window.blit(bola6PO, (1252.5, 145))
-                window.blit(bola7PO, (1297.5, 145))
-            elif P1RAY:
-                window.blit(bola9PO, (1185, 100))
-                window.blit(bola10PO, (1230, 100))
-                window.blit(bola11PO, (1275, 100))
-                window.blit(bola12PO, (1320, 100))
-                window.blit(bola13PO, (1207.5, 145))
-                window.blit(bola14PO, (1252.5, 145))
-                window.blit(bola15PO, (1297.5, 145))
-
-            if P2LISA:
-                window.blit(bola1PO, (1185, 330))
-                window.blit(bola2PO, (1230, 330))
-                window.blit(bola3PO, (1275, 330))
-                window.blit(bola4PO, (1320, 330))
-                window.blit(bola5PO, (1207.5, 375))
-                window.blit(bola6PO, (1252.5, 375))
-                window.blit(bola7PO, (1297.5, 375))
-            elif P2RAY:
-                window.blit(bola9PO, (1185, 330))
-                window.blit(bola10PO, (1230, 330))
-                window.blit(bola11PO, (1275, 330))
-                window.blit(bola12PO, (1320, 330))
-                window.blit(bola13PO, (1207.5, 375))
-                window.blit(bola14PO, (1252.5, 375))
-                window.blit(bola15PO, (1297.5, 375))
-            '''
 
         if mostrarBochas:
             if P1LISA:

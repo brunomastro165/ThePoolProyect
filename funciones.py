@@ -8,10 +8,8 @@ import pygame.mixer
 pygame.mixer.init()
 
 
-
 def play_music():
     pygame.mixer.music.play(-1)  # reproducir musica en bucle
-
 
 
 # Funcion para actualizar las imagenes con hover
@@ -78,9 +76,9 @@ def make_new_game(balls, diam, static_body, space, potted_balls, potted_balls_li
         for row in range(rows):
             pos = (250 + (col * (diam + 3)), 267 + (row * (diam + 3)) + (col * diam / 2))
 
-            # COMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARAMETROS, SIMPLEMENTE
-            # ES UNA FUNCION QUE DEVUELVE CIERTOS NUMEROS
-            # ASI QUE SE MODIFICO LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
+            '''COMO LAS BALLS NO SON OBJETOS, NO TIENEN ATRIBUTOS O PARAMETROS, SIMPLEMENTE
+            ES UNA FUNCION QUE DEVUELVE CIERTOS NUMEROS
+            ASI QUE SE MODIFICO LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS'''
 
             if 8 > len(balls) > 0:
                 # print(f"Lisas: {len(balls)}")
@@ -137,10 +135,8 @@ def make_new_game(balls, diam, static_body, space, potted_balls, potted_balls_li
     potted_balls_rayada.clear()
 
 
-
-
 def calcular_probabilidad(prob):
-    if random.randint(0,100) > prob:
+    if random.randint(0, 100) > prob:
         return True
     else:
         return False

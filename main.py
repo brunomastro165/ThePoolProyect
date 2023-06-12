@@ -13,6 +13,7 @@ import pygame.mixer
 from pygame.locals import *
 import pygame.font
 import IATest
+import os
 # Callback de colisión
 def handle_collision(arbiter, space, data):
     # Obtener las formas colisionadas
@@ -21,7 +22,6 @@ def handle_collision(arbiter, space, data):
     # Comprobar si las formas son bolas
     if isinstance(shape_a, funciones.MyCircle) and isinstance(shape_b, funciones.MyCircle):
         # Realizar las acciones necesarias cuando hay colisión entre las bolas
-        print(taking_shot)
         if not taking_shot:
             sound_ball.play()
     return True
@@ -341,7 +341,8 @@ music = False
 musicExist = False
 
 num = random.randint(0, 2)
-
+alpha = 128
+bot_balls = []
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
     # print(mouse_x ,",", mouse_y)
@@ -360,6 +361,153 @@ while True:
                     posX = (window.get_width() - 800) / 2
                     posY = (window.get_height() - 800) / 2
             # Animacion de Botones y cambio de pestanas
+            # VENTANA MENU
+            if menu:
+                        # BARRA DE VOLUMEN
+                        pygame.draw.rect(window, (255, 255, 255), pygame.Rect(389, 222, 736 - 389, 319 - 222))
+                        # Definir la barra
+                        bar_width = 300
+                        bar_height = 10
+                        bar_x = (window.get_width() - 800) / 2 + 408
+                        bar_y = (window.get_height() - 800) / 2 + 273
+                        sound_bar = pygame.Rect(bar_x, bar_y, bar_width, bar_height)
+                        mouse_state = pygame.mouse.get_pressed()
+                        # Definir el cursor
+                        cursor_width = 20
+                        cursor_height = 40
+                        if default_sound:
+                            x_cursor = bar_x + bar_width / 2
+                            y_cursor = bar_y - (cursor_height / 2)
+                            cursor = pygame.Rect(x_cursor - cursor_width / 2, y_cursor, cursor_width, cursor_height)
+                        # pygame.mixer.music.stop()
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            if cursor.collidepoint(event.pos):
+                                moving_cursor = True
+                                x_cursor, y_cursor = event.pos
+                                cursor.x = x_cursor - (cursor_width / 2)
+                                default_sound = False
+                            elif sound_bar.collidepoint(event.pos):
+                                moving_bar = True
+                                x_cursor, y_cursor = event.pos
+                                cursor.x = x_cursor - (cursor_width / 2)
+                                default_sound = False
+                        elif event.type == pygame.MOUSEBUTTONUP:
+                            moving_cursor = False
+                            moving_bar = False
+                            x_cursor, y_cursor = event.pos  # actualizar posicion del cursor
+                        elif event.type == pygame.MOUSEMOTION:
+                            if moving_cursor:
+                                x_cursor, y_cursor = event.pos
+                                # asegurarse de que el cursor no se mueva fuera de los limites de la barra
+                                if x_cursor < bar_x:
+                                    x_cursor = bar_x
+                                elif x_cursor > bar_x + bar_width - cursor_width:
+                                    x_cursor = bar_x + bar_width - cursor_width
+                                cursor.x = x_cursor - (cursor_width / 2)
+                            elif moving_bar:
+                                x_cursor, y_cursor = event.pos
+                                # asegurarse de que el cursor no se mueva fuera de los limites de la barra
+                                if x_cursor < bar_x:
+                                    x_cursor = bar_x
+                                elif x_cursor > bar_x + bar_width - cursor_width:
+                                    x_cursor = bar_x + bar_width - cursor_width
+                                cursor.x = x_cursor - (cursor_width / 2)
+                        # Calcular el volumen y actualizar la musica
+                        sound = (cursor.x - bar_x) / bar_width
+                        pygame.mixer.music.set_volume(sound)
+                        sound = (cursor.y - bar_y) / bar_height
+                        pygame.mixer.music.set_volume(sound)
+                        # VOLVER AL PRINCIPAL
+                        if return_hitbox.down(event):
+                            change_image = True
+                            menu = False
+                            main = True
+                        if change_image and not return_hitbox.hover():
+                            change_image = False
+                            window.blit(imagenActual, (posX, posY))
+                        # SI ESTA APRETADO SI
+                        if fullscreenSi_hitbox.down(event):
+                            change_image = True
+                            screenSiPress = True
+                            screenNoPress = False
+                            imagenActual = imagenSiMedio
+                            FullScreen = True
+                        # DIFERENCIADOS POR DIFICULTADO
+                        if diffFacil_hitbox.down(event):
+                            change_image = True
+                            Medio = False
+                            Facil = True
+                            dificil = False
+                            doom.stop()
+                            pygame.mixer.music.stop()
+                            pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")
+                            pygame.mixer.music.play()
+                        if diffMedio_hitbox.down(event):
+                            change_image = True
+                            Medio = True
+                            Facil = False
+                            dificil = False
+                            pygame.mixer.music.stop()
+                            pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")
+                            pygame.mixer.music.play()
+                        if diffDificil_hitbox.down(event):
+                            change_image = True
+                            Medio = False
+                            Facil = False
+                            dificil = True
+                            pygame.mixer.music.stop()
+                            pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
+                            pygame.mixer.music.play()
+                            music = True
+                            musicExist = True
+                        # SI ESTA APRETADO NO
+                        if fullscreenNo_hitbox.down(event):
+                            change_image = True
+                            screenNoPress = True
+                            screenSiPress = False
+                            imagenActual = imagenNoMedio
+                            FullScreen = False
+                        # Cosas de frontEnd
+                        if screenSiPress:
+                            if Facil:
+                                imagenActual = imagenSiFacil
+                                if not change_image and return_hitbox.hover():
+                                    change_image = True
+                                    window.blit(imagenSiFacilBack, (posX, posY))
+
+                            if Medio:
+                                imagenActual = imagenSiMedio
+                                if not change_image and return_hitbox.hover():
+                                    change_image = True
+                                    window.blit(imagenSiMedioBack, (posX, posY))
+
+                            if dificil:
+                                imagenActual = imagenSiDificil
+                                if not change_image and return_hitbox.hover():
+                                    change_image = True
+                                    window.blit(imagenSiDificilBack, (posX, posY))
+
+                        elif screenNoPress:
+                            if Facil:
+                                imagenActual = imagenNoFacil
+                                if not change_image and return_hitbox.hover():
+                                    change_image = True
+                                    window.blit(imagenNoFacilBack, (posX, posY))
+
+                            if Medio:
+                                imagenActual = imagenNoMedio
+                                if not change_image and return_hitbox.hover():
+                                    change_image = True
+                                    window.blit(imagenNoMedioBack, (posX, posY))
+
+                            if dificil:
+                                imagenActual = imagenNoDificil
+                                if not change_image and return_hitbox.hover():
+                                    change_image = True
+                                    window.blit(imagenNoDificilBack, (posX, posY))
+
+                        pygame.draw.rect(window, green_color, sound_bar)
+                        pygame.draw.rect(window, yellow_color, cursor)
             # PANTALLA PRINCIPAL
             if main:
                 if change_image and not start_hitbox.hover() and not menu_hitbox.hover() and not data_hitbox.hover():
@@ -394,7 +542,6 @@ while True:
                     main = False
             # VENTANA DE PRE JUEGO
             if start:
-
                 if change_image and not return_hitbox.hover() and not prePlayPlayerActive_hitbox.hover() and not preBotActive_hitbox.hover():
                     change_image = False
                     window.blit(prePlayInactive, (posX, posY))
@@ -458,153 +605,7 @@ while True:
                                                          pygame.RESIZABLE)
                         pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel), w, h)
                     # window.blit(nombre_bot, (100, 100))
-            # VENTANA MENU
-            if menu:
-                # BARRA DE VOLUMEN
-                pygame.draw.rect(window, (255, 255, 255), pygame.Rect(389, 222, 736-389, 319-222))
-                # Definir la barra
-                bar_width = 300
-                bar_height = 10
-                bar_x = (window.get_width() - 800) / 2 + 408
-                bar_y = (window.get_height() - 800) / 2 + 273
-                sound_bar = pygame.Rect(bar_x, bar_y, bar_width, bar_height)
-                mouse_state = pygame.mouse.get_pressed()
-                # Definir el cursor
-                cursor_width = 20
-                cursor_height = 40
-                if default_sound:
-                    x_cursor = bar_x + bar_width / 2
-                    y_cursor = bar_y - (cursor_height / 2)
-                    cursor = pygame.Rect(x_cursor - cursor_width / 2, y_cursor, cursor_width, cursor_height)
-                # pygame.mixer.music.stop()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if cursor.collidepoint(event.pos):
-                        moving_cursor = True
-                        x_cursor, y_cursor = event.pos
-                        cursor.x = x_cursor - (cursor_width / 2)
-                        default_sound = False
-                    elif sound_bar.collidepoint(event.pos):
-                        moving_bar = True
-                        x_cursor, y_cursor = event.pos
-                        cursor.x = x_cursor - (cursor_width / 2)
-                        default_sound = False
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    moving_cursor = False
-                    moving_bar = False
-                    x_cursor, y_cursor = event.pos  # actualizar posicion del cursor
-                elif event.type == pygame.MOUSEMOTION:
-                    if moving_cursor:
-                        x_cursor, y_cursor = event.pos
-                        # asegurarse de que el cursor no se mueva fuera de los limites de la barra
-                        if x_cursor < bar_x:
-                            x_cursor = bar_x
-                        elif x_cursor > bar_x + bar_width - cursor_width:
-                            x_cursor = bar_x + bar_width - cursor_width
-                        cursor.x = x_cursor - (cursor_width / 2)
-                    elif moving_bar:
-                        x_cursor, y_cursor = event.pos
-                        # asegurarse de que el cursor no se mueva fuera de los limites de la barra
-                        if x_cursor < bar_x:
-                            x_cursor = bar_x
-                        elif x_cursor > bar_x + bar_width - cursor_width:
-                            x_cursor = bar_x + bar_width - cursor_width
-                        cursor.x = x_cursor - (cursor_width / 2)
-                # Calcular el volumen y actualizar la musica
-                sound = (cursor.x - bar_x) / bar_width
-                pygame.mixer.music.set_volume(sound)
-                sound = (cursor.y - bar_y) / bar_height
-                pygame.mixer.music.set_volume(sound)
-                # VOLVER AL PRINCIPAL
-                if return_hitbox.down(event):
-                    change_image = True
-                    menu = False
-                    main = True
-                if change_image and not return_hitbox.hover():
-                    change_image = False
-                    window.blit(imagenActual, (posX, posY))
-                # SI ESTA APRETADO SI
-                if fullscreenSi_hitbox.down(event):
-                    change_image = True
-                    screenSiPress = True
-                    screenNoPress = False
-                    imagenActual = imagenSiMedio
-                    FullScreen = True
-                # DIFERENCIADOS POR DIFICULTADO
-                if diffFacil_hitbox.down(event):
-                    change_image = True
-                    Medio = False
-                    Facil = True
-                    dificil = False
-                    doom.stop()
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")
-                    pygame.mixer.music.play()
-                if diffMedio_hitbox.down(event):
-                    change_image = True
-                    Medio = True
-                    Facil = False
-                    dificil = False
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")
-                    pygame.mixer.music.play()
-                if diffDificil_hitbox.down(event):
-                    change_image = True
-                    Medio = False
-                    Facil = False
-                    dificil = True
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
-                    pygame.mixer.music.play()
-                    music = True
-                    musicExist = True
-                # SI ESTA APRETADO NO
-                if fullscreenNo_hitbox.down(event):
-                    change_image = True
-                    screenNoPress = True
-                    screenSiPress = False
-                    imagenActual = imagenNoMedio
-                    FullScreen = False
-                # Cosas de frontEnd
-                if screenSiPress:
-                    if Facil:
-                        imagenActual = imagenSiFacil
-                        if not change_image and return_hitbox.hover():
-                            change_image = True
-                            window.blit(imagenSiFacilBack, (posX, posY))
 
-                    if Medio:
-                        imagenActual = imagenSiMedio
-                        if not change_image and return_hitbox.hover():
-                            change_image = True
-                            window.blit(imagenSiMedioBack, (posX, posY))
-
-                    if dificil:
-                        imagenActual = imagenSiDificil
-                        if not change_image and return_hitbox.hover():
-                            change_image = True
-                            window.blit(imagenSiDificilBack, (posX, posY))
-
-                elif screenNoPress:
-                    if Facil:
-                        imagenActual = imagenNoFacil
-                        if not change_image and return_hitbox.hover():
-                            change_image = True
-                            window.blit(imagenNoFacilBack, (posX, posY))
-
-                    if Medio:
-                        imagenActual = imagenNoMedio
-                        if not change_image and return_hitbox.hover():
-                            change_image = True
-                            window.blit(imagenNoMedioBack, (posX, posY))
-
-                    if dificil:
-                        imagenActual = imagenNoDificil
-                        if not change_image and return_hitbox.hover():
-                            change_image = True
-                            window.blit(imagenNoDificilBack, (posX, posY))
-
-                pygame.draw.rect(window, green_color, sound_bar)
-                pygame.draw.rect(window, yellow_color, cursor)
             # VENTANA DATOS
             if data:
                 if return_hitbox.down(event):
@@ -852,7 +853,6 @@ while True:
 
         # text = picanteo_bot[num]
         # window.blit((text), (1214, 582))
-        print(pygame.mouse.get_pos())
         if taking_shot:
             if changeTurn:
                 soundTurn = True
@@ -925,7 +925,9 @@ while True:
                     x_dist = balls[-1].body.position[0] - mouse_pos[0]
                     y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
                     if ballTeam:
-                        bot_balls = balls
+                        for ball in balls:
+                            if ball.tipo != "negra":
+                                bot_balls.append(ball)
                     else:
                         bot_balls = []
                         if p2_can_put_black:
@@ -940,6 +942,7 @@ while True:
                             for ball in balls:
                                 if ball.tipo == "rayada":
                                     bot_balls.append(ball)
+                        bot_balls.append(balls[len(balls)-1])
 
                     if Facil:
                         if funciones.calcular_probabilidad(30):
@@ -1340,6 +1343,5 @@ while True:
         # print(f"BallTeam{ballTeam}")
         # space.debug_draw(draw_options)
         pygame.display.update()
-    # print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

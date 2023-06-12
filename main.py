@@ -915,6 +915,7 @@ while True:
                     x_dist = balls[-1].body.position[0] - mouse_pos[0]
                     y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
                     if ballTeam:
+                        bot_balls = []
                         for ball in balls:
                             if ball.tipo != "negra":
                                 bot_balls.append(ball)
@@ -946,7 +947,6 @@ while True:
                             # Fuerza del golpe
                             force = random.randint(7000, 10000)
                     if Medio:
-                        print(len(balls))
                         if funciones.calcular_probabilidad(60):
                             palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
                                                                       diam, window)

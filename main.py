@@ -241,6 +241,7 @@ bot_active = True
 music = False
 musicExist = False
 mainTheme = True
+generalTheme = True
 
 # Bot variables
 num = random.randint(0, 2)
@@ -654,14 +655,12 @@ while True:
             pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
             pygame.mixer.music.play()
             musicD = False
-            print("LA PUTA MADRE")
-
 
         if mainTheme is True:
             pygame.mixer.music.load("Assets/Sound/GameMusic.mp3")
             pygame.mixer.music.play()
             mainTheme = False
-            print("LA RE CONCHA DE SU MADRE")
+
 
         # Time simulation
         clock.tick(FPS)
@@ -1069,10 +1068,11 @@ while True:
     # Parte del loop jugable sin el bot
     else:
 
-        if mainTheme is True:
+        # Comentario de ayuda
+        if generalTheme is True:
             pygame.mixer.music.load("Assets/Sound/GameMusic.mp3")
             pygame.mixer.music.play()
-            mainTheme = False
+            generalTheme = False
 
         # Time simulation
         clock.tick(FPS)

@@ -107,17 +107,13 @@ def triangulo_de_tirada(blancaX, blancaY, bolaX, bolaY, hoyoX, hoyoY, diam, wind
             if (bolaX < blancaX < hoyoX) or (bolaX > blancaX > hoyoX):
                 if bolaY < blancaY:
                     if bolaX < blancaX:
-                        # print(-(180 - angulo))
                         return -(180 - angulo)
                     else:
-                        # print(-angulo)
                         return -angulo
                 else:
                     if bolaX < blancaX:
-                        # print(180 - angulo)
                         return 180 - angulo
                     else:
-                        # print(180 - angulo)
                         return angulo
 
         elif (blancaY < bolaY < hoyoY) or (blancaY > bolaY > hoyoY):
@@ -127,17 +123,13 @@ def triangulo_de_tirada(blancaX, blancaY, bolaX, bolaY, hoyoX, hoyoY, diam, wind
 
     if bolaY < blancaY:
         if bolaX > blancaX:
-            # print(-(180-angulo))
             return -(180-angulo)
         else:
-            # print(-angulo)
             return -angulo
     else:
         if bolaX > blancaX:
-            # print(180 - angulo)
             return 180-angulo
         else:
-            # print(180 - angulo)
             return angulo
 
 

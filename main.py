@@ -266,19 +266,15 @@ for col in range(5):
         SIMPLEMENTE ES UNA FUNCION QUE DEVUELVE CIERTOS NUMEROS'''
         # ASI QUE SE MODIFICO LA CLASE CIRCLE DE PYMUNK, PARA PODER TENER OBJETOS
         if 8 > len(balls) > 0:
-            # print(f"Lisas: {len(balls)}")
             new_ball = funciones.create_ball((diam / 2), pos, static_body, space)
             new_ball.tipo = "lisa"
         if len(balls) == 0:  # LA ITERACION 0 POR ALGUN MOTIVO ES LA NUMERO 15, Y ES RAYADA, POR ESO ES ESTE IF
-            # print(f"Rayadas: {len(balls)}")
             new_ball = funciones.create_ball((diam / 2), pos, static_body, space)
             new_ball.tipo = "rayada"
         if len(balls) > 8:
-            # print(f"Rayadas: {len(balls)}")
             new_ball = funciones.create_ball((diam / 2), pos, static_body, space)
             new_ball.tipo = "rayada"
         if len(balls) == 8:
-            # print(f"Negra: {len(balls)}")
             new_ball = funciones.create_ball((diam / 2), pos, static_body, space)
             new_ball.tipo = "negra"
         if new_ball:
@@ -306,7 +302,6 @@ balls.append(cue_ball)
 contBalls = 0
 
 for i in balls:
-    print(f"{contBalls} : {i.tipo}")
     contBalls = contBalls + 1
 
 # NO BORREN ESTO NUNCA
@@ -369,7 +364,6 @@ power_bar4 = pygame.Surface((barra_placeholder4.get_width(), barra_placeholder4.
 power_bar4.blit(barra_placeholder4, (0, 0))
 aux_rayada = 0
 aux_lisa = 0
-print(balls[15].tipo)
 
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
@@ -407,7 +401,7 @@ while True:
                     x_cursor = bar_x + bar_width / 2
                     y_cursor = bar_y - (cursor_height / 2)
                     cursor = pygame.Rect(x_cursor - cursor_width / 2, y_cursor, cursor_width, cursor_height)
-                # pygame.mixer.music.stop()
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if cursor.collidepoint(event.pos):
                         moving_cursor = True
@@ -581,7 +575,6 @@ while True:
                     window.blit(prePlayBotActive, (posX, posY))
                 # DOWN EVENT
                 if prePlayPlayerActive_hitbox.down(event):
-                    # playMusic()
                     pygame.mixer.music.stop()
                     start = False
                     playing = True
@@ -629,7 +622,6 @@ while True:
                         window = pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel),
                                                          pygame.RESIZABLE)
                         pygame.display.set_mode((base_width + 200, base_height + base_bottom_panel), w, h)
-                    # window.blit(nombre_bot, (100, 100))
 
             # VENTANA DATOS
             if data:
@@ -731,11 +723,8 @@ while True:
 
                     contBalls = 0
                     for j in balls:
-                        print(f"{contBalls} : {j.tipo}")
                         contBalls = contBalls + 1
-                    print(f"Lisas: {potted_balls_lisa}")
-                    print(f"Rayadas: {potted_balls_rayada}")
-                    print(f"Negra: {potted_negra}")
+
         # draw pool balls
         # Utilizo el iterador i para obtener el numero de la bola
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
@@ -868,7 +857,6 @@ while True:
             window.blit(ganaj2, (400, 300))
             bot_active = False
             taking_shot = False
-            # defeat_sound = True
 
         if p1win is True and one_time:
             pygame.mixer.music.stop()
@@ -898,7 +886,6 @@ while True:
                 x_dist = balls[-1].body.position[0] - mouse_pos[0]
                 y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
                 palo_angle = math.degrees(math.atan2(y_dist, x_dist))
-                # print(palo_angle)
                 palo_p1.update(palo_angle)
                 # dibujar palo
                 palo_p1.draw(window)
@@ -941,7 +928,6 @@ while True:
                 if powering_up and not new_shot:
                     if potted_blanca:
                         balls[-1].body.position = (888, base_height / 2)
-                      #  window.blit(ball_images[-1], (930, 380))
 
                         potted_blanca = False
                     new_shot = True
@@ -999,7 +985,6 @@ while True:
                         # Fuerza del golpe
                         top_force = random.randint(9000, 10000)
                 if taking_shot:
-                    # print(palo_angle)
                     palo_p1.update(palo_angle)
                     # dibujar palo
                     palo_p1.draw(window)
@@ -1043,9 +1028,6 @@ while True:
 
         # Event Handler
         for event in pygame.event.get():
-            if event.type == KEYDOWN:  # Verificar si se presiono una tecla
-                if event.key == pygame.K_p:
-                    funciones.make_new_game(balls, diam, static_body, space)
             # Disparar la bola blanca
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot and turn:
                 powering_up = True
@@ -1159,12 +1141,9 @@ while True:
                         ball.body.velocity = (0.0, 0.0)
                     contBalls = 0
                     for j in balls:
-                        print(f"{contBalls} : {j.tipo}")
                         contBalls = contBalls + 1
-                    print(f"Lisas: {potted_balls_lisa}")
-                    print(f"Rayadas: {potted_balls_rayada}")
-                    print(f"Negra: {potted_negra}")
-        # draw pool balls
+
+        # Dibujar las bolas del pool
         # Utilizo el iterador i para obtener el numero de la bola
         # Esto debido a que el iterador ball solo me da la direccion de memoria del objeto ball
         for i, ball in enumerate(balls):
@@ -1188,7 +1167,7 @@ while True:
         if ballTeam:
 
             # Jugador 1
-            if len(potted_balls_lisa) > 0 and turn:  # Probado y funciona
+            if len(potted_balls_lisa) > 0 and turn:
                 P1LISA = True
                 P1RAY = False
                 P2LISA = False
@@ -1196,7 +1175,7 @@ while True:
                 ballTeam = False
                 mostrarBochas = True
                 cont = 0
-            elif len(potted_balls_rayada) > 0 and turn:  # Probado y funciona
+            elif len(potted_balls_rayada) > 0 and turn:
                 P1LISA = False
                 P1RAY = True
                 P2LISA = True
@@ -1206,7 +1185,7 @@ while True:
                 cont = 0
 
             # Jugador 2
-            elif len(potted_balls_lisa) > 0 and not turn:  # Probado y funciona
+            elif len(potted_balls_lisa) > 0 and not turn:
                 P1LISA = False
                 P1RAY = True
                 P2LISA = True
@@ -1214,7 +1193,7 @@ while True:
                 ballTeam = False
                 mostrarBochas = True
                 cont = 0
-            elif len(potted_balls_rayada) > 0 and not turn:  # Probado y funciona
+            elif len(potted_balls_rayada) > 0 and not turn:
                 P1LISA = True
                 P1RAY = False
                 P2LISA = False
@@ -1304,7 +1283,6 @@ while True:
             x_dist = balls[-1].body.position[0] - mouse_pos[0]
             y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
             palo_angle = math.degrees(math.atan2(y_dist, x_dist))
-            # print(palo_angle)
             palo_p1.update(palo_angle)
             # dibujar palo
             palo_p1.draw(window)
@@ -1343,9 +1321,6 @@ while True:
                 force_direction = 1
         # Event Handler
         for event in pygame.event.get():
-            if event.type == KEYDOWN:  # Verificar si se presiono una tecla
-                if event.key == pygame.K_p:
-                    funciones.make_new_game(balls, diam, static_body, space)
             # Disparar la bola blanca
             if event.type == pygame.MOUSEBUTTONDOWN and taking_shot:
                 powering_up = True
@@ -1362,7 +1337,6 @@ while True:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_b:
                 balls[7].body.position = (55, 58)
 
-
             if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
                 if musicExist:
                     if music:
@@ -1378,6 +1352,6 @@ while True:
                 sys.exit()
 
         pygame.display.update()
-        print(pygame.mouse.get_pos())
+
     clock.tick(FPS)
     pygame.display.flip()

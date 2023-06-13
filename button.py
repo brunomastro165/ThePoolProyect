@@ -18,7 +18,6 @@ class Button:
         mouse_pos = pygame.mouse.get_pos()
 
         if self.hitbox.collidepoint(mouse_pos) and event.type == pygame.MOUSEBUTTONUP:
-            # if event.button == 1:
             return True
 
     def down(self, event):

@@ -240,6 +240,7 @@ mostrarBochas = False
 bot_active = True
 music = False
 musicExist = False
+mainTheme = True
 
 # Bot variables
 num = random.randint(0, 2)
@@ -461,6 +462,7 @@ while True:
                     Facil = True
                     dificil = False
                     muiscD = False
+                    mainTheme = True
 
                 if diffMedio_hitbox.down(event):
                     change_image = True
@@ -468,16 +470,18 @@ while True:
                     Facil = False
                     dificil = False
                     musicD = False
+                    mainTheme = True
 
                 if diffDificil_hitbox.down(event):
                     change_image = True
                     Medio = False
                     Facil = False
                     dificil = True
-
                     musicD = True
                     music = True
                     musicExist = True
+                    mainTheme = False
+
                 # SI ESTA APRETADO NO
                 if fullscreenNo_hitbox.down(event):
                     change_image = True
@@ -485,6 +489,7 @@ while True:
                     screenSiPress = False
                     imagenActual = imagenNoMedio
                     FullScreen = False
+
                 # Cosas de frontEnd
                 if screenSiPress:
                     if Facil:
@@ -649,6 +654,14 @@ while True:
             pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
             pygame.mixer.music.play()
             musicD = False
+            print("LA PUTA MADRE")
+
+
+        if mainTheme is True:
+            pygame.mixer.music.load("Assets/Sound/GameMusic.mp3")
+            pygame.mixer.music.play()
+            mainTheme = False
+            print("LA RE CONCHA DE SU MADRE")
 
         # Time simulation
         clock.tick(FPS)
@@ -1055,6 +1068,12 @@ while True:
         pygame.display.update()
     # Parte del loop jugable sin el bot
     else:
+
+        if mainTheme is True:
+            pygame.mixer.music.load("Assets/Sound/GameMusic.mp3")
+            pygame.mixer.music.play()
+            mainTheme = False
+
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)

@@ -134,17 +134,17 @@ diffDificil_hitbox = button.Button(407, 684, 697 - 407, 760 - 684)
 # Inicializo el mixer
 pygame.mixer.init()
 # Musica
-pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")  # agregar musica
+pygame.mixer.music.load("Assets/Sound/Jazza Plaza.mp3")  # agregar musica
 pygame.mixer.music.set_volume(0.5)  # setear volumen
 doom = pygame.mixer.Sound("Assets/Sound/DMusic.mp3")
 musicD = False
 
 # Sonidos
-palo_sound = pygame.mixer.Sound("Assets/Sound/Strike.wav")
+palo_sound = pygame.mixer.Sound("Assets/Sound/ball_sound.wav")
 change_turn_sound = pygame.mixer.Sound("Assets/Sound/cturn.wav")
 ball_in = pygame.mixer.Sound("Assets/Sound/sound_ball_in.mp3")
 win_sound = pygame.mixer.Sound("Assets/Sound/win_sound.mp3")
-sound_ball = pygame.mixer.Sound("Assets/Sound/BallsCollide-old1.wav")
+sound_ball = pygame.mixer.Sound("Assets/Sound/balls_collide.wav")
 
 change_turn_sound.set_volume(0.1)
 
@@ -661,7 +661,6 @@ while True:
             pygame.mixer.music.play()
             mainTheme = False
 
-
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)
@@ -972,7 +971,7 @@ while True:
                     if Facil:
                         if funciones.calcular_probabilidad(30):
                             palo_angle = IA.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
-                                                                      diam, window)
+                                                                  diam, window)
                             # Fuerza del golpe
                             top_force = random.randint(4000, 10000)
                         else:
@@ -983,7 +982,7 @@ while True:
                     if Medio:
                         if funciones.calcular_probabilidad(60):
                             palo_angle = IA.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
-                                                                      diam, window)
+                                                                  diam, window)
                             # Fuerza del golpe
                             top_force = random.randint(7000, 10000)
                         else:
@@ -993,7 +992,7 @@ while True:
                             top_force = random.randint(8500, 10000)
                     if dificil:
                         palo_angle = IA.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls)-1],
-                                                                  diam, window)
+                                                              diam, window)
                         # Fuerza del golpe
                         top_force = random.randint(9000, 10000)
                 if taking_shot:

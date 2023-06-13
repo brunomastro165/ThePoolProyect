@@ -243,7 +243,6 @@ musicExist = False
 
 # Bot variables
 num = random.randint(0, 2)
-alpha = 128
 bot_balls = []
 
 # load images
@@ -644,10 +643,14 @@ while True:
                 if not change_image and return_hitbox.hover():
                     change_image = True
                     window.blit(data_return, (posX, posY))
+            # Revision de eventos
+            # Revisa si aprita el boton para cerrar la aplicacion
             if event.type == QUIT:
                 sys.exit()
+            # Revisa si aprita el boton ESCAPE para cerrar la aplicacion
             if event.type == event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
+    # Parte del loop jugable con el bot
     elif playing_bot:
 
         if musicD is True:
@@ -746,7 +749,7 @@ while True:
                 changeTurn = True
         # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
         # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
-        if potted_blanca and not unicaVez:
+        if potted_blanca and not unicaVez and not win and not p2win and not p1win:
             turn = not turn
             cont = -1
             unicaVez = True
@@ -882,11 +885,9 @@ while True:
                 soundTurn = True
                 changeTurn = False
                 cont += 1
-
                 if cont > 1:
                     turn = not turn
             if turn:
-
                 # Sistema de turnos
                 if potted_blanca:
                     balls[-1].body.position = (888, base_height / 2)
@@ -935,17 +936,15 @@ while True:
                     force = 0
                     force_direction = 1
             elif turn is False and bot_active is True:
-
                 powering_up = True
                 # Sistema de turnos
-                if potted_blanca:
-                    balls[-1].body.position = (888, base_height / 2)
-                    window.blit(ball_images[-1], (930, 380))
+                if powering_up and not new_shot:
+                    if potted_blanca:
+                        balls[-1].body.position = (888, base_height / 2)
+                      #  window.blit(ball_images[-1], (930, 380))
 
-                    potted_blanca = False
-                if powering_up:
-                    changeTurn = True
-                    powering_up = False
+                        potted_blanca = False
+                    new_shot = True
                     # Calcular el angulo
                     mouse_pos = pygame.mouse.get_pos()
                     palo_p1.rect.center = balls[-1].body.position
@@ -999,7 +998,6 @@ while True:
                                                                   diam, window)
                         # Fuerza del golpe
                         top_force = random.randint(9000, 10000)
-
                 if taking_shot:
                     # print(palo_angle)
                     palo_p1.update(palo_angle)
@@ -1030,15 +1028,18 @@ while True:
                                 window.blit(power_bar,
                                             (balls[-1].body.position[0] - 30 + (b * 15),
                                              balls[-1].body.position[1] + 30))
-
-                try:
-                    x_impulse = math.cos(math.radians(palo_angle))
-                    y_impulse = math.sin(math.radians(palo_angle))
-                    balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
-                    force = 0
-                    force_direction = 1
-                except Exception as e:
-                    print("")
+                    else:
+                        changeTurn = True
+                        powering_up = False
+                        new_shot = False
+                        try:
+                            x_impulse = math.cos(math.radians(palo_angle))
+                            y_impulse = math.sin(math.radians(palo_angle))
+                            balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
+                            force = 0
+                            force_direction = 1
+                        except Exception as e:
+                            print("")
 
         # Event Handler
         for event in pygame.event.get():
@@ -1070,6 +1071,7 @@ while True:
                 sys.exit()
 
         pygame.display.update()
+    # Parte del loop jugable sin el bot
     else:
         # Time simulation
         clock.tick(FPS)
@@ -1177,7 +1179,7 @@ while True:
 
         # Si un jugador mete la blanca, le toca al otro jugador durante 2 turnos (como en el pool de verdad)
         # NO MUEVAN ESTO DE ACA, PORQUE MAS ABAJO SE MODIFICA LA VARIABLE Y NO FUNCIONARIA
-        if potted_blanca and not unicaVez:
+        if potted_blanca and not unicaVez and not win and not p2win and not p1win:
             turn = not turn
             cont = -1
             unicaVez = True

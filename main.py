@@ -137,6 +137,7 @@ pygame.mixer.init()
 pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")  # agregar musica
 pygame.mixer.music.set_volume(0.5)  # setear volumen
 doom = pygame.mixer.Sound("Assets/Sound/DMusic.mp3")
+musicD = False
 
 # Sonidos
 palo_sound = pygame.mixer.Sound("Assets/Sound/Strike.wav")

@@ -194,13 +194,17 @@ one_time = True
 # Pymunk space
 space = pymunk.Space()
 static_body = space.static_body
+
 # Con esta funcion le puedo pedir a pymunk que dibuje las formar que creo, en la ventana
 draw_options = pymunk.pygame_util.DrawOptions(window)
+
 # Collision Handler
 register_collision_handler(space)
+
 # Clock
 clock = pygame.time.Clock()
 FPS = 75
+
 # Game variables
 diam = 40
 pocket_dia = 66
@@ -208,9 +212,13 @@ force = 0
 max_force = 10000
 top_force = 0
 force_direction = 1
-
-powering_up = False
 game_started = False
+
+# Shot variables
+new_shot = False
+powering_up = False
+
+# Balls variables
 potted_balls = []
 potted_balls_lisa = []
 potted_balls_rayada = []
@@ -219,31 +227,37 @@ potted_blanca = False
 ballTeam = True
 p1_can_put_black = False
 p2_can_put_black = False
-FullScreen = False
-
-
-
-change_image = True
 contPottedBalls = 0
+
+# Screen variables
+FullScreen = False
+change_image = True
+
+# Flags variables
 unicaVez = False
 mostrarBochas = False
 bot_active = True
 music = False
 musicExist = False
 
+# Bot variables
 num = random.randint(0, 2)
 alpha = 128
 bot_balls = []
+
 # load images
 table_image = pygame.image.load("Assets/GameAssets/table.png").convert_alpha()
 ball_images = []
+
 for i in range(1, 17):
     ball_image = pygame.image.load(f"Assets/GameAssets/bola{i}.png").convert_alpha()
     ball_image = pygame.transform.scale(ball_image, (diam * 2, diam * 2))
     ball_images.append(ball_image)
+
 # Crear las bolas para el juego
 balls = []
 rows = 5
+
 # Bolas numeradas
 for col in range(5):
     for row in range(rows):
@@ -270,7 +284,8 @@ for col in range(5):
         if new_ball:
             balls.append(new_ball)
     rows -= 1
-# Cambiando las bolas de lugar
+
+# Cambiando las bolas de lugar (acomodandolas para que sean cómo el pool de verdad)
 funciones.change_pos(0, 14, balls)
 funciones.change_pos(1, 5, balls)
 funciones.change_pos(2, 13, balls)
@@ -281,20 +296,24 @@ funciones.change_pos(7, 10, balls)
 funciones.change_pos(10, 6, balls)
 funciones.change_pos(3, 12, balls)
 funciones.change_pos(12, 10, balls)
+
 # Bola blanca
 pos = (888, (678 / 2))
-# print(pos)
+
 cue_ball = funciones.create_ball((diam / 2), pos, static_body, space)
 cue_ball.tipo = "blanca"
 balls.append(cue_ball)
 contBalls = 0
+
 for i in balls:
     print(f"{contBalls} : {i.tipo}")
     contBalls = contBalls + 1
+
 # NO BORREN ESTO NUNCA
 balls[0].tipo = "lisa"
 balls[8].tipo = "rayada"
 balls[7].tipo = "negra"
+
 # Crear los bordes de la mesa (usando las coordenadas donde quiero dibujarlos)
 border = [
     [(88, 56), (109, 77), (555, 77), (564, 56)],
@@ -304,6 +323,7 @@ border = [
     [(56, 96), (77, 117), (77, 560), (56, 581)],
     [(1143, 96), (1122, 117), (1122, 560), (1143, 581)]
 ]
+
 # Crear los hoyos de la mesa
 pockets = [
     (55, 63),
@@ -313,6 +333,7 @@ pockets = [
     (592, 629),
     (1134, 616)
 ]
+
 bot_pockets = [
     (82, 86),
     (594, 74),
@@ -321,16 +342,20 @@ bot_pockets = [
     (594, 600),
     (1112, 590)
 ]
+
 for b in border:
     funciones.create_table_border(b, space)
+
 # Objeto palo (instancia de la clase palo)
 palo_p1 = palo.Palo(balls[-1].body.position)
+
 # Imagen para la barra de carga
 barra_placeholder = pygame.image.load("Assets/GameAssets/power_bar.png")
 barra_placeholder1 = pygame.image.load("Assets/GameAssets/power_bar1.png")
 barra_placeholder2 = pygame.image.load("Assets/GameAssets/power_bar2.png")
 barra_placeholder3 = pygame.image.load('Assets/GameAssets/power_bar3.png')
 barra_placeholder4 = pygame.image.load('Assets/GameAssets/power_bar4.png')
+
 # Barra de poder del palo
 power_bar = pygame.Surface((barra_placeholder.get_width(), barra_placeholder.get_height()))
 power_bar.blit(barra_placeholder, (0, 0))
@@ -345,8 +370,6 @@ power_bar4.blit(barra_placeholder4, (0, 0))
 aux_rayada = 0
 aux_lisa = 0
 print(balls[15].tipo)
-
-
 
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
@@ -443,26 +466,22 @@ while True:
                     Medio = False
                     Facil = True
                     dificil = False
-                    doom.stop()
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")
-                    pygame.mixer.music.play()
+                    muiscD = False
+
                 if diffMedio_hitbox.down(event):
                     change_image = True
                     Medio = True
                     Facil = False
                     dificil = False
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("Assets/Sound/Bossa Antigua.mp3")
-                    pygame.mixer.music.play()
+                    musicD = False
+
                 if diffDificil_hitbox.down(event):
                     change_image = True
                     Medio = False
                     Facil = False
                     dificil = True
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
-                    pygame.mixer.music.play()
+
+                    musicD = True
                     music = True
                     musicExist = True
                 # SI ESTA APRETADO NO
@@ -629,8 +648,12 @@ while True:
             if event.type == event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
     elif playing_bot:
-        print(pygame.mouse.get_pos())
-        # window.blit(nombre_bot, (1215, 521))
+
+        if musicD is True:
+            pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
+            pygame.mixer.music.play()
+            musicD = False
+
         # Time simulation
         clock.tick(FPS)
         space.step(1 / FPS)
@@ -642,7 +665,6 @@ while True:
         window.blit(jugador1Turno, (1200, 5))
         window.blit(jugador2Turno, (1200, 235))
         if turn:
-
             if soundTurn:
                 change_turn_sound.play()
                 soundTurn = False
@@ -653,7 +675,6 @@ while True:
             elif cont == -1:
                 print("3")
         else:
-
             if soundTurn:
                 change_turn_sound.play()
                 soundTurn = False
@@ -681,6 +702,7 @@ while True:
                         balls.remove(ball)
                         ball_images.pop(i)
                         contPottedBalls = contPottedBalls - 100
+
                     elif ball.tipo == "rayada":
                         potted_balls.append(ball_images[i])
                         potted_balls_rayada.append(ball_images[i])
@@ -690,16 +712,19 @@ while True:
                         balls.remove(ball)
                         ball_images.pop(i)
                         contPottedBalls = contPottedBalls - 100
+
                     elif ball.tipo == "negra":
                         potted_negra = True
                         potted_balls.append(ball_images[i])
                         space.remove(ball.body)
                         balls.remove(ball)
                         ball_images.pop(i)
+
                     elif ball.tipo == "blanca":
                         potted_blanca = True
                         ball.body.position = (-100, -100)
                         ball.body.velocity = (0.0, 0.0)
+
                     contBalls = 0
                     for j in balls:
                         print(f"{contBalls} : {j.tipo}")
@@ -980,9 +1005,8 @@ while True:
                     # dibujar palo
                     palo_p1.draw(window)
                     # Fuerza del golpe
-                    while force < top_force:
-                        pygame.display.flip()
-                        force += 10
+                    if force < top_force:
+                        force += 100
                         # Dibujar las barras de poder
                         for b in range(math.ceil(force / 2000)):
                             if b == 4:
@@ -1329,6 +1353,13 @@ while True:
                 if game_started:
                     palo_sound.play()
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_o:
+                balls[-1].body.position = (55, 58)
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_b:
+                balls[7].body.position = (55, 58)
+
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
                 if musicExist:
                     if music:
@@ -1344,5 +1375,6 @@ while True:
                 sys.exit()
 
         pygame.display.update()
+        print(pygame.mouse.get_pos())
     clock.tick(FPS)
     pygame.display.flip()

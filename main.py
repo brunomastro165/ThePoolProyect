@@ -9,7 +9,7 @@ import random
 import pygame.mixer
 from pygame.locals import *
 import pygame.font
-import IATest
+import IA
 
 
 # Callback de colisión
@@ -972,28 +972,28 @@ while True:
 
                     if Facil:
                         if funciones.calcular_probabilidad(30):
-                            palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
+                            palo_angle = IA.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
                                                                       diam, window)
                             # Fuerza del golpe
                             top_force = random.randint(4000, 10000)
                         else:
-                            palo_angle = random.randint(-8, 8) + IATest.determinar_mejor_bola\
+                            palo_angle = random.randint(-8, 8) + IA.determinar_mejor_bola\
                                 (bot_balls, bot_pockets, balls[len(balls) - 1], diam, window)
                             # Fuerza del golpe
                             top_force = random.randint(7000, 10000)
                     if Medio:
                         if funciones.calcular_probabilidad(60):
-                            palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
+                            palo_angle = IA.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
                                                                       diam, window)
                             # Fuerza del golpe
                             top_force = random.randint(7000, 10000)
                         else:
-                            palo_angle = random.randint(-5, 5) + IATest.determinar_mejor_bola\
+                            palo_angle = random.randint(-5, 5) + IA.determinar_mejor_bola\
                                 (bot_balls, bot_pockets, balls[len(balls) - 1], diam, window)
                             # Fuerza del golpe
                             top_force = random.randint(8500, 10000)
                     if dificil:
-                        palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls)-1],
+                        palo_angle = IA.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls)-1],
                                                                   diam, window)
                         # Fuerza del golpe
                         top_force = random.randint(9000, 10000)

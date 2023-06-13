@@ -206,6 +206,7 @@ diam = 40
 pocket_dia = 66
 force = 0
 max_force = 10000
+top_force = 0
 force_direction = 1
 
 powering_up = False
@@ -940,35 +941,62 @@ while True:
                             palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
                                                                       diam, window)
                             # Fuerza del golpe
-                            force = random.randint(4000, 10000)
+                            top_force = random.randint(4000, 10000)
                         else:
                             palo_angle = random.randint(-8, 8) + IATest.determinar_mejor_bola\
                                 (bot_balls, bot_pockets, balls[len(balls) - 1], diam, window)
                             # Fuerza del golpe
-                            force = random.randint(7000, 10000)
+                            top_force = random.randint(7000, 10000)
                     if Medio:
                         if funciones.calcular_probabilidad(60):
                             palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls) - 1],
                                                                       diam, window)
                             # Fuerza del golpe
-                            force = random.randint(7000, 10000)
+                            top_force = random.randint(7000, 10000)
                         else:
                             palo_angle = random.randint(-5, 5) + IATest.determinar_mejor_bola\
                                 (bot_balls, bot_pockets, balls[len(balls) - 1], diam, window)
                             # Fuerza del golpe
-                            force = random.randint(8500, 10000)
+                            top_force = random.randint(8500, 10000)
                     if dificil:
                         palo_angle = IATest.determinar_mejor_bola(bot_balls, bot_pockets, balls[len(balls)-1],
                                                                   diam, window)
                         # Fuerza del golpe
-                        force = random.randint(9000, 10000)
+                        top_force = random.randint(9000, 10000)
 
-                try:
+                if taking_shot:
                     # print(palo_angle)
                     palo_p1.update(palo_angle)
                     # dibujar palo
                     palo_p1.draw(window)
+                    # Fuerza del golpe
+                    while force < top_force:
+                        pygame.display.flip()
+                        force += 10
+                        # Dibujar las barras de poder
+                        for b in range(math.ceil(force / 2000)):
+                            if b == 4:
+                                window.blit(power_bar4,
+                                            (balls[-1].body.position[0] - 30 + (b * 15),
+                                             balls[-1].body.position[1] + 30))
+                            elif b == 3:
+                                window.blit(power_bar3,
+                                            (balls[-1].body.position[0] - 30 + (b * 15),
+                                             balls[-1].body.position[1] + 30))
+                            elif b == 2:
+                                window.blit(power_bar2,
+                                            (balls[-1].body.position[0] - 30 + (b * 15),
+                                             balls[-1].body.position[1] + 30))
+                            elif b == 1:
+                                window.blit(power_bar1,
+                                            (balls[-1].body.position[0] - 30 + (b * 15),
+                                             balls[-1].body.position[1] + 30))
+                            else:
+                                window.blit(power_bar,
+                                            (balls[-1].body.position[0] - 30 + (b * 15),
+                                             balls[-1].body.position[1] + 30))
 
+                try:
                     x_impulse = math.cos(math.radians(palo_angle))
                     y_impulse = math.sin(math.radians(palo_angle))
                     balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))

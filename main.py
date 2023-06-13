@@ -220,6 +220,20 @@ ballTeam = True
 p1_can_put_black = False
 p2_can_put_black = False
 FullScreen = False
+
+
+
+change_image = True
+contPottedBalls = 0
+unicaVez = False
+mostrarBochas = False
+bot_active = True
+music = False
+musicExist = False
+
+num = random.randint(0, 2)
+alpha = 128
+bot_balls = []
 # load images
 table_image = pygame.image.load("Assets/GameAssets/table.png").convert_alpha()
 ball_images = []
@@ -331,17 +345,9 @@ power_bar4.blit(barra_placeholder4, (0, 0))
 aux_rayada = 0
 aux_lisa = 0
 print(balls[15].tipo)
-change_image = True
-contPottedBalls = 0
-unicaVez = False
-mostrarBochas = False
-bot_active = True
-music = False
-musicExist = False
 
-num = random.randint(0, 2)
-alpha = 128
-bot_balls = []
+
+
 while True:
     # mouse_x, mouse_y = pygame.mouse.get_pos()  # posicion cartesiana del mouse
     # print(mouse_x ,",", mouse_y)
@@ -623,6 +629,7 @@ while True:
             if event.type == event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
     elif playing_bot:
+        print(pygame.mouse.get_pos())
         # window.blit(nombre_bot, (1215, 521))
         # Time simulation
         clock.tick(FPS)
@@ -849,6 +856,7 @@ while True:
                 soundTurn = True
                 changeTurn = False
                 cont += 1
+
                 if cont > 1:
                     turn = not turn
             if turn:
@@ -906,6 +914,8 @@ while True:
                 # Sistema de turnos
                 if potted_blanca:
                     balls[-1].body.position = (888, base_height / 2)
+                    window.blit(ball_images[-1], (930, 380))
+
                     potted_blanca = False
                 if powering_up:
                     changeTurn = True

@@ -95,11 +95,12 @@ Python, por defecto, viene instalado en las distribuciones linux más utilizadas
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/c91b75f1-e078-4cd0-a354-819e1c8863c9)
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/565341cd-7608-40b3-9519-15bbee2000d7)
 ![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/dac813f2-c5c6-4a55-8e37-469e78e297de)
-![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/83f4844f-c3ec-48e3-b9f5-e96daac95318)
-![17-12-20](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/cab2e5c0-d497-4985-99fe-dae0e19b5ccb)
-![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/8dee2e71-f64c-4d26-81f2-e362fcf51f28)
-![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/704aaa36-f488-493f-bcb3-63382ae1e503)
-![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/f853c4e5-337d-497c-ae1f-8800cb540592)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/37279b95-a052-49f2-b966-144f3128fd63)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/e706e518-4149-4e73-a299-0f799fb64f32)
+![image](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/700230f7-83b2-46d9-b0be-a803039dd608)
+![11-24-28](https://github.com/brunomastro165/ThePoolProyect/assets/127962081/5a9456f2-898f-4c21-89ad-ce4c0d6dc210)
+
+
 
 
 

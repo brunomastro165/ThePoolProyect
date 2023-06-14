@@ -11,7 +11,7 @@ from pygame.locals import *
 import pygame.font
 import IA
 
-
+# Finalizado
 # Callback de colisión
 def handle_collision(arbiter, _space, _data):
     # Obtener las formas colisionadas

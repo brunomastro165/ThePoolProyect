@@ -10,7 +10,9 @@
 La idea del proyecto que estamos realizando es la de un juego clásico de Pool, al cual hemos querido darle una estética minimalista y un funcionamiento realista, principalmente en las reglas y condiciones de victoria del mismo. 
 
 Para llevar a cabo el proyecto que tenemos entre manos, hemos utilizado el lenguaje Python junto con las librerías Pygame y Pymunk.
-El mismo tiene incorporadas ya todas las reglas básicas del juego, las físicas, las colisiones y turnos, además de una estética visual agradable, una interfaz de usuario bonita y amigable para la vista y una música relajante para agregar un ambiente de tranquilidad a la experiencia de juego.
+
+El mismo tiene incorporadas ya todas las reglas básicas del juego, las físicas, las colisiones, sistema turnos y un modo de juego contra un bot con 3 dificultades, además de una estética visual sencilla y agradable, una interfaz de usuario bonita y amigable para la vista y una amplia variedad música para acompañar a la experiencia del juego.
+
 
 # Integrantes y tareas
 
@@ -24,7 +26,7 @@ El mismo tiene incorporadas ya todas las reglas básicas del juego, las físicas
   Se encargó de crear las imagenes y *assets* para el proyecto e importarlas al mismo, además de su colaboración en las interfaces tanto de usuario como jugables, colaboró en la creación del bot y realizó investigación del lenguaje y entorno. 
 
 **Lucas Nievas**
-  Se encargó del sistema de físicas del juego y de su correcta implementación en el programa, además de los sistemas de colisiones entre bochas y ángulos de dirección, además de colaborar en la correción de errores y legibilidad del código.
+  Se encargó del sistema de físicas del juego y de su correcta implementación en el programa, además de los sistemas de colisiones entre bochas y ángulos de dirección, colaboracion en la correción de errores y legibilidad del código, e implementación de música.
 
   **Tareas conjuntas**
   La mayoría del código fué realizado mediante la función *code with me* que proveen los IDE´s de JetBrains, por lo que la gran mayoría de código fué realizado entre todos en reuniones diarias,

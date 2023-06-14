@@ -653,12 +653,12 @@ while True:
 
         if musicD is True:
             pygame.mixer.music.load("Assets/Sound/DMusic.mp3")
-            pygame.mixer.music.play()
+            pygame.mixer.music.play(-1)
             musicD = False
 
         if mainTheme is True:
             pygame.mixer.music.load("Assets/Sound/GameMusic.mp3")
-            pygame.mixer.music.play()
+            pygame.mixer.music.play(-1)
             mainTheme = False
 
         # Time simulation
@@ -1070,7 +1070,7 @@ while True:
         # Comentario de ayuda
         if generalTheme is True:
             pygame.mixer.music.load("Assets/Sound/GameMusic.mp3")
-            pygame.mixer.music.play()
+            pygame.mixer.music.play(-1)
             generalTheme = False
 
         # Time simulation
